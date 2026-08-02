@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="ar">
+
+<head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css2?family=Lobster&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="morbat.css">
+    <link rel="stylesheet" href="login.css">
+    <link rel="stylesheet" href="next-style.css">
+    <link rel="stylesheet" href="me.css">
+    <title>الباقات والاشتراكات - BROVAT</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<body>
+
+    <div class="menu-btn" id="menuBtn"><span></span><span></span><span></span></div>
+
+    <div class="side-menu" id="sideMenu">
+        <ul>
+            <li><a href="logn.html" class="menu-link">سجل في البروفا</a></li>
+            <li><a href="me.html" class="menu-link">ملفي الشخصي</a></li>
+            <li><a href="next.html" class="menu-link">الرئيسية</a></li>
+            <li><a href="notifications.html" class="menu-link"> الإشعارات</a></li>
+            <li><a href="messages.html" class="menu-link"> الرسائل الخاصة </a></li>
+            <li><a href="texts.html" class="menu-link">نصوص</a></li>
+            <li><a href="show.html" class="menu-link">العروض</a></li>
+
+            <li><a href="information.html" class="menu-link">معلومات عن المسرح</a></li>
+            <li><a href="free.html" class="menu-link"> ورش تعليم </a></li>
+            <li>
+            <li><a href="links.html" class="menu-link">اتصل بنا</a></li>
+
+            </li>
+        </ul>
+    </div>
+
+    <div class="header-container">
+        <h1 class="logo">BROVAT</h1>
+        <h2 class="right-text">اختر باقتك وطور مسيرتك المسرحية أو استمتع بعروض الجمهور</h2>
+    </div>
+
+    <!-- قسم باقات الفنانين والمخرجين -->
+    <div style="margin-top: 130px; text-align: center;" dir="rtl">
+        <h2 style="color: #ffcc00; font-size: 26px; margin-bottom: 10px;">باقات الفنانين والمخرجين 🎭</h2>
+        <p style="color: #ccc; font-size: 15px; margin-bottom: 25px;">طوّر بروفايلك وعروضك المسرحية واظهر بأفضل شكل
+            للمجتمع الفني.</p>
+    </div>
+
+    <div style="padding: 0 20px 40px 20px; display: flex; flex-wrap: wrap; justify-content: center; gap: 25px;"
+        dir="rtl">
+
+        <!-- الباقة المجانية -->
+        <div
+            style="background: rgba(0,0,0,0.6); border: 1px solid rgba(255,255,255,0.2); border-radius: 15px; padding: 25px; width: 300px; text-align: center; color: #fff; backdrop-filter: blur(10px);">
+            <h3 style="color: #ccc; margin-bottom: 10px;">الباقة المجانية 🎭</h3>
+            <h2 style="font-size: 28px; margin-bottom: 15px;">0 جنيه</h2>
+            <p style="font-size: 14px; color: #aaa; margin-bottom: 20px;">للبداية واستكشاف مجتمع البروفا المسرحي.</p>
+            <ul
+                style="text-align: right; font-size: 14px; margin-bottom: 25px; list-style: none; padding: 0; line-height: 2;">
+                <li>✔️ إنشاء بروفايل شخصي</li>
+                <li>✔️ تصفح العروض والنصوص</li>
+                <li>✔️ نشر بوستات وميديا محدودة</li>
+            </ul>
+            <button
+                style="background: #555; color: #fff; border: none; padding: 10px 20px; border-radius: 8px; width: 100%; font-weight: bold; cursor: not-allowed;">باقتك
+                الحالية</button>
+        </div>
+
+        <!-- باقة النجم (الأكثر طلباً) -->
+        <div
+            style="background: rgba(139, 0, 0, 0.6); border: 2px solid #ffcc00; border-radius: 15px; padding: 25px; width: 300px; text-align: center; color: #fff; backdrop-filter: blur(10px); transform: scale(1.05);">
+            <div
+                style="background: #ffcc00; color: #000; font-size: 12px; font-weight: bold; padding: 3px 10px; border-radius: 20px; display: inline-block; margin-bottom: 10px;">
+                الأكثر طلباً 🔥</div>
+            <h3 style="color: #ffcc00; margin-bottom: 10px;">باقة النجم الصاعد 🌟</h3>
+            <h2 style="font-size: 28px; margin-bottom: 15px;">250 جنيه <span style="font-size: 14px; color: #ccc;">/
+                    شهرياً</span></h2>
+            <p style="font-size: 14px; color: #ddd; margin-bottom: 20px;">للفنانين والممثلين الساعين للظهور والتألق.</p>
+            <ul
+                style="text-align: right; font-size: 14px; margin-bottom: 25px; list-style: none; padding: 0; line-height: 2;">
+                <li>✔️ ميزات الباقة المجانية بالكامل</li>
+                <li>✔️ رفع عدد غير محدود من المشاهد</li>
+                <li>✔️ ظهور مميز للبروفايل أمام المخرجين</li>
+                <li>✔️ شارة فنان معتمد (Badge) 🌟</li>
+            </ul>
+            <button onclick="subscribePlan('باقة النجم الصاعد - 250 جنيه')"
+                style="background: #ffcc00; color: #000; border: none; padding: 10px 20px; border-radius: 8px; width: 100%; font-weight: bold; cursor: pointer; font-size: 16px;">اشترك
+                الآن 🚀</button>
+        </div>
+
+        <!-- باقة المخرج -->
+        <div
+            style="background: rgba(0,0,0,0.6); border: 1px solid rgba(255,255,255,0.2); border-radius: 15px; padding: 25px; width: 300px; text-align: center; color: #fff; backdrop-filter: blur(10px);">
+            <h3 style="color: #ff4757; margin-bottom: 10px;">باقة المخرج الشامل 🎬</h3>
+            <h2 style="font-size: 28px; margin-bottom: 15px;">500 جنيه <span style="font-size: 14px; color: #ccc;">/
+                    شهرياً</span></h2>
+            <p style="font-size: 14px; color: #aaa; margin-bottom: 20px;">مخصصة للمخرجين لإدارة وترويج عروضهم بكفاءة.
+            </p>
+            <ul
+                style="text-align: right; font-size: 14px; margin-bottom: 25px; list-style: none; padding: 0; line-height: 2;">
+                <li>✔️ كل ميزات باقة النجم</li>
+                <li>✔️ إمكانية تثبيت العروض في الرئيسية</li>
+                <li>✔️ مدة صلاحية أطول للعروض المسرحية</li>
+                <li>✔️ أولوية الدعم الفني والترويج</li>
+                <li>✔️ شارة مخرج معتمد (Badge) 🎬</li>
+                <li>✔️امكنية رفع نص خاص من تاليفك</li>
+            </ul>
+            <button onclick="subscribePlan('باقة المخرج الشامل - 500 جنيه')"
+                style="background: #ff4757; color: #fff; border: none; padding: 10px 20px; border-radius: 8px; width: 100%; font-weight: bold; cursor: pointer; font-size: 16px;">اشترك
+                الآن 🎬</button>
+        </div>
+
+    </div>
+
+
+
+    <!-- نافذة إدخال بيانات الدفع (Modal) -->
+    <div id="paymentModal"
+        style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); backdrop-filter: blur(8px); justify-content: center; align-items: center; z-index: 2000;">
+        <div style="background: rgba(20, 20, 20, 0.95); border: 1px solid rgba(255,255,255,0.3); padding: 30px; border-radius: 20px; width: 360px; color: #fff; text-align: right;"
+            dir="rtl">
+            <h3 id="modalPlanTitle" style="color: #ffcc00; margin-bottom: 15px; text-align: center; font-size: 20px;">
+                تأكيد الدفع</h3>
+
+            <p style="font-size: 13px; opacity: 0.9; margin-bottom: 8px;">اختر طريقة الدفع وحول المبلغ:</p>
+            <div
+                style="background: rgba(0,0,0,0.5); padding: 10px; border-radius: 8px; margin-bottom: 12px; font-size: 13px;">
+                <span style="color: #2ed573; font-weight: bold;">📱 فودافون كاش:</span> 01015224575<br>
+                <span style="color: #ff4757; font-weight: bold;">🏦 إنستاباي:</span> 01015224575
+            </div>
+
+            <form onsubmit="submitSubscriptionWithPayment(event)">
+                <label style="font-size: 12px; display: block; margin-bottom: 4px;">اسم المُحوِّل الثلاثي:</label>
+                <input type="text" id="senderName" required
+                    style="width: 100%; padding: 10px; margin-bottom: 12px; border-radius: 6px; border: 1px solid #555; background: #222; color: #fff; box-sizing: border-box;">
+
+                <label style="font-size: 12px; display: block; margin-bottom: 4px;">رقم المحوّل منه أو رقم
+                    العملية:</label>
+                <input type="text" id="transferRef" required
+                    style="width: 100%; padding: 10px; margin-bottom: 20px; border-radius: 6px; border: 1px solid #555; background: #222; color: #fff; box-sizing: border-box;">
+
+                <div style="display: flex; gap: 10px;">
+                    <button type="submit"
+                        style="background: #2ed573; color: white; border: none; padding: 10px; border-radius: 8px; cursor: pointer; flex: 1; font-weight: bold;">تأكيد
+                        وإرسال 🎟️</button>
+                    <button type="button" onclick="closePaymentModal()"
+                        style="background: #ff4757; color: white; border: none; padding: 10px; border-radius: 8px; cursor: pointer; flex: 1; font-weight: bold;">إلغاء</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- سكربتات الموقع الأساسية -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="init-supabase.js"></script>
+    <script src="main.js"></script>
+    <script src="script.js"></script>
+    <script>
+        let selectedPlanName = "";
+
+        async function subscribePlan(planName) {
+            const { data: { user } } = await supabase.auth.getUser();
+
+            if (!user) {
+                alert("يجب تسجيل الدخول أولاً لتتمكن من الاشتراك! ⚠️");
+                window.location.href = "logn.html";
+                return;
+            }
+
+            selectedPlanName = planName;
+            document.getElementById('modalPlanTitle').innerText = "اشتراك: " + planName;
+            document.getElementById('paymentModal').style.display = 'flex';
+        }
+
+        function closePaymentModal() {
+            document.getElementById('paymentModal').style.display = 'none';
+        }
+
+        async function submitSubscriptionWithPayment(e) {
+            e.preventDefault();
+            const senderName = document.getElementById('senderName').value;
+            const transferRef = document.getElementById('transferRef').value;
+
+            const { data: { user } } = await supabase.auth.getUser();
+            if (!user) return;
+
+            const { error } = await supabase.from('subscriptions').insert([
+                {
+                    user_id: user.id,
+                    plan_name: selectedPlanName,
+                    status: 'pending',
+                    transfer_ref: transferRef
+                }
+            ]);
+
+            if (error) {
+                alert("حدث خطأ أثناء إتمام الاشتراك: " + error.message);
+                return;
+            }
+
+            const adminPhone = "201117415769"; // رقم الأدمن على واتساب
+            const message = `طلب اشتراك جديد في الباقات:%0Aالباقة: ${selectedPlanName}%0Aاسم المُحوِّل: ${senderName}%0Aرقم العملية/التحويل: ${transferRef}`;
+            const whatsappUrl = `https://wa.me/${adminPhone}?text=${message}`;
+
+            window.open(whatsappUrl, '_blank');
+            alert("تم إرسال طلب الاشتراك بنجاح! سيتم مراجعة التحويل وتفعيل باقتك قريباً. 🎉");
+            closePaymentModal();
+            window.location.href = "next.html";
+        }
+    </script>
+</body>
+
+</html>

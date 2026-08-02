@@ -1,0 +1,41 @@
+.page-title5 {
+    font-family: 'Lobster', cursive;
+    position: absolute;
+    /* عشان نتحكم في مكانه بالظبط */
+    top: 20px;
+    /* مسافة من فوق */
+    left: 50%;
+    /* ابدأ من نص الصفحة */
+    transform: translateX(-50%);
+    /* الحركة السحرية للسنتر */
+    color: #feeeba;
+
+    /* لون الخط */
+    font-size: 3.5rem;
+    /* حجم الخط */
+    margin: 0;
+    /* بدون هوامش */
+    text-shadow: 0 0 10px #feeeba;
+    /* لمسة توهج خفيفة */
+    font-family: 'Cairo', sans-serif;
+    z-index: 100;
+    /* عشان يظهر فوق أي حاجة تانية */
+    color: #feeeba;
+    /* لون النص الأساسي */
+    text-shadow:
+        0 0 60px #feeeba;
+}
+
+.page-title {
+    animation: glowPulse 1s infinite alternate;
+}
+
+@keyframes glowPulse {
+    from {
+        text-shadow: 0 0 5px #feeeba, 0 0 20px #feeeba;
+    }
+
+    to {
+        text-shadow: 0 0 10px #feeeba, 0 0 40px #feeeba;
+    }
+}

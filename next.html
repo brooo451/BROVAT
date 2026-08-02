@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="ar">
+
+<head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css2?family=Lobster&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="next-style.css">
+    <link rel="stylesheet" href="morbat.css">
+    <link rel="stylesheet" href="login.css">
+    <link rel="stylesheet" href="feed.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- 1. تحميل مكتبة Supabase أولاً -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <!-- 2. التهيئة الآمنة لمتغير supabase لمنع أي تضارب -->
+    <script>
+        const SUPABASE_URL = 'https://dfoqxztjsienubxqpdez.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRmb3F4enRqc2llbnVieHFwZGV6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQyMTAwMDYsImV4cCI6MjA5OTc4NjAwNn0.PSbtPGaBzhA-7hQMPq-3NMdZ30t111GPv4cG8mbitNQ';
+
+        // إنشاء الكائن وتثبيته عالمياً
+        window.supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    </script>
+</head>
+
+
+
+<body>
+    <script src="main.js"></script>
+    <script src="home.js"></script>
+    <script src="login.js"></script>
+    <script src="next.js"></script>
+
+
+    <div class="header-container">
+        <h1 class="logo">BROVAT</h1>
+        <h2 class="right-text">احنا في البروفا</h2>
+    </div>
+
+    <div class="menu-btn" id="menuBtn" onclick="toggleMenu()">
+        <span></span><span></span><span></span>
+    </div>
+
+    <div class="side-menu" id="sideMenu">
+        <div class="search-box-container"
+            style="position: relative; width: 90%; max-width: 400px; margin: 20px auto; text-align: right;">
+            <input type="text" id="userSearchInput" placeholder="ابحث عن اسم المستخدم..." oninput="searchUsersLive()"
+                style="
+        width: 100%;
+        padding: 12px 20px;
+        border-radius: 25px;
+        border: 1px solid rgba(255,255,255,0.3);
+        background: rgba(0, 0, 0, 0.6);
+        color: #fff;
+        font-size: 16px;
+        outline: none;
+        box-sizing: border-box;
+        backdrop-filter: blur(10px);
+    ">
+
+            <div id="searchResultsDropdown" style="
+        display: none;
+        position: absolute;
+        top: 100%;
+        right: 0;
+        width: 100%;
+        background: rgba(20, 0, 0, 0.95);
+        border: 1px solid rgba(255,255,255,0.2);
+        border-radius: 15px;
+        margin-top: 8px;
+        overflow: hidden;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.6);
+        backdrop-filter: blur(15px);
+        z-index: 9999;
+    "></div>
+        </div>
+        <ul>
+            <li>
+                <a href="logn.html" class="menu-link">
+                    <span class="menu-icon">👤</span>
+                    <span class="menu-text">سجل في البروفا</span>
+                </a>
+            </li>
+            <li>
+                <a href="me.html" class="menu-link">
+                    <span class="menu-icon">👤</span>
+                    <span class="menu-text">ملفي الشخصي</span>
+                </a>
+            </li>
+            <li>
+                <a href="next.html" class="menu-link">
+                    <span class="menu-icon">🎭</span>
+                    <span class="menu-text">الرئيسية</span>
+                </a>
+            </li>
+            <a href="notifications.html" class="menu-link">
+                <span class="menu-icon">🔔</span>
+                <span class="menu-text">الإشعارات</span>
+            </a>
+            <li>
+                <a href="messages.html" class="menu-link">
+                    <span class="menu-icon">💬</span>
+                    <span class="menu-text">الرسائل الخاصة</span>
+                </a>
+            </li>
+            <li>
+                <a href="texts.html" class="menu-link">
+                    <span class="menu-icon">📜</span>
+                    <span class="menu-text">نصوص</span>
+                </a>
+            </li>
+            <li>
+                <a href="show.html" class="menu-link">
+                    <span class="menu-icon">🎟️</span>
+                    <span class="menu-text">العروض</span>
+                </a>
+            </li>
+            <li>
+                <a href="information.html" class="menu-link">
+                    <span class="menu-icon">🏛️</span>
+                    <span class="menu-text">معلومات وحجز المسرح</span>
+                </a>
+
+                <a href="free.html" class="menu-link">
+                    <span class="menu-icon">✨</span>
+                    <span class="menu-text">ورش تعليم </span>
+                </a>
+                <a href="my-tickets.html" class="menu-link">
+                    <span class="menu-icon">🎟️</span>
+                    <span class="menu-text">تذاكري المحجوزة</span>
+                </a>
+            </li>
+            <li><a href="subscriptions.html" class="menu-link" style="color: #ffcc00; font-weight: bold;">الباقات
+                    والاشتراكات 🌟</a></li>
+            <li>
+            <li><a href="links.html" class="menu-link">اتصل بنا</a></li>
+
+
+            <li><a href="about.html" class="menu-link">تعريف BROVAT 🌟</a></li>
+
+
+            <li><a href="admin.html" class="menu-link"> لوحة تحكم المسؤول </a></li>
+
+            </li>
+
+
+
+    </div>
+
+
+    <a href="#" onclick="filterPostsByRole('actor'); return false;" class="glass-btn">
+        <span class="logo-icon4">🎭</span>
+        <span class="hover-text">تمثيل</span>
+    </a>
+
+    <a href="#" onclick="filterPostsByRole('director'); return false;" class="glass-btn1">
+        <span class="logo-icon1">🎬</span>
+        <span class="hover-text">مخرج</span>
+    </a>
+
+    <a href="#" onclick="filterPostsByRole('decor'); return false;" class="glass-btn2">
+        <span class="logo-icon2">🛠️</span>
+        <span class="hover-text">ديكور</span>
+    </a>
+
+    <a href="#" onclick="filterPostsByRole('music'); return false;" class="glass-btn3">
+        <span class="logo-icon3">🎵</span>
+        <span class="hover-text">موسيقي</span>
+    </a>
+
+    <a href="#" onclick="filterPostsByRole('light'); return false;" class="glass-btn4">
+        <span class="logo-icon3">💡</span>
+        <span class="hover-text">إضاءة</span>
+    </a>
+
+    <a href="#" onclick="filterPostsByRole('dance'); return false;" class="glass-btn5">
+        <span class="logo-icon3">🕺</span>
+        <span class="hover-text">استعرضات</span>
+    </a>
+
+    <div id="feedContainer" style="max-width: 600px; margin: 20px auto;"></div>
+
+
+
+    <!-- سكربت تفعيل الإيموجي تلقائياً في الصفحة الرئيسية باستخدام supabase -->
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            if (typeof supabase !== 'undefined') {
+                const { data: { user } } = await supabase.auth.getUser();
+                if (user) {
+                    const { data: sub } = await supabase
+                        .from('subscriptions')
+                        .select('plan_name')
+                        .eq('user_id', user.id)
+                        .eq('status', 'active')
+                        .maybeSingle();
+
+                    if (sub) {
+                        let badgeEmoji = "⭐";
+                        const pName = sub.plan_name.toLowerCase();
+                        if (pName.includes('النجم') || pName.includes('star')) badgeEmoji = "🌟";
+                        else if (pName.includes('المخرج') || pName.includes('director')) badgeEmoji = "🎬";
+                        else if (pName.includes('vip') || pName.includes('عاشق')) badgeEmoji = "⭐";
+                        else if (pName.includes('الداعم') || pName.includes('gold')) badgeEmoji = "🎭";
+
+                        localStorage.setItem('userBadge', badgeEmoji);
+                    }
+                }
+            }
+        });
+    </script>
+
+    <div class="overlay" id="overlay"></div>
+
+    <!-- نافذة تكبير الصورة (Lightbox Modal) -->
+    <div id="imageModal"
+        style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.85); z-index: 10000; justify-content: center; align-items: center; backdrop-filter: blur(8px);">
+        <span onclick="closeImageModal()"
+            style="position: absolute; top: 20px; right: 30px; color: #fff; font-size: 35px; font-weight: bold; cursor: pointer; z-index: 10001;">&times;</span>
+        <img id="modalImageContent"
+            style="max-width: 90%; max-height: 85vh; border-radius: 12px; object-fit: contain; box-shadow: 0 5px 25px rgba(0,0,0,0.5);">
+    </div>
+
+</body>
+
+</html>

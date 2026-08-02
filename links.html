@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="ar">
+
+<head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css2?family=Lobster&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="morbat.css">
+    <link rel="stylesheet" href="next-style.css">
+    <link rel="stylesheet" href="login.css">
+
+
+    <title>روابط التواصل - BROVAT</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('your-background-image.jpg') no-repeat center center fixed;
+            background-size: cover;
+            font-family: 'Cairo', sans-serif;
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        .links-container {
+            width: 90%;
+            max-width: 450px;
+            background: rgba(139, 0, 0, 0.4);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 25px;
+            padding: 30px 20px;
+            text-align: center;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+        }
+
+        .profile-img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #ff4757;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+        }
+
+        .profile-name {
+            font-size: 24px;
+            font-weight: bold;
+            color: #fff;
+            margin-bottom: 5px;
+        }
+
+        .profile-bio {
+            font-size: 14px;
+            color: #ffcc00;
+            margin-bottom: 25px;
+        }
+
+        .link-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 14px;
+            margin-bottom: 15px;
+            border-radius: 15px;
+            color: #fff;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(5px);
+        }
+
+        .link-btn:hover {
+            background: #ff4757;
+            border-color: #ff4757;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(255, 71, 87, 0.4);
+        }
+
+        .link-icon {
+            font-size: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="menu-btn" id="menuBtn"><span></span><span></span><span></span></div>
+    <div class="side-menu" id="sideMenu">
+        <ul>
+
+            <li><a href="me.html" class="menu-link">ملفي الشخصي</a></li>
+            <li><a href="next.html" class="menu-link">الرئيسية</a></li>
+        </ul>
+    </div>
+
+    <div class="links-container">
+        <!-- صورة البروفايل أو لوجو الموقع -->
+        <img src="img/default-avatar.png" alt="Profile" class="profile-img">
+
+        <div class="profile-name">منصة بروفا • BROVAT</div>
+        <div class="profile-bio">الملتقى الرقمي الأول لأهل المسرح 🎭✨</div>
+
+        <!-- لينكات التواصل (استبدل # بالرابط الخاص بك) -->
+        <a href="next.html" class="link-btn">
+            <span class="link-icon">🌐</span> زيارة موقع بروفات الرئيسي
+        </a>
+
+        <a href="https://www.facebook.com/profile.php?id=61588085533969" target="_blank" class="link-btn">
+            <span class="link-icon"></span> تابعنا على فيسبوك
+        </a>
+
+        <a href="https://l.facebook.com/l.php?u=https%3A%2F%2Fwww.instagram.com%2Fbrovatcom%2F%3F__pwa%3D1%26fbclid%3DIwZXh0bgNhZW0CMTAAYnJpZBExU1pIODc1cUhDVDV1a2xQOXNydGMGYXBwX2lkEDIyMjAzOTE3ODgyMDA4OTIAAR73gWIYxNAJPekQ4IrG0VAZ9_yvYQ-3ohnWNTVfdfA6SjZCy3Y4Up1Dlty5vQ_aem_y5iOHNOx4Xs86ifDsE5gjQ%23&h=AUC-_z2wgEDR6v6M8snep_D5rcFdMicNAUTDdv00bkq8k0EMu0Mn1OJOwoc70rG36XBaOF0XOAU0vwc9BSlYjxh9Ih2q3I3KPYVdZeqUp_SeumB_TQJd_MqCvL7yrh7tJKuj"
+            target="_blank" class="link-btn">
+            <span class="link-icon"></span> تابعنا على إنستجرام
+        </a>
+
+        <a href="https://wa.me/201117415769" target="_blank" class="link-btn">
+            <span class="link-icon"></span> تواصل معنا عبر واتساب
+        </a>
+
+        <a href="https://www.tiktok.com/@brovat_?is_from_webapp=1&sender_device=pc" target="_blank" class="link-btn">
+            <span class="link-icon"></span> صفحتنا على تيك توك
+        </a>
+
+
+    </div>
+    <script src="me.js"></script>
+    <script src="script.js"></script>
+    <script src="login.js"></script>
+    <script src="main.js"></script>
+</body>
+
+</html>

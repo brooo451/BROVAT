@@ -1,0 +1,236 @@
+/* منع التمدد العرضي وإجبار الصفحة على التوافق التام مع الشاشة */
+* {
+    box-sizing: border-box !important;
+}
+
+html,
+body {
+    max-width: 100% !important;
+    overflow-x: hidden !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.library-container {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    padding: 50px;
+    flex-wrap: wrap;
+}
+
+.glass-card {
+    width: 250px;
+    background: rgba(139, 0, 0, 0.4);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 20px;
+    padding: 20px;
+    color: white;
+    text-align: center;
+    transition: 0.3s;
+    z-index: 10;
+}
+
+.glass-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+}
+
+.read-btn {
+    margin-top: 15px;
+    padding: 10px 20px;
+    background: #ff3333;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    cursor: pointer;
+}
+
+.library-container {
+    display: flex;
+    flex-direction: row-reverse;
+    /* بيعكس الترتيب عشان يبدأ من اليمين */
+    justify-content: center;
+    gap: 20px;
+    padding: 50px;
+    flex-wrap: wrap;
+}
+
+.page-title {
+    font-family: 'Lobster', cursive;
+    position: absolute;
+    /* عشان نتحكم في مكانه بالظبط */
+    top: 20px;
+    /* مسافة من فوق */
+    left: 50%;
+    /* ابدأ من نص الصفحة */
+    transform: translateX(-50%);
+    /* الحركة السحرية للسنتر */
+    color: rgb(192, 0, 0);
+    /* لون الخط */
+    font-size: 3.5rem;
+    /* حجم الخط */
+    margin: 0;
+    /* بدون هوامش */
+    text-shadow: 0 0 10px #9e1515;
+    /* لمسة توهج خفيفة */
+    font-family: 'Cairo', sans-serif;
+    z-index: 100;
+    /* عشان يظهر فوق أي حاجة تانية */
+    color: #dc0404;
+    /* لون النص الأساسي */
+    text-shadow:
+        0 0 60px #ff3333;
+}
+
+.page-title {
+    animation: glowPulse 1s infinite alternate;
+}
+
+@keyframes glowPulse {
+    from {
+        text-shadow: 0 0 5px #c60303, 0 0 20px #ff3333;
+    }
+
+    to {
+        text-shadow: 0 0 10px #c70303, 0 0 40px #ff3333;
+    }
+}
+
+/* تنسيقات الشاشات الصغيرة (الموبايل) النهائية */
+/* تنسيقات عامة لضمان التجاوب التام على الهواتف */
+/* --- تنسيقات الموبايل والتاّبلت الأساسية --- */
+@media screen and (max-width: 768px) {
+    body {
+        margin: 0 !important;
+        padding: 0 !important;
+        background-color: #1a0000 !important;
+        overflow-x: hidden !important;
+        font-family: Arial, sans-serif;
+    }
+
+    /* 1. تثبيت الهيدر العلوي بشكل شيك وصغير */
+    .header-container {
+        position: fixed !important;
+        top: 0 !important;
+        left: 0 !important;
+        width: 100% !important;
+        height: 60px !important;
+        background: rgba(0, 0, 0, 0.8) !important;
+        backdrop-filter: blur(10px) !important;
+        display: flex !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+        padding: 0 15px !important;
+        z-index: 999 !important;
+        box-sizing: border-box !important;
+    }
+
+    .header-container .logo {
+        font-size: 22px !important;
+        color: #ff4757 !important;
+        margin: 0 !important;
+    }
+
+    .header-container .right-text {
+        font-size: 14px !important;
+        color: #fff !important;
+        margin: 0 !important;
+    }
+
+    /* 2. زر القائمة الجانبية */
+    .menu-btn {
+        position: fixed !important;
+        top: 15px !important;
+        right: 15px !important;
+        z-index: 1001 !important;
+        cursor: pointer;
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+    }
+
+    .menu-btn span {
+        display: block;
+        width: 25px;
+        height: 3px;
+        background: #fff;
+        border-radius: 2px;
+    }
+
+    /* 3. القائمة الجانبية وتفعيلها */
+    .side-menu {
+        position: fixed !important;
+        top: 0 !important;
+        right: -250px !important;
+        /* مخفية يميناً */
+        width: 220px !important;
+        height: 100vh !important;
+        background: rgba(20, 0, 0, 0.95) !important;
+        backdrop-filter: blur(15px);
+        z-index: 1000 !important;
+        transition: right 0.3s ease;
+        padding-top: 70px;
+        box-sizing: border-box;
+    }
+
+    .side-menu.active {
+        right: 0 !important;
+        /* تظهر عند الضغط */
+    }
+
+    .side-menu ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        text-align: right;
+    }
+
+    .side-menu ul li a {
+        display: block;
+        padding: 12px 20px;
+        color: #fff;
+        text-decoration: none;
+        font-size: 16px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    /* 4. إجبار حاوية البوستات على البدء فوراً تحت الهيدر بدون فراغات */
+    #feedContainer {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        margin-top: 75px !important;
+        /* مسافة قريبة تحت الهيدر مباشرة */
+        padding: 10px !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
+    }
+
+    /* 5. ضبط كروت البوستات لتملأ عرض الشاشة بانتظام */
+    .feed-post-card {
+        width: 95% !important;
+        max-width: 450px !important;
+        margin: 0 auto 15px auto !important;
+        background: rgba(139, 0, 0, 0.5) !important;
+        backdrop-filter: blur(10px);
+        border-radius: 15px;
+        padding: 12px;
+        color: #fff;
+        box-sizing: border-box !important;
+    }
+}
+
+/* العنوان يفضل ظاهر عادي جداً على اللابتوب وكل الشاشات الكبيرة */
+/* اللابتوب والشاشات الكبيرة: العنصر يفضل ظاهر بشكل طبيعي تماماً زي الأول */
+.page-title {
+    display: block;
+}
+
+/* الموبايل فقط: العنصر بيختفي تماماً من غير ما نغير أي حاجة في الـ HTML */
+@media screen and (max-width: 768px) {
+    .page-title {
+        display: none !important;
+    }
+}

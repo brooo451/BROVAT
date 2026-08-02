@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <title>الرسائل - كواليس البروفا</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="next-style.css">
+    <link rel="stylesheet" href="me.css">
+    <div class="menu-btn" id="menuBtn"><span></span><span></span><span></span></div>
+
+    <div class="side-menu" id="sideMenu">
+        <ul>
+
+
+            <li><a href="next.html" class="menu-link">الرئيسية</a></li>
+            <li><a href="texts.html" class="menu-link">نصوص</a></li>
+            <li><a href="show.html" class="menu-link">العروض</a></li>
+            <li><a href="information.html" class="menu-link">معلومات وحجز المسرح</a></li>
+            <li><a href="free.html" class="menu-link"> ورش تعليم </a></li>
+            <li><a href="subscriptions.html" class="menu-link">الباقات والاشتراكات 🌟</a></li>
+            <li>
+            <li><a href="links.html" class="menu-link">اتصل بنا</a></li>
+            <li><a href="about.html" class="menu-link">تعريف BROVAT 🌟</a></li>
+
+            </li>
+        </ul>
+    </div>
+    <style>
+        body {
+            background-color: #1a0000;
+            color: #fff;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+
+        .messenger-layout {
+            display: flex;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(30, 0, 0, 0.95);
+            position: relative;
+        }
+
+        /* قائمة المحادثات (الجانبية) */
+        .conversations-sidebar {
+            width: 100%;
+            height: 100%;
+            overflow-y: auto;
+            background: rgba(20, 0, 0, 0.9);
+            padding: 20px 15px;
+            box-sizing: border-box;
+            transition: transform 0.3s ease;
+        }
+
+        .conversation-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 15px;
+            border-radius: 12px;
+            cursor: pointer;
+            margin-bottom: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: background 0.2s;
+        }
+
+        .conversation-item:hover {
+            background: rgba(255, 71, 87, 0.2);
+        }
+
+        .unread-badge {
+            background: #ff4757;
+            color: #fff;
+            font-size: 11px;
+            padding: 2px 7px;
+            border-radius: 50px;
+            font-weight: bold;
+        }
+
+        /* صندوق الشات الرئيسي */
+        .chat-main-area {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 100%;
+            height: 100%;
+            display: none;
+            flex-direction: column;
+            background: #1a0000;
+            z-index: 10;
+        }
+
+        .chat-header-bar {
+            padding: 12px 15px;
+            background: rgba(139, 0, 0, 0.8);
+            font-weight: bold;
+            color: #ffcc00;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .header-left-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .back-btn {
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+        .block-btn {
+            background: rgba(255, 71, 87, 0.2);
+            border: 1px solid #ff4757;
+            color: #ff4757;
+            padding: 5px 12px;
+            border-radius: 8px;
+            font-size: 13px;
+            cursor: pointer;
+            font-weight: bold;
+            display: none;
+        }
+
+        .chat-messages-box {
+            flex: 1;
+            padding: 15px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .msg-container {
+            display: flex;
+            flex-direction: column;
+            max-width: 75%;
+            position: relative;
+        }
+
+        .msg-container.sent {
+            align-self: flex-start;
+        }
+
+        .msg-container.received {
+            align-self: flex-end;
+        }
+
+        .msg-bubble {
+            padding: 10px 14px;
+            border-radius: 14px;
+            font-size: 14px;
+            word-break: break-word;
+            line-height: 1.4;
+            cursor: pointer;
+        }
+
+        .msg-container.sent .msg-bubble {
+            background: #ff4757;
+            color: #fff;
+            border-bottom-left-radius: 3px;
+        }
+
+        .msg-container.received .msg-bubble {
+            background: rgba(255, 255, 255, 0.15);
+            color: #fff;
+            border-bottom-right-radius: 3px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* قائمة الخيارات للرسالة (تعديل/حذف) */
+        .msg-options-menu {
+            display: none;
+            position: absolute;
+            bottom: 105%;
+            left: 0;
+            background: rgba(20, 0, 0, 0.95);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+            z-index: 20;
+            overflow: hidden;
+        }
+
+        .msg-options-menu button {
+            display: block;
+            width: 100%;
+            padding: 8px 15px;
+            background: none;
+            border: none;
+            color: #fff;
+            text-align: right;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        .msg-options-menu button:hover {
+            background: rgba(255, 71, 87, 0.4);
+        }
+
+        .chat-input-bar {
+            padding: 12px;
+            background: rgba(20, 0, 0, 0.9);
+            display: flex;
+            gap: 10px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .chat-input-bar input {
+            flex: 1;
+            padding: 12px 15px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: rgba(0, 0, 0, 0.5);
+            color: #fff;
+            outline: none;
+            font-size: 14px;
+        }
+
+        .chat-input-bar button {
+            padding: 0 20px;
+            background: #ff4757;
+            color: #fff;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        @media (min-width: 768px) {
+            .messenger-layout {
+                width: 90%;
+                max-width: 900px;
+                height: 80vh;
+                margin: 80px auto;
+                border-radius: 20px;
+                border: 1px solid rgba(255, 255, 255, 0.2);
+                overflow: hidden;
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+            }
+
+            .conversations-sidebar {
+                width: 35%;
+                border-left: 1px solid rgba(255, 255, 255, 0.1);
+            }
+
+            .chat-main-area {
+                position: relative;
+                display: flex !important;
+                width: 65%;
+            }
+
+            .back-btn {
+                display: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="messenger-layout">
+        <!-- قائمة المحادثات -->
+        <div class="conversations-sidebar" id="conversationsSidebar">
+            <h3
+                style="color: #ffcc00; font-size: 18px; margin-bottom: 20px; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px;">
+                الرسائل الخاصة 💬</h3>
+            <div id="usersListContainer" style="color: #aaa; text-align: center; font-size: 14px; padding-top: 20px;">
+                جاري تحميل المحادثات...</div>
+        </div>
+
+        <!-- صندوق الشات -->
+        <div class="chat-main-area" id="chatMainArea">
+            <div class="chat-header-bar">
+                <div class="header-left-group">
+                    <button class="back-btn" onclick="closeMobileChat()">⬅</button>
+                    <span id="activeChatTitle">اختر محادثة 🎭</span>
+                </div>
+                <button class="block-btn" id="blockUserBtn" onclick="toggleBlockUser()">حظر 🚫</button>
+            </div>
+
+            <div class="chat-messages-box" id="chatMessagesBox">
+                <div style="color: #aaa; text-align: center; margin: auto;">اختر شخصاً للبدء بالمراسلة</div>
+            </div>
+
+            <div class="chat-input-bar" id="chatInputArea" style="display: none;">
+                <input type="text" id="messageInputText" placeholder="اكتب رسالتك..."
+                    onkeypress="if(event.key === 'Enter') handleSendOrUpdate()">
+                <button id="sendBtn" onclick="handleSendOrUpdate()">إرسال</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- مكتبة Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="init-supabase.js"></script>
+    <script src="me.js"></script>
+    <script src="main.js"></script>
+    <script src="script.js"></script>
+    <script>
+        let currentActiveUserId = null;
+        let activeInterval = null;
+        let editingMessageId = null; // لتخزين رقم الرسالة المراد تعديلها
+
+        async function loadInboxUsers() {
+            const container = document.getElementById('usersListContainer');
+            if (!container || typeof supabase === 'undefined') return;
+
+            const { data: { user } } = await supabase.auth.getUser();
+            if (!user) {
+                container.innerHTML = "يجب تسجيل الدخول أولاً!";
+                return;
+            }
+
+            const { data: messages, error } = await supabase
+                .from('messages')
+                .select('*')
+                .or(`sender_id.eq.${user.id},receiver_id.eq.${user.id}`)
+                .order('created_at', { ascending: false });
+
+            if (error || !messages || messages.length === 0) {
+                container.innerHTML = "لا توجد محادثات سابقة 📭";
+                return;
+            }
+
+            const otherIdsMap = new Map(); // لتخزين آخر رسالة وعدد غير المقروءة لكل يوزر
+            messages.forEach(m => {
+                const otherId = m.sender_id === user.id ? m.receiver_id : m.sender_id;
+                if (!otherIdsMap.has(otherId)) {
+                    otherIdsMap.set(otherId, { lastMsg: m.message_text, unreadCount: 0 });
+                }
+                // حساب عدد الرسائل الواردة غير المقروءة
+                if (m.receiver_id === user.id && m.is_read === false) {
+                    otherIdsMap.get(otherId).unreadCount++;
+                }
+            });
+
+            const idsArray = Array.from(otherIdsMap.keys());
+            const { data: usersData } = await supabase
+                .from('users')
+                .select('id, nickname, avatar_url')
+                .in('id', idsArray);
+
+            if (!usersData || usersData.length === 0) {
+                container.innerHTML = "لا توجد جهات اتصال.";
+                return;
+            }
+
+            let html = "";
+            usersData.forEach(u => {
+                const avatar = u.avatar_url || 'img/default-avatar.png';
+                const info = otherIdsMap.get(u.id);
+                const lastMsg = info ? info.lastMsg : "";
+                const unread = info && info.unreadCount > 0 ? `<span class="unread-badge">${info.unreadCount}</span>` : "";
+
+                html += `
+                    <div onclick="openActiveChat('${u.id}', '${u.nickname || 'فنان'}')" class="conversation-item" id="conv-${u.id}">
+                        <div style="display: flex; align-items: center; gap: 12px; overflow: hidden;">
+                            <img src="${avatar}" style="width: 45px; height: 45px; border-radius: 50%; object-fit: cover; border: 2px solid #ff4757;">
+                            <div style="overflow: hidden; text-align: right;">
+                                <div style="font-weight: bold; font-size: 15px; color: #fff;">${u.nickname || 'فنان'}</div>
+                                <div style="font-size: 12px; color: #aaa; margin-top: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 150px;">${lastMsg}</div>
+                            </div>
+                        </div>
+                        <div>${unread}</div>
+                    </div>
+                `;
+            });
+
+            container.innerHTML = html;
+        }
+
+        async function openActiveChat(userId, userName) {
+            currentActiveUserId = userId;
+            document.getElementById('activeChatTitle').innerText = userName;
+            document.getElementById('chatInputArea').style.display = 'flex';
+            document.getElementById('blockUserBtn').style.display = 'block';
+
+            if (window.innerWidth < 768) {
+                document.getElementById('chatMainArea').style.display = 'flex';
+            }
+
+            // تعليم رسائل هذا المستخدم كمقروءة (is_read = true)
+            const { data: { user } } = await supabase.auth.getUser();
+            if (user) {
+                await supabase
+                    .from('messages')
+                    .update({ is_read: true })
+                    .eq('sender_id', userId)
+                    .eq('receiver_id', user.id);
+            }
+
+            checkBlockStatus();
+            loadInboxUsers(); // لتحديث العدادات في القائمة
+
+            if (activeInterval) clearInterval(activeInterval);
+            fetchChatMessages();
+            activeInterval = setInterval(fetchChatMessages, 3000);
+        }
+
+        function closeMobileChat() {
+            document.getElementById('chatMainArea').style.display = 'none';
+            if (activeInterval) clearInterval(activeInterval);
+            loadInboxUsers();
+        }
+
+        async function checkBlockStatus() {
+            const { data: { user } } = await supabase.auth.getUser();
+            if (!user || !currentActiveUserId) return;
+
+            const { data } = await supabase
+                .from('block_list')
+                .select('*')
+                .eq('blocker_id', user.id)
+                .eq('blocked_id', currentActiveUserId)
+                .maybeSingle();
+
+            const blockBtn = document.getElementById('blockUserBtn');
+            if (data) {
+                blockBtn.innerText = "إلغاء الحظر 🔓";
+                blockBtn.style.background = "#fff";
+                blockBtn.style.color = "#1a0000";
+            } else {
+                blockBtn.innerText = "حظر 🚫";
+                blockBtn.style.background = "rgba(255, 71, 87, 0.2)";
+                blockBtn.style.color = "#ff4757";
+            }
+        }
+
+        async function toggleBlockUser() {
+            const { data: { user } } = await supabase.auth.getUser();
+            if (!user || !currentActiveUserId) return;
+
+            const { data: existingBlock } = await supabase
+                .from('block_list')
+                .select('*')
+                .eq('blocker_id', user.id)
+                .eq('blocked_id', currentActiveUserId)
+                .maybeSingle();
+
+            if (existingBlock) {
+                await supabase.from('block_list').delete().eq('id', existingBlock.id);
+                alert("تم إلغاء الحظر بنجاح.");
+            } else {
+                await supabase.from('block_list').insert([{ blocker_id: user.id, blocked_id: currentActiveUserId }]);
+                alert("تم حظر المستخدم بنجاح.");
+            }
+            checkBlockStatus();
+        }
+
+        async function fetchChatMessages() {
+            if (!currentActiveUserId) return;
+            const { data: { user } } = await supabase.auth.getUser();
+            if (!user) return;
+
+            const { data: messages } = await supabase
+                .from('messages')
+                .select('*')
+                .or(`and(sender_id.eq.${user.id},receiver_id.eq.${currentActiveUserId}),and(sender_id.eq.${currentActiveUserId},receiver_id.eq.${user.id})`)
+                .order('created_at', { ascending: true });
+
+            const box = document.getElementById('chatMessagesBox');
+            if (!messages || messages.length === 0) {
+                box.innerHTML = `<div style="color: #aaa; text-align: center; margin: auto;">ابدأ المحادثة الآن! 🎭</div>`;
+                return;
+            }
+
+            let html = "";
+            messages.forEach(m => {
+                const isMe = m.sender_id === user.id;
+                const containerClass = isMe ? "sent" : "received";
+
+                // زرار التعديل والحذف يظهر فقط لرسائلك أنت
+                let optionsMenu = "";
+                if (isMe) {
+                    optionsMenu = `
+                        <div class="msg-options-menu" id="menu-${m.id}">
+                            <button onclick="startEditMessage('${m.id}', \`${m.message_text}\`)">تعديل ✏️</button>
+                            <button onclick="deleteMessage('${m.id}')" style="color: #ff4757;">حذف 🗑️</button>
+                        </div>
+                    `;
+                }
+
+                html += `
+                    <div class="msg-container ${containerClass}">
+                        <div class="msg-bubble" onclick="toggleMsgMenu('${m.id}')">${m.message_text}</div>
+                        ${optionsMenu}
+                    </div>
+                `;
+            });
+
+            box.innerHTML = html;
+            box.scrollTop = box.scrollHeight;
+        }
+
+        function toggleMsgMenu(msgId) {
+            // إغلاق أي قوائم مفتوحة وفتح القائمة الحالية
+            document.querySelectorAll('.msg-options-menu').forEach(el => {
+                if (el.id !== `menu-${msgId}`) el.style.display = 'none';
+            });
+            const menu = document.getElementById(`menu-${msgId}`);
+            if (menu) {
+                menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+            }
+        }
+
+        function startEditMessage(msgId, text) {
+            editingMessageId = msgId;
+            const input = document.getElementById('messageInputText');
+            input.value = text;
+            input.focus();
+            document.getElementById('sendBtn').innerText = "تعديل";
+            // غلق القائمة
+            document.querySelectorAll('.msg-options-menu').forEach(el => el.style.display = 'none');
+        }
+
+        async function deleteMessage(msgId) {
+            if (!confirm("هل أنت متأكد من حذف هذه الرسالة؟")) return;
+            const { error } = await supabase.from('messages').delete().eq('id', msgId);
+            if (!error) {
+                fetchChatMessages();
+                loadInboxUsers();
+            }
+        }
+
+        async function handleSendOrUpdate() {
+            const input = document.getElementById('messageInputText');
+            const text = input.value.trim();
+            if (!text || !currentActiveUserId) return;
+
+            const { data: { user } } = await supabase.auth.getUser();
+            if (!user) return;
+
+            if (editingMessageId) {
+                // تعديل الرسالة القائمة
+                const { error } = await supabase
+                    .from('messages')
+                    .update({ message_text: text })
+                    .eq('id', editingMessageId);
+
+                if (!error) {
+                    editingMessageId = null;
+                    document.getElementById('sendBtn').innerText = "إرسال";
+                    input.value = "";
+                    fetchChatMessages();
+                    loadInboxUsers();
+                }
+            } else {
+                // إرسال رسالة جديدة
+                const { data: checkBlock } = await supabase
+                    .from('block_list')
+                    .select('*')
+                    .or(`and(blocker_id.eq.${user.id},blocked_id.eq.${currentActiveUserId}),and(blocker_id.eq.${currentActiveUserId},blocked_id.eq.${user.id})`)
+                    .maybeSingle();
+
+                if (checkBlock) {
+                    alert("عذراً، لا يمكنك إرسال رسالة لوجود حظر بينكما!");
+                    return;
+                }
+
+                const { error } = await supabase.from('messages').insert([{
+                    sender_id: user.id,
+                    receiver_id: currentActiveUserId,
+                    message_text: text,
+                    is_read: false
+                }]);
+
+                if (!error) {
+                    input.value = "";
+                    fetchChatMessages();
+                    loadInboxUsers();
+                }
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', loadInboxUsers);
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="ar">
+
+<head>
+    <link href="https://fonts.googleapis.com/css2?family=Lobster&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="next-style.css">
+    <link rel="stylesheet" href="morbat.css">
+    <link rel="stylesheet" href="login.css">
+    <title>الملف الشخصي - BROVAT</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<body>
+    <!-- ... (الهيدر والقائمة الجانبية كما هي) ... -->
+
+    <div class="profile-container">
+        <h2 id="profileTitle">الملف الشخصي للفنان</h2>
+        <div class="input-group">
+            <!-- حقل اسم الشهرة -->
+            <input type="text" id="viewNickname" placeholder="اسم الشهرة">
+
+            <!-- حقل التخصص -->
+            <input type="text" id="viewRole" placeholder="التخصص">
+
+            <!-- حقل نبذة عنك -->
+            <textarea id="viewBio" placeholder="نبذة عنك"></textarea>
+        </div>
+        <button onclick="enableEdit()" id="editBtn">تعديل البيانات</button>
+        <button onclick="saveProfile()" id="saveBtn" style="display:none;">حفظ</button>
+    </div>
+
+    <div id="content" style="display:none;">
+        <h1>مرحباً بك في بروفايلك</h1>
+        <p>اسمك: <span id="userName"></span></p>
+    </div>
+
+    <!-- استبدال مكتبات Firebase بمكتبة Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <!-- ملف الـ JS الذي يحتوي على كود Supabase -->
+    <script src="profail.js"></script>
+    <script src="script.js"></script>
+    <script src="main.js"></script>
+
+
+
+    <div class="overlay" id="overlay"></div>
+
+    <script>
+        // دالة بسيطة لفتح الحقول للتعديل
+        function enableEdit() {
+            document.getElementById('viewNickname').readOnly = false;
+            document.getElementById('viewRole').readOnly = false;
+            document.getElementById('viewBio').readOnly = false;
+            document.getElementById('editBtn').style.display = 'none';
+            document.getElementById('saveBtn').style.display = 'block';
+        }
+    </script>
+</body>
+
+</html>

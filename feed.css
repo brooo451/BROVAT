@@ -1,0 +1,115 @@
+/* حاوية البوستات الرئيسية (بتخليهم شبكة أفقية مرنة جنب بعض) */
+#feedContainer {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    gap: 25px !important;
+    justify-content: center !important;
+    max-width: 1200px !important;
+    margin: 140px auto 30px auto !important;
+    /* مسافة من فوق عشان تبعد عن الزراير */
+    padding: 0 20px !important;
+    box-sizing: border-box !important;
+}
+
+/* شكل كارت البوست الواحد (مربع زجاجي مستقل بعرض مناسب عشان يقفوا جنب بعض) */
+.feed-post-card {
+    background: rgba(255, 255, 255, 0.1) !important;
+    backdrop-filter: blur(10px) !important;
+    -webkit-backdrop-filter: blur(10px) !important;
+    border-radius: 15px !important;
+    padding: 20px !important;
+    color: #fff !important;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3) !important;
+    width: 320px !important;
+    /* عرض ثابت يخلي أكتر من كارت يقفوا جنب بعض */
+    flex-shrink: 0 !important;
+    box-sizing: border-box !important;
+}
+
+/* تنسيق صورة أو فيديو البوست جوا الكارت */
+.feed-post-media {
+    width: 100% !important;
+    height: 240px !important;
+    object-fit: cover !important;
+    border-radius: 10px !important;
+}
+
+/* تنسيقات الشاشات الصغيرة (الموبايل) النهائية */
+/* تنسيقات عامة لضمان التجاوب التام على الهواتف */
+/* --- تنسيقات الموبايل والتاّبلت الأساسية --- */
+/* --- الحل الجذري لمشكلة القائمة الجانبية وصفحة الباب على الموبايل --- */
+@media screen and (max-width: 768px) {
+
+    /* 1. ضبط زر القائمة والقائمة الجانبية لتظهر وتفتح فوق أي شيء بشياكة */
+    .menu-btn {
+        position: fixed !important;
+        top: 15px !important;
+        left: 15px !important;
+        /* خليناه في الشمال عشان يكون ظاهر وواضح */
+        z-index: 99999 !important;
+        cursor: pointer;
+        background: rgba(0, 0, 0, 0.5);
+        padding: 8px;
+        border-radius: 8px;
+    }
+
+    .side-menu {
+        position: fixed !important;
+        top: 0 !important;
+        left: -280px !important;
+        /* مخفية في اليسار */
+        width: 250px !important;
+        height: 100vh !important;
+        background: rgba(20, 0, 0, 0.98) !important;
+        backdrop-filter: blur(15px);
+        z-index: 99998 !important;
+        transition: left 0.3s ease !important;
+        padding-top: 80px !important;
+        box-sizing: border-box !important;
+        box-shadow: 5px 0 15px rgba(0, 0, 0, 0.5);
+    }
+
+    /* عندما تفتح القائمة عبر الـ JS كلاس active */
+    .side-menu.active {
+        left: 0 !important;
+    }
+
+    .side-menu ul {
+        list-style: none !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        text-align: right !important;
+    }
+
+    .side-menu ul li a {
+        display: block !important;
+        padding: 15px 20px !important;
+        color: #fff !important;
+        text-decoration: none !important;
+        font-size: 16px !important;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+    }
+
+    /* 2. ضبط صفحة الباب (حجم الصورة أو عنصر الباب ليناسب شاشة الموبايل تماماً) */
+    .door-container,
+    img[src*="door"],
+    .door-image,
+    div[style*="door"] {
+        max-width: 80% !important;
+        width: 280px !important;
+        height: auto !important;
+        max-height: 60vh !important;
+        object-fit: contain !important;
+        margin: 80px auto 20px auto !important;
+        display: block !important;
+        position: relative !important;
+    }
+
+    /* تصغير اللوجو في صفحة الباب عشان ميبقاش عملاق */
+    .logo,
+    h1.logo {
+        font-size: 24px !important;
+        text-align: center !important;
+        margin: 10px 0 !important;
+    }
+}

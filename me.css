@@ -1,0 +1,223 @@
+/* تنسيق صفحة الملف الشخصي */
+/* الحاوية الكبيرة اللي مالية الشاشة */
+/* منع التمدد العرضي وإجبار الصفحة على التوافق التام مع الشاشة */
+* {
+    box-sizing: border-box !important;
+}
+
+html,
+body {
+    max-width: 100% !important;
+    overflow-x: hidden !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.profile-container {
+    width: 100%;
+    /* عرض المربع */
+    max-width: 500px;
+    /* عرض أقصى لشكله يكون أحلى */
+    margin: 50px auto;
+    /* سنتر في نص الصفحة */
+    background: rgba(255, 255, 255, 0.15);
+    /* شفافية المربع */
+    backdrop-filter: blur(15px);
+    /* تأثير الزجاج */
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 25px;
+    padding: 30px;
+    color: white;
+    border-left: 10px solid transparent;
+    /* ده اللي هيتغير لونه */
+    transition: border-color 0.5s ease;
+    z-index: 50;
+}
+
+/* ألوان التخصصات (هنغير border-left-color) */
+.role-actor {
+    border-left-color: #ff4500;
+}
+
+.role-director {
+    border-left-color: #00d2ff;
+}
+
+.role-music {
+    border-left-color: #d63384;
+}
+
+.header-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.profile-circle {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #ff4500;
+    /* إطار بلون مميز */
+}
+
+.details-section {
+    display: flex;
+    justify-content: space-around;
+    margin: 20px 0;
+    padding: 10px;
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.gallery-section {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.avatar-circle {
+    width: 100px;
+    height: 100px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    margin: 0 auto 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3rem;
+    border: 3px solid rgba(255, 255, 255, 0.5);
+    z-index: 50;
+}
+
+.profile-actions {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    z-index: 50;
+}
+
+.btn-edit {
+    background: #007bff;
+    color: white;
+}
+
+.btn-logout {
+    background: #ff4d4d;
+    color: white;
+}
+
+.profile-container {
+    transition: background 0.5s ease, border 0.5s ease;
+    padding: 20px;
+    border-radius: 20px;
+    margin: 20px auto;
+}
+
+.content-upload-area {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.btn-add {
+    background: #4caf50;
+    color: white;
+    padding: 15px 30px;
+    border-radius: 50px;
+    border: none;
+    cursor: pointer;
+    font-size: 1.1rem;
+}
+
+#galleryContainer {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 15px;
+    /* مسافة محترمة بين كل صورة والثانية */
+    margin-top: 20px;
+    max-height: 350px;
+    overflow-y: auto;
+    /* عشان لو الصور كترت يعمل Scroll شيك جوه المربع */
+    padding: 10px;
+}
+
+/* تنسيقات الشاشات الصغيرة (الموبايل) النهائية */
+/* تنسيقات عامة لضمان التجاوب التام على الهواتف */
+/* --- تنسيقات الموبايل والتاّبلت الأساسية --- */
+/* --- الحل الجذري لمشكلة القائمة الجانبية وصفحة الباب على الموبايل --- */
+@media screen and (max-width: 768px) {
+
+    /* 1. ضبط زر القائمة والقائمة الجانبية لتظهر وتفتح فوق أي شيء بشياكة */
+    .menu-btn {
+        position: fixed !important;
+        top: 15px !important;
+        left: 15px !important;
+        /* خليناه في الشمال عشان يكون ظاهر وواضح */
+        z-index: 99999 !important;
+        cursor: pointer;
+        background: rgba(0, 0, 0, 0.5);
+        padding: 8px;
+        border-radius: 8px;
+    }
+
+    .side-menu {
+        position: fixed !important;
+        top: 0 !important;
+        left: -280px !important;
+        /* مخفية في اليسار */
+        width: 250px !important;
+        height: 100vh !important;
+        background: rgba(20, 0, 0, 0.98) !important;
+        backdrop-filter: blur(15px);
+        z-index: 99998 !important;
+        transition: left 0.3s ease !important;
+        padding-top: 80px !important;
+        box-sizing: border-box !important;
+        box-shadow: 5px 0 15px rgba(0, 0, 0, 0.5);
+    }
+
+    /* عندما تفتح القائمة عبر الـ JS كلاس active */
+    .side-menu.active {
+        left: 0 !important;
+    }
+
+    .side-menu ul {
+        list-style: none !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        text-align: right !important;
+    }
+
+    .side-menu ul li a {
+        display: block !important;
+        padding: 15px 20px !important;
+        color: #fff !important;
+        text-decoration: none !important;
+        font-size: 16px !important;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+    }
+
+    /* 2. ضبط صفحة الباب (حجم الصورة أو عنصر الباب ليناسب شاشة الموبايل تماماً) */
+    .door-container,
+    img[src*="door"],
+    .door-image,
+    div[style*="door"] {
+        max-width: 80% !important;
+        width: 280px !important;
+        height: auto !important;
+        max-height: 60vh !important;
+        object-fit: contain !important;
+        margin: 80px auto 20px auto !important;
+        display: block !important;
+        position: relative !important;
+    }
+
+    /* تصغير اللوجو في صفحة الباب عشان ميبقاش عملاق */
+    .logo,
+    h1.logo {
+        font-size: 24px !important;
+        text-align: center !important;
+        margin: 10px 0 !important;
+    }
+}

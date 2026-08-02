@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="ar">
+
+<head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css2?family=Lobster&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="next-style.css">
+    <link rel="stylesheet" href="login.css">
+    <title>لوحة تحكم المسؤول - BROVAT</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+
+<body style="padding: 20px; color: #fff;" dir="rtl">
+
+    <div class="header-container">
+        <h1 class="logo">BROVAT</h1>
+        <h2 class="right-text">لوحة تحكم المسؤول 🛡️</h2>
+    </div>
+    <div class="menu-btn" id="menuBtn"><span></span><span></span><span></span></div>
+
+    <div class="side-menu" id="sideMenu">
+        <li><a href="me.html" class="menu-link">ملفي الشخصي</a></li>
+        <li><a href="next.html" class="menu-link">الرئيسية</a></li>
+        </ul>
+    </div>
+
+
+    <!-- رسالة الحماية لو مش الأدمن -->
+    <div id="unauthorizedMsg" style="display: none; text-align: center; margin-top: 100px;">
+        <h2 style="color: #ff4757; font-size: 24px;">غير مطلع على هذه الصفحة! ⚠️</h2>
+        <p style="color: #ccc; margin-top: 10px;">هذه الصفحة مخصصة لمسؤول المنصة فقط.</p>
+        <a href="next.html"
+            style="display: inline-block; margin-top: 20px; background: #ffcc00; color: #000; padding: 10px 20px; border-radius: 8px; text-decoration: none; font-weight: bold;">العودة
+            للرئيسية</a>
+    </div>
+
+    <!-- محتوى لوحة التحكم (يظهر للأدمن فقط) -->
+    <div id="adminPanelContent" style="display: none; margin-top: 40px;">
+        <h3 style="color: #ffcc00; margin-bottom: 20px;">طلبات الاشتراكات قيد المراجعة (Pending) 📋</h3>
+
+        <div id="subscriptionsContainer" style="display: flex; flex-direction: column; gap: 15px;">
+            <!-- الكروت هتتحمل هنا أوتوماتيكياً -->
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="init-supabase.js"></script>
+    <script>
+        // ضع هنا إيميلك الشخصي المسجل به في الموقع ليكون هو الأدمن الوحيد
+        const ADMIN_EMAIL = "0101medomedo@gmail.com"; // استبدل هذا الإيميل بإيميلك الحقيقي
+
+        async function checkAdminAndLoad() {
+            const { data: { user }, error: userError } = await supabase.auth.getUser();
+
+            if (userError || !user || user.email !== ADMIN_EMAIL) {
+                document.getElementById('unauthorizedMsg').style.display = 'block';
+                return;
+            }
+
+            // لو اليوزر هو الأدمن فعلاً، اظهر اللوحة وحمل الطلبات
+            document.getElementById('adminPanelContent').style.display = 'block';
+            loadPendingSubscriptions();
+        }
+
+        async function loadPendingSubscriptions() {
+            const container = document.getElementById('subscriptionsContainer');
+
+            const { data: subs, error } = await supabase
+                .from('subscriptions')
+                .select('*')
+                .eq('status', 'pending')
+                .order('id', { ascending: false });
+
+            if (error) {
+                container.innerHTML = `<p style="color: #ff4757;">حدث خطأ أثناء جلب الطلبات: ${error.message}</p>`;
+                return;
+            }
+
+            if (subs && subs.length > 0) {
+                container.innerHTML = "";
+                subs.forEach(sub => {
+                    const card = document.createElement('div');
+                    card.style.cssText = "background: rgba(139, 0, 0, 0.4); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.2); padding: 20px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px;";
+
+                    card.innerHTML = `
+                        <div>
+                            <h4 style="color: #ffcc00; font-size: 18px; margin-bottom: 5px;">🎭 ${sub.plan_name}</h4>
+                            <p style="font-size: 14px; margin-bottom: 3px;">🆔 كود/رقم التحويل: <strong style="color: #2ed573;">${sub.transfer_ref || 'غير محدد'}</strong></p>
+                            <p style="font-size: 12px; opacity: 0.7;">تاريخ الطلب: ${new Date(sub.created_at).toLocaleString()}</p>
+                        </div>
+                        <div style="display: flex; gap: 10px; align-items: center;">
+                            <button onclick="approveSubscription(${sub.id})" style="background: #2ed573; color: #fff; border: none; padding: 10px 20px; border-radius: 8px; font-weight: bold; cursor: pointer; transition: 0.3s;">موافقة وتفعيل ✅</button>
+                            <button onclick="rejectSubscription(${sub.id})" style="background: #ff4757; color: #fff; border: none; padding: 10px 20px; border-radius: 8px; font-weight: bold; cursor: pointer; transition: 0.3s;">رفض وحذف ✖️</button>
+                        </div>
+                    `;
+                    container.appendChild(card);
+                });
+            } else {
+                container.innerHTML = "<p style='color: #fff; opacity: 0.8;'>لا توجد طلبات اشتراك معلقة في الوقت الحالي. 🎉</p>";
+            }
+        }
+
+        async function approveSubscription(subId) {
+            const { error } = await supabase
+                .from('subscriptions')
+                .update({ status: 'active' })
+                .eq('id', subId);
+
+            if (error) {
+                alert("حدث خطأ أثناء التفعيل: " + error.message);
+            } else {
+                alert("تم تفعيل الاشتراك بنجاح! 🎉");
+                loadPendingSubscriptions(); // تحديث القائمة
+            }
+        }
+
+        async function rejectSubscription(subId) {
+            if (!confirm("هل أنت متأكد من رفض وحذف هذا الطلب؟")) return;
+
+            const { error } = await supabase
+                .from('subscriptions')
+                .delete()
+                .eq('id', subId);
+
+            if (error) {
+                alert("حدث خطأ أثناء رفض الطلب: " + error.message);
+            } else {
+                alert("تم رفض وحذف الطلب بنجاح.");
+                loadPendingSubscriptions(); // تحديث القائمة ليختفي الطلب فوراً
+            }
+        }
+
+        window.approveSubscription = approveSubscription;
+        window.rejectSubscription = rejectSubscription;
+        window.addEventListener('DOMContentLoaded', checkAdminAndLoad);
+        async function approveSubscription(subId) {
+            // حساب تاريخ الانتهاء بعد 30 يوم من اللحظة دي
+            const expiryDate = new Date();
+            expiryDate.setDate(expiryDate.getDate() + 30);
+
+            const { error } = await supabase
+                .from('subscriptions')
+                .update({
+                    status: 'active',
+                    expires_at: expiryDate.toISOString() // حفظ تاريخ انتهاء الاشتراك
+                })
+                .eq('id', subId);
+
+            if (error) {
+                alert("حدث خطأ أثناء التفعيل: " + error.message);
+            } else {
+                alert("تم تفعيل الاشتراك لمدة شهر بنجاح! 🎉");
+                loadPendingSubscriptions();
+            }
+        }
+        async function loadAdminTheaterBookings() {
+            if (typeof supabase === 'undefined') return;
+
+            const { data: bookings, error } = await supabase
+                .from('theater_bookings')
+                .select('*')
+                .order('created_at', { ascending: false });
+
+            // افترض إن عندك div في صفحة الأدمن باسم adminBookingsList
+            const container = document.getElementById('adminBookingsList');
+            if (!container) return;
+
+            if (error || !bookings || bookings.length === 0) {
+                container.innerHTML = `<p style="color: #aaa; text-align: center;">لا توجد حجوزات مسارح حتى الآن 📭</p>`;
+                return;
+            }
+
+            let html = "";
+            bookings.forEach(b => {
+                html += `
+            <div style="background: rgba(30,0,0,0.9); border: 1px solid #ff4757; padding: 15px; border-radius: 12px; margin-bottom: 10px; color: #fff; text-align: right;">
+                <h4 style="color: #ffcc00; margin: 0 0 5px 0;">🎭 حجز مسرح: ${b.theater_name}</h4>
+                <p style="margin: 4px 0;"><strong>المستخدم/الزائر:</strong> ${b.client_info || 'غير معروف'}</p>
+                <p style="margin: 4px 0;"><strong>رقم التواصل:</strong> <span style="color: #2ed573; font-weight: bold;">${b.client_phone}</span></p>
+                <p style="margin: 4px 0;"><strong>المواعيد المحجوزة:</strong> ${b.booking_date}</p>
+                <p style="margin: 4px 0; font-size: 11px; color: #aaa;">وقت الطلب: ${new Date(b.created_at).toLocaleString()}</p>
+            </div>
+        `;
+            });
+
+            container.innerHTML = html;
+        }
+
+        // استدعي الدالة دي لما صفحة الأدمن تفتح
+        document.addEventListener("DOMContentLoaded", loadAdminTheaterBookings);
+    </script>
+    <script src="me.js"></script>
+    <script src="main.js"></script>
+    <script src="script.js"></script>
+</body>
+
+</html>

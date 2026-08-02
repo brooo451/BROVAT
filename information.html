@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css2?family=Lobster&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="morbat.css">
+    <link rel="stylesheet" href="login.css">
+    <link rel="stylesheet" href="next-style.css">
+    <link rel="stylesheet" href="me.css">
+    <title>معلومات عن المسرح - BROVAT</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        .glass-card {
+            background: rgba(20, 0, 0, 0.75);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 20px;
+            padding: 20px;
+            margin: 20px auto;
+            max-width: 600px;
+            color: #fff;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(12px);
+            text-align: right;
+            transition: transform 0.3s;
+        }
+
+        .glass-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .glass-card img.main-img {
+            width: 100%;
+            height: 260px;
+            object-fit: cover;
+            border-radius: 15px;
+            margin-bottom: 15px;
+            border: 2px solid rgba(255, 204, 0, 0.5);
+        }
+
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(8px);
+            padding: 15px;
+            overflow-y: auto;
+        }
+
+        .modal-content {
+            background: rgba(25, 0, 0, 0.95);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            width: 100%;
+            max-width: 650px;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 25px;
+            color: #fff;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.9);
+            text-align: right;
+            position: relative;
+        }
+
+        .theater-images-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 8px;
+            margin: 15px 0;
+        }
+
+        .theater-images-grid img {
+            width: 100%;
+            height: 90px;
+            object-fit: cover;
+            border-radius: 8px;
+            border: 1px solid #ffcc00;
+        }
+
+        .cal-container {
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 12px;
+            margin: 10px 0;
+            display: none;
+        }
+
+        .cal-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 5px;
+            text-align: center;
+        }
+
+        .cal-day-header {
+            font-size: 11px;
+            color: #aaa;
+            font-weight: bold;
+        }
+
+        .cal-day-cell {
+            padding: 8px 2px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: bold;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .cal-day-available {
+            background: rgba(46, 213, 115, 0.25);
+            border: 1px solid #2ed573;
+            color: #2ed573;
+        }
+
+        .cal-day-available.selected {
+            background: #2ed573 !important;
+            color: #000 !important;
+            transform: scale(1.05);
+        }
+
+        .cal-day-busy {
+            background: rgba(255, 71, 87, 0.25);
+            border: 1px solid #ff4757;
+            color: #ff4757;
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+
+        .admin-form-box {
+            display: none;
+            background: rgba(30, 0, 0, 0.95);
+            border: 1px solid #ff4757;
+            padding: 20px;
+            border-radius: 15px;
+            max-width: 600px;
+            margin: 20px auto;
+            color: #fff;
+            text-align: right;
+        }
+
+        .admin-form-box input,
+        .admin-form-box textarea,
+        .admin-form-box select {
+            width: 100%;
+            padding: 10px;
+            margin: 8px 0 15px 0;
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            color: #fff;
+            outline: none;
+        }
+
+        .admin-btn {
+            background: #ff4757;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: bold;
+            display: none;
+            margin: 10px auto;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="menu-btn" id="menuBtn"><span></span><span></span><span></span></div>
+
+    <div class="side-menu" id="sideMenu">
+        <ul>
+            <li><a href="next.html" class="menu-link">الرئيسية</a></li>
+            <li><a href="logn.html" class="menu-link">سجل في البروفا</a></li>
+            <li><a href="me.html" class="menu-link">ملفي الشخصي</a></li>
+            <li><a href="notifications.html" class="menu-link">الإشعارات</a></li>
+            <li><a href="messages.html" class="menu-link">الرسائل الخاصة</a></li>
+            <li><a href="texts.html" class="menu-link">نصوص</a></li>
+            <li><a href="show.html" class="menu-link">العروض</a></li>
+            <li><a href="information.html" class="menu-link" style="color: #ff4757; font-weight: bold;">معلومات وحجز
+                    المسرح</a></li>
+            <li><a href="free.html" class="menu-link">ورش تعليم</a></li>
+            <li><a href="subscriptions.html" class="menu-link">الباقات والاشتراكات 🌟</a></li>
+            <li><a href="links.html" class="menu-link">اتصل بنا</a></li>
+            <li><a href="about.html" class="menu-link">تعريف BROVAT 🌟</a></li>
+        </ul>
+    </div>
+
+    <div class="header-container">
+        <h1 class="logo">BROVAT</h1>
+        <h2 class="right-text">معلومات عن المسرح</h2>
+    </div>
+
+    <div style="margin-top: 150px; padding: 20px;">
+
+        <div style="text-align: center;">
+            <button id="showAddTheaterBtn" class="admin-btn" onclick="toggleAdminForm()">➕ إضافة مسرح جديد (أدمن
+                فقط)</button>
+        </div>
+
+        <!-- لوحة تحكم الأدمن -->
+        <div id="adminTheaterForm" class="admin-form-box">
+            <h3 style="color: #ffcc00; margin-bottom: 15px;">لوحة تحكم الأدمن: رفع مسرح جديد 🎭</h3>
+            <input type="hidden" id="editingTheaterId" value="">
+
+            <label>اسم المسرح:</label>
+            <input type="text" id="theaterName" placeholder="مثال: مسرح الهوسابير">
+
+            <label>موقع المسرح (اللوكيشن):</label>
+            <input type="text" id="theaterLocation" placeholder="مثال: القاهرة، وسط البلد، شارع عماد الدين">
+
+            <label>السيرة الذاتية للمسرح:</label>
+            <textarea id="theaterBio" placeholder="نبذة تاريخية أو وصف تفصيلي..." rows="3"></textarea>
+
+            <label>صور المسرح (اختر صور متعددة):</label>
+            <input type="file" id="theaterImagesFiles" accept="image/*" multiple>
+
+            <label>عدد الكراسي:</label>
+            <input type="number" id="theaterSeats" placeholder="مثال: 150">
+
+            <label>السعر:</label>
+            <input type="text" id="theaterPrice" placeholder="مثال: 1500 جنيه">
+
+            <div style="display: flex; gap: 10px;">
+                <div style="flex:1;">
+                    <label>اختر الشهر الأول:</label>
+                    <select id="selectMonth1" onchange="updateAdminCalendars()"></select>
+                </div>
+                <div style="flex:1;">
+                    <label>اختر الشهر الثاني:</label>
+                    <select id="selectMonth2" onchange="updateAdminCalendars()"></select>
+                </div>
+            </div>
+
+            <label style="color: rgb(194, 2, 2); margin-top: 10px; display:block;">حدد الأيام المتاحة (اضغط للتبديل بين
+                متاح/غير متاح):</label>
+            <div class="cal-container" style="display: block;">
+                <div id="adminTitle1"
+                    style="color:rgb(194, 2, 2); font-size:14px; margin-bottom:5px; text-align:center; font-weight:bold;">
+                </div>
+                <div class="cal-grid" id="adminGrid1"></div>
+            </div>
+            <div class="cal-container" style="display: block; margin-top:10px;">
+                <div id="adminTitle2"
+                    style="color:rgb(194, 2, 2); font-size:14px; margin-bottom:5px; text-align:center; font-weight:bold;">
+                </div>
+                <div class="cal-grid" id="adminGrid2"></div>
+            </div>
+
+            <button onclick="saveTheater()"
+                style="background: #2ed573; color: #fff; border:none; padding: 12px; border-radius: 8px; cursor:pointer; font-weight:bold; width:100%; margin-top:15px;">حفظ
+                ونشر المسرح 🚀</button>
+        </div>
+
+        <div id="theatersContainer">
+            <div id="comingSoonBox" class="profile-container"
+                style="max-width: 600px; margin: 40px auto; text-align: center; background: rgba(20, 0, 0, 0.9); padding: 30px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.2);">
+                <div style="font-size: 40px; margin-bottom: 10px;">⏳</div>
+                <h2 style="color: #ffcc00; margin-bottom: 15px;">قريباً</h2>
+                <p style="color: #fff; font-size: 16px; line-height: 1.6;">
+                    سيتواجد قريباً نظام الحجز ومعلومات شاملة عن المسارح في منصة (BROVAT) 🎭✨
+                </p>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- نافذة تفاصيل المسرح -->
+    <div id="theaterDetailsModal" class="modal-overlay">
+        <div class="modal-content" id="modalDetailsContent"></div>
+    </div>
+
+    <!-- نافذة الحجز وإدخال رقم التواصل -->
+    <div id="bookingModal" class="modal-overlay">
+        <div class="modal-content" style="max-width: 400px; text-align: center;">
+            <h3 style="color: #c20707; margin-bottom: 15px;">تأكيد حجز الموعد 🎟️</h3>
+            <p id="selectedDateText" style="margin-bottom: 15px; color: #ddd;"></p>
+            <input type="text" id="clientPhoneInput" placeholder="أدخل رقم التواصل (الهاتف)..."
+                style="width: 100%; padding: 12px; background: rgba(0,0,0,0.6); border: 1px solid rgba(255,255,255,0.2); border-radius: 10px; color: #fff; margin-bottom: 15px; text-align: right;">
+            <div style="display: flex; gap: 10px;">
+                <button onclick="submitBooking()"
+                    style="flex: 1; background: #2ed573; color: #fff; border: none; padding: 10px; border-radius: 8px; font-weight: bold; cursor: pointer;">إرسال
+                    للأدمن 🚀</button>
+                <button onclick="closeBookingModal()"
+                    style="flex: 1; background: #555; color: #fff; border: none; padding: 10px; border-radius: 8px; font-weight: bold; cursor: pointer;">إلغاء
+                    ✕</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="init-supabase.js"></script>
+    <script>
+        const adminEmail = "0101medomedo@gmail.com";
+        let isAdmin = false;
+        let allTheaters = [];
+        let activeTheaterForBooking = null;
+        let selectedBookingDates = []; // لتحديد عدد الأيام المتاحة للحجز لو رغب المستخدم
+        let adminCalendarData = { month1: {}, month2: {} };
+        const monthNames = ["يناير", "فبراير", "مارس", "أبريل", "مايو", "يونيو", "يوليو", "أغسطس", "سبتمبر", "أكتوبر", "نوفمبر", "ديسمبر"];
+
+        document.addEventListener("DOMContentLoaded", async () => {
+            await checkAdminPermissions();
+            populateMonthDropdowns();
+            updateAdminCalendars();
+            await loadTheaters();
+        });
+
+        async function checkAdminPermissions() {
+            if (typeof supabase === 'undefined') return;
+            const { data: { user } } = await supabase.auth.getUser();
+            if (user && user.email === adminEmail) {
+                isAdmin = true;
+                const btn = document.getElementById('showAddTheaterBtn');
+                if (btn) btn.style.display = 'inline-block';
+            }
+        }
+
+        function toggleAdminForm() {
+            const form = document.getElementById('adminTheaterForm');
+            if (form) form.style.display = form.style.display === 'block' ? 'none' : 'block';
+        }
+
+        function populateMonthDropdowns() {
+            const m1 = document.getElementById('selectMonth1');
+            const m2 = document.getElementById('selectMonth2');
+            const now = new Date();
+            let currYear = now.getFullYear();
+            let currMonth = now.getMonth();
+
+            m1.innerHTML = "";
+            m2.innerHTML = "";
+
+            for (let i = 0; i < 12; i++) {
+                let d = new Date(currYear, currMonth + i, 1);
+                let val = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`;
+                let text = `${monthNames[d.getMonth()]} ${d.getFullYear()}`;
+
+                m1.innerHTML += `<option value="${val}">${text}</option>`;
+                let opt2 = document.createElement('option');
+                opt2.value = val;
+                opt2.text = text;
+                if (i === 1) opt2.selected = true; // الشهر الثاني افتراضياً الشهر القادم
+                m2.add(opt2);
+            }
+        }
+
+        function updateAdminCalendars() {
+            const val1 = document.getElementById('selectMonth1').value;
+            const val2 = document.getElementById('selectMonth2').value;
+
+            setupAdminMonth('adminGrid1', 'adminTitle1', val1, 'month1');
+            setupAdminMonth('adminGrid2', 'adminTitle2', val2, 'month2');
+        }
+
+        function setupAdminMonth(gridId, titleId, yearMonthStr, targetKey) {
+            const grid = document.getElementById(gridId);
+            const titleEl = document.getElementById(titleId);
+            if (!grid || !titleEl) return;
+
+            const [year, month] = yearMonthStr.split('-').map(Number);
+            titleEl.innerText = `شهر ${monthNames[month - 1]} ${year}`;
+
+            const firstDayIndex = new Date(year, month - 1, 1).getDay();
+            const totalDays = new Date(year, month, 0).getDate();
+
+            let html = `<div class="cal-day-header">ح</div><div class="cal-day-header">ن</div><div class="cal-day-header">ث</div><div class="cal-day-header">ر</div><div class="cal-day-header">خ</div><div class="cal-day-header">ج</div><div class="cal-day-header">س</div>`;
+
+            for (let i = 0; i < firstDayIndex; i++) {
+                html += `<div class="cal-day-cell" style="visibility:hidden;"></div>`;
+            }
+
+            if (!adminCalendarData[targetKey]) adminCalendarData[targetKey] = {};
+
+            for (let day = 1; day <= totalDays; day++) {
+                const dateKey = `${yearMonthStr}-${String(day).padStart(2, '0')}`;
+                if (adminCalendarData[targetKey][dateKey] === undefined) {
+                    adminCalendarData[targetKey][dateKey] = true; // متاح افتراضياً
+                }
+
+                const isAvail = adminCalendarData[targetKey][dateKey];
+                const cls = isAvail ? "cal-day-available" : "cal-day-busy";
+                html += `<div id="adm-${targetKey}-${dateKey}" class="cal-day-cell ${cls}" onclick="toggleAdminDay('${targetKey}', '${dateKey}')">${day}</div>`;
+            }
+            grid.innerHTML = html;
+        }
+
+        function toggleAdminDay(targetKey, dateKey) {
+            adminCalendarData[targetKey][dateKey] = !adminCalendarData[targetKey][dateKey];
+            const cell = document.getElementById(`adm-${targetKey}-${dateKey}`);
+            if (cell) {
+                cell.className = adminCalendarData[targetKey][dateKey] ? "cal-day-cell cal-day-available" : "cal-day-cell cal-day-busy";
+            }
+        }
+
+        async function saveTheater() {
+            const theaterId = document.getElementById('editingTheaterId').value;
+            const name = document.getElementById('theaterName').value.trim();
+            const location = document.getElementById('theaterLocation').value.trim();
+            const bio = document.getElementById('theaterBio').value.trim();
+            const filesInput = document.getElementById('theaterImagesFiles');
+            const seats = document.getElementById('theaterSeats').value.trim();
+            const price = document.getElementById('theaterPrice').value.trim();
+
+            const m1Val = document.getElementById('selectMonth1').value;
+            const m2Val = document.getElementById('selectMonth2').value;
+            const [y1, mo1] = m1Val.split('-');
+            const [y2, mo2] = m2Val.split('-');
+
+            const monthsMeta = {
+                month1Name: `${monthNames[parseInt(mo1) - 1]} ${y1}`,
+                month2Name: `${monthNames[parseInt(mo2) - 1]} ${y2}`
+            };
+
+            if (!name) { alert("يرجى إدخال اسم المسرح! ⚠️"); return; }
+
+            let imageUrls = [];
+            if (filesInput && filesInput.files.length > 0) {
+                for (let i = 0; i < filesInput.files.length; i++) {
+                    const file = filesInput.files[i];
+                    const fileName = `theater_${Date.now()}_${i}_${file.name}`;
+                    const { error: uploadError } = await supabase.storage.from('theaters-images').upload(fileName, file);
+                    if (!uploadError) {
+                        const { data: pubUrl } = supabase.storage.from('theaters-images').getPublicUrl(fileName);
+                        imageUrls.push(pubUrl.publicUrl);
+                    }
+                }
+            }
+
+            let updateData = {
+                name: name,
+                location: location || null,
+                bio: bio || null,
+                seats: seats ? parseInt(seats) : null,
+                price: price || null,
+                schedule_data: adminCalendarData,
+                months_names: monthsMeta
+            };
+
+            if (imageUrls.length > 0) updateData.image_urls = imageUrls;
+
+            if (theaterId) {
+                const { error } = await supabase.from('theaters').update(updateData).eq('id', theaterId);
+                if (error) alert("خطأ: " + error.message);
+                else { alert("تم التعديل بنجاح! 🎭"); resetForm(); loadTheaters(); }
+            } else {
+                if (imageUrls.length === 0) imageUrls.push('placeholder.jpg');
+                updateData.image_urls = imageUrls;
+                const { error } = await supabase.from('theaters').insert([updateData]);
+                if (error) alert("خطأ: " + error.message);
+                else { alert("تم الإضافة بنجاح! 🎭"); resetForm(); loadTheaters(); }
+            }
+        }
+
+        function resetForm() {
+            document.getElementById('editingTheaterId').value = "";
+            document.getElementById('theaterName').value = "";
+            document.getElementById('theaterLocation').value = "";
+            document.getElementById('theaterBio').value = "";
+            document.getElementById('theaterSeats').value = "";
+            document.getElementById('theaterPrice').value = "";
+            document.getElementById('adminTheaterForm').style.display = 'none';
+        }
+
+        async function loadTheaters() {
+            if (typeof supabase === 'undefined') return;
+            const { data: theaters, error } = await supabase.from('theaters').select('*').order('created_at', { ascending: false });
+
+            const container = document.getElementById('theatersContainer');
+            if (!container || error || !theaters || theaters.length === 0) return;
+
+            allTheaters = theaters;
+            let html = "";
+            theaters.forEach(t => {
+                let images = t.image_urls || ['placeholder.jpg'];
+                let adminActions = isAdmin ? `
+                    <div style="margin-top: 15px; display: flex; gap: 10px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 10px;">
+                        <button onclick="editTheater(${t.id})" style="background: #ffa502; color:#fff; border:none; padding:8px 15px; border-radius:6px; cursor:pointer; font-weight:bold;">تعديل ✏️</button>
+                        <button onclick="deleteTheater(${t.id})" style="background: #ff4757; color:#fff; border:none; padding:8px 15px; border-radius:6px; cursor:pointer; font-weight:bold;">حذف 🗑️</button>
+                    </div>
+                ` : "";
+
+                let locationHtml = t.location ? `<p style="margin: 5px 0; color: #ffcc00; font-size:14px;">📍 ${t.location}</p>` : "";
+
+                html += `
+                    <div class="glass-card">
+                        <img src="${images[0]}" alt="${t.name}" class="main-img">
+                        <h2 style="color: #ffcc00; margin-bottom: 5px;">${t.name} 🎭</h2>
+                        ${locationHtml}
+                        <button onclick="openTheaterDetails(${t.id})" style="background: #ff4757; color:#fff; border:none; padding:10px 20px; border-radius:10px; cursor:pointer; font-weight:bold; width:100%; margin-top:10px; box-shadow: 0 5px 15px rgba(255,71,87,0.4);">تفاصيل أكثر 🎭</button>
+                        ${adminActions}
+                    </div>
+                `;
+            });
+            container.innerHTML = html;
+        }
+
+        function openTheaterDetails(id) {
+            const t = allTheaters.find(item => item.id === id);
+            if (!t) return;
+
+            activeTheaterForBooking = t;
+            selectedBookingDates = [];
+            const modal = document.getElementById('theaterDetailsModal');
+            const content = document.getElementById('modalDetailsContent');
+
+            let imagesHtml = `<div class="theater-images-grid">`;
+            (t.image_urls || ['placeholder.jpg']).forEach(img => imagesHtml += `<img src="${img}">`);
+            imagesHtml += `</div>`;
+
+            let bioHtml = t.bio ? `<p style="margin: 10px 0; line-height: 1.6; color: #ddd;">${t.bio}</p>` : "";
+            let seatsHtml = t.seats ? `<p style="margin: 5px 0;"><strong>عدد الكراسي:</strong> ${t.seats} مقعد</p>` : "";
+            let priceHtml = t.price ? `<p style="margin: 5px 0;"><strong>السعر:</strong> <span style="color: #2ed573;">${t.price}</span></p>` : "";
+            let locationHtml = t.location ? `<p style="margin: 5px 0; color: #ffcc00;"><strong>الموقع:</strong> ${t.location}</p>` : "";
+
+            content.innerHTML = `
+                <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.2); padding-bottom: 10px; margin-bottom: 15px;">
+                    <h2 style="color: #ffcc00; margin: 0;">${t.name}</h2>
+                    <button onclick="closeTheaterDetails()" style="background:none; border:none; color:#fff; font-size:22px; cursor:pointer;">✕</button>
+                </div>
+                ${imagesHtml}
+                ${locationHtml}
+                ${bioHtml}
+                ${seatsHtml}
+                ${priceHtml}
+
+                <div style="margin-top: 15px;">
+                    <button onclick="toggleUserCalendar()" style="background: rgb(194, 2, 2); border: 1px solid #ffcc00; color: #ffcc00; width: 100%; padding: 12px; border-radius: 10px; font-weight: bold; cursor: pointer; font-size: 15px;">📅 المواعيد المتاحة (اختر الأيام)</button>
+                    <div id="userCalendarBox" class="cal-container">
+                        <div style="margin-bottom:10px;">
+                            <label style="color:#fff; font-size:14px; display:block; margin-bottom:5px;">سؤال: عاوز تحجز كام يوم؟ (اختياري)</label>
+                            <input type="number" id="desiredDaysCount" placeholder="مثال: 3 أيام" style="width:100%; padding:8px; background:rgba(0,0,0,0.5); border:1px solid rgba(255,255,255,0.2); border-radius:6px; color:#fff;">
+                        </div>
+                        ${renderUserCalendars(t.schedule_data, t.months_names)}
+                        <button onclick="proceedToBooking()" style="background:#2ed573; color:#fff; border:none; padding:10px; width:100%; border-radius:8px; font-weight:bold; margin-top:12px; cursor:pointer;">تأكيد اختيار الأيام والحجز 🎟️</button>
+                    </div>
+                </div>
+            `;
+            modal.style.display = 'flex';
+        }
+
+        function closeTheaterDetails() { document.getElementById('theaterDetailsModal').style.display = 'none'; }
+        function toggleUserCalendar() {
+            const box = document.getElementById('userCalendarBox');
+            if (box) box.style.display = box.style.display === 'block' ? 'none' : 'block';
+        }
+
+        function renderUserCalendars(sched, namesMeta) {
+            if (!sched) return `<p style="text-align:center; color:#aaa;">لا توجد مواعيد مخصصة.</p>`;
+            let m1Name = namesMeta?.month1Name || "الشهر الأول";
+            let m2Name = namesMeta?.month2Name || "الشهر الثاني";
+
+            let out = "";
+            const keys = ['month1', 'month2'];
+            const titles = [m1Name, m2Name];
+
+            keys.forEach((k, idx) => {
+                if (sched[k]) {
+                    out += `<div style="color:#ffcc00; font-size:14px; font-weight:bold; margin: 10px 0 5px 0; text-align:center;">شهر: ${titles[idx]}</div>`;
+                    out += `<div class="cal-grid" style="margin-bottom:10px;">`;
+                    for (let dateKey in sched[k]) {
+                        const isAvail = sched[k][dateKey];
+                        const dayNum = dateKey.split('-')[2];
+                        if (isAvail) {
+                            out += `<div id="user-day-${dateKey}" class="cal-day-cell cal-day-available" onclick="toggleUserDaySelection('${dateKey}')">${dayNum}</div>`;
+                        } else {
+                            out += `<div class="cal-day-cell cal-day-busy">${dayNum}</div>`;
+                        }
+                    }
+                    out += `</div>`;
+                }
+            });
+            return out;
+        }
+
+        function toggleUserDaySelection(dateKey) {
+            const cell = document.getElementById(`user-day-${dateKey}`);
+            const index = selectedBookingDates.indexOf(dateKey);
+            if (index > -1) {
+                selectedBookingDates.splice(index, 1);
+                if (cell) cell.classList.remove('selected');
+            } else {
+                selectedBookingDates.push(dateKey);
+                if (cell) cell.classList.add('selected');
+            }
+        }
+
+        function proceedToBooking() {
+            if (selectedBookingDates.length === 0) {
+                alert("يرجى اختيار يوم واحد على الأقل من التقويم! ⚠️");
+                return;
+            }
+            closeTheaterDetails();
+            const daysCount = document.getElementById('desiredDaysCount')?.value || selectedBookingDates.length;
+            document.getElementById('selectedDateText').innerText = `الأيام المختارة (${daysCount} أيام): ${selectedBookingDates.join(', ')}`;
+            document.getElementById('bookingModal').style.display = 'flex';
+        }
+
+        function closeBookingModal() { document.getElementById('bookingModal').style.display = 'none'; }
+
+        async function submitBooking() {
+            const phone = document.getElementById('clientPhoneInput').value.trim();
+            if (!phone) {
+                alert("يرجى إدخال رقم التواصل الخاص بك! ⚠️");
+                return;
+            }
+
+            if (!activeTheaterForBooking) {
+                alert("حدث خطأ، يجدر إعادة اختيار المسرح.");
+                return;
+            }
+
+            const daysCount = document.getElementById('desiredDaysCount')?.value || selectedBookingDates.length;
+            const theaterName = activeTheaterForBooking.name;
+            const bookingDatesStr = selectedBookingDates.join(', ');
+
+            // ⚠️ استبدل الرقم ده برقم واتساب الخاص بك (متبوعاً بكود الدولة، مثلاً لمصر: 20 وبعدها رقمك بدون أصفار في البداية)
+            const adminWhatsAppNumber = "201117415769"; // <--- اكتب رقمك هنا 
+
+            // صياغة الرسالة اللي هتوصلك على الواتساب بالشكل المطلوب تماماً
+            const message = `      🎭:%0a` +
+                `📍 اسم المسرح: ${theaterName}%0a` +
+                `📅 عدد الأيام: ${daysCount} أيام%0a` +
+                `🗓️ التواريخ: ${bookingDatesStr}%0a` +
+                `📱 رقم التواصل للعميل: ${phone}`;
+
+            // فتح رابط الواتساب مباشرة لإرسال الرسالة
+            const whatsappUrl = `https://wa.me/${adminWhatsAppNumber}?text=${message}`;
+
+            // إعلام العميل وسيتم التواصل معك
+            alert("تم تجهيز طلب حجزك بنجاح! سيتم تحويلك الآن لتأكيد الحجز عبر الواتساب وسيتم التواصل معك في خلال 24 ساعة 🚀");
+
+            closeBookingModal();
+            document.getElementById('clientPhoneInput').value = "";
+
+            // فتح الواتساب في نافذة جديدة
+            window.open(whatsappUrl, '_blank');
+        }
+        function editTheater(id) {
+            const t = allTheaters.find(item => item.id === id);
+            if (!t) return;
+
+            document.getElementById('editingTheaterId').value = t.id;
+            document.getElementById('theaterName').value = t.name;
+            document.getElementById('theaterLocation').value = t.location || "";
+            document.getElementById('theaterBio').value = t.bio || "";
+            document.getElementById('theaterSeats').value = t.seats || "";
+            document.getElementById('theaterPrice').value = t.price || "";
+
+            if (t.schedule_data) {
+                adminCalendarData = t.schedule_data;
+                updateAdminCalendars();
+            }
+
+            document.getElementById('adminTheaterForm').style.display = 'block';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        async function deleteTheater(id) {
+            if (confirm("هل أنت متأكد من الحذف؟")) {
+                const { error } = await supabase.from('theaters').delete().eq('id', id);
+                if (error) alert("خطأ: " + error.message);
+                else { alert("تم الحذف"); loadTheaters(); }
+            }
+        }
+    </script>
+    <script src="main.js"></script>
+</body>
+
+</html>

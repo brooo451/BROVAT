@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الرسائل - كواليس البروفا</title>
+    <link rel="stylesheet" href="mystyle.css">
+    <link rel="stylesheet" href="next-style.css">
+    <link rel="stylesheet" href="me.css">
+    <style>
+        body {
+            background-color: #1a0000;
+            color: #fff;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .chat-container {
+            width: 90%;
+            max-width: 600px;
+            height: 80vh;
+            margin: 30px auto;
+            background: rgba(30, 0, 0, 0.85);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            display: flex;
+            flex-direction: column;
+            backdrop-filter: blur(15px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+            overflow: hidden;
+        }
+
+        .chat-header {
+            padding: 15px 20px;
+            background: rgba(139, 0, 0, 0.5);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            font-weight: bold;
+            font-size: 18px;
+            color: #ffcc00;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .chat-messages {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .message {
+            max-width: 70%;
+            padding: 10px 15px;
+            border-radius: 15px;
+            font-size: 14px;
+            line-height: 1.4;
+            word-break: break-word;
+        }
+
+        .message.sent {
+            background: #ff4757;
+            color: #fff;
+            align-self: flex-start;
+            border-bottom-left-radius: 3px;
+        }
+
+        .message.received {
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            align-self: flex-end;
+            border-bottom-right-radius: 3px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .chat-input-area {
+            padding: 15px;
+            background: rgba(20, 0, 0, 0.9);
+            display: flex;
+            gap: 10px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .chat-input-area input {
+            flex: 1;
+            padding: 12px 15px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: rgba(0, 0, 0, 0.4);
+            color: #fff;
+            outline: none;
+            font-size: 14px;
+        }
+
+        .chat-input-area button {
+            padding: 0 20px;
+            background: #ff4757;
+            color: #fff;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background 0.2s;
+        }
+
+        .chat-input-area button:hover {
+            background: #ff6b81;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="menu-btn" id="menuBtn"><span></span><span></span><span></span></div>
+
+    <div class="side-menu" id="sideMenu">
+        <ul>
+            <li><a href="logn.html" class="menu-link">سجل في البروفا</a></li>
+
+            <li><a href="next.html" class="menu-link">الرئيسية</a></li>
+            <li><a href="notifications.html" class="menu-link"> الإشعارات</a></li>
+            <li><a href="messages.html" class="menu-link"> الرسائل الخاصة </a></li>
+            <li><a href="texts.html" class="menu-link">نصوص</a></li>
+            <li><a href="show.html" class="menu-link">العروض</a></li>
+            <li><a href="information.html" class="menu-link">معلومات وحجز المسرح</a></li>
+            <li><a href="free.html" class="menu-link">ورش تعليم</a></li>
+            <li><a href="subscriptions.html" class="menu-link">الباقات والاشتراكات 🌟</a></li>
+            <li><a href="links.html" class="menu-link">اتصل بنا</a></li>
+            <li><a href="about.html" class="menu-link">تعريف BROVAT 🌟</a></li>
+
+        </ul>
+    </div>
+    <div class="chat-container">
+        <div class="chat-header">
+            <span id="chatWithUser">محادثة خاصة 💬</span>
+        </div>
+
+        <div class="chat-messages" id="chatMessages">
+            <div style="color: #aaa; text-align: center; margin: auto;">اختر رسالة أو ابدأ محادثة جديدة...</div>
+        </div>
+
+        <div class="chat-input-area">
+            <input type="text" id="messageInput" placeholder="اكتب رسالتك هنا...">
+            <button onclick="sendMessage()">إرسال 🚀</button>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="main.js"></script>
+    <script>
+        // كود تشغيل الشات وجلب الرسائل بين المستخدم الحالي والشخص المستهدف (عبر الـ URL ?id=...)
+        const urlParams = new URLSearchParams(window.location.search);
+        const receiverId = urlParams.get('id');
+
+        async function loadMessages() {
+            if (!receiverId || typeof supabase === 'undefined') return;
+            const { data: { user } } = await supabase.auth.getUser();
+            if (!user) return;
+
+            // جلب الرسائل المتبادلة بين الطرفين
+            const { data: messages, error } = await supabase
+                .from('messages')
+                .select('*')
+                .or(`and(sender_id.eq.${user.id},receiver_id.eq.${receiverId}),and(sender_id.eq.${receiverId},receiver_id.eq.${user.id})`)
+                .order('created_at', { ascending: true });
+
+            if (error) {
+                console.error("خطأ في جلب الرسائل:", error.message);
+                return;
+            }
+
+            const container = document.getElementById('chatMessages');
+            container.innerHTML = "";
+
+            if (!messages || messages.length === 0) {
+                container.innerHTML = `<div style="color: #aaa; text-align: center; margin: auto;">لا توجد رسائل سابقة، كن أول المبادَرين! 🎭</div>`;
+                return;
+            }
+
+            messages.forEach(msg => {
+                const isSentByMe = msg.sender_id === user.id;
+                const msgDiv = document.createElement('div');
+                msgDiv.className = `message ${isSentByMe ? 'sent' : 'received'}`;
+                msgDiv.innerText = msg.message_text;
+                container.appendChild(msgDiv);
+            });
+
+            container.scrollTop = container.scrollHeight;
+        }
+
+        async function sendMessage() {
+            const input = document.getElementById('messageInput');
+            const text = input.value.trim();
+            if (!text || !receiverId) return;
+
+            const { data: { user } } = await supabase.auth.getUser();
+            if (!user) {
+                alert("يجب تسجيل الدخول أولاً لإرسال رسالة!");
+                return;
+            }
+
+            const { error } = await supabase
+                .from('messages')
+                .insert([{
+                    sender_id: user.id,
+                    receiver_id: receiverId,
+                    message_text: text
+                }]);
+
+            if (!error) {
+                input.value = "";
+                loadMessages();
+            } else {
+                console.error("خطأ في الإرسال:", error.message);
+            }
+        }
+
+        // تحديث تلقائي للرسايل كل ثواني أو عند التحميل
+        document.addEventListener('DOMContentLoaded', () => {
+            loadMessages();
+            // تحديث كل 3 ثواني مثلاً كمحاكاة سريعة للشات
+            setInterval(loadMessages, 3000);
+        });
+    </script>
+</body>
+
+</html>

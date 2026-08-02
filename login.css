@@ -1,0 +1,574 @@
+.logo {
+    font-family: 'Lobster', cursive;
+    /* الخط اللي ضفناه */
+    font-size: 3rem;
+    margin-top: auto;
+
+    /* حجم كبير */
+    color: #ff0000;
+    /* اللون الأحمر */
+    text-shadow: 0 0 10px #ff0000, 0 0 20px #ff0000;
+    /* التوهج */
+    margin-left: 20px;
+    cursor: pointer;
+    animation: glow-red 1.5s infinite alternate;
+    /* حركة الوميض */
+}
+
+.logo:hover {
+    transform: scale(1.1);
+    text-shadow: 0 0 30px #ff0000;
+}
+
+/* حركة الوميض (النيون) */
+@keyframes glow-red {
+    from {
+        opacity: 0.5;
+        text-shadow: 0 0 10px #ff0000;
+    }
+
+    to {
+        opacity: 1;
+        text-shadow: 0 0 20px #ff0000, 0 0 40px #ff0000;
+    }
+}
+
+/* تنسيق جملة "احنا في البروفا" */
+.right-text {
+    font-family: 'Arial', sans-serif;
+    /* خط عربي واضح */
+    font-size: 3rem;
+    /* حجم مناسب */
+    color: #ffcc00;
+    /* لون أصفر ذهبي (يليق مع الأحمر) */
+    text-shadow: 0 0 8px #ffcc00;
+    /* توهج أصفر */
+    margin: 0;
+    cursor: pointer;
+    /* إضافة حركة تنفس بسيطة للكلمة */
+    animation: pulse-yellow 2s infinite alternate;
+}
+
+/* حركة الوميض الأصفر */
+@keyframes pulse-yellow {
+    from {
+        opacity: 0.5;
+        text-shadow: 0 0 20px #ffcc00;
+    }
+
+    to {
+        opacity: 3;
+        text-shadow: 0 0 20px #ffcc00, 0 0 40px #ffcc00
+    }
+}
+
+.floating-glass-box2 {
+    position: absolute;
+    width: 500px;
+    height: auto;
+    min-height: 400px;
+    top: 50%;
+    right: 500px;
+    transform: translate(-50%, -50%);
+    width: 350px;
+    /* عرض مناسب للبوست */
+    background: rgba(139, 0, 0, 0.4);
+    backdrop-filter: blur(15px);
+    border-radius: 20px;
+    padding: 15px;
+    /* مسافة للبرواز */
+    display: flex;
+    flex-direction: column;
+    /* ترتيب فوق بعض */
+    gap: 15px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    z-index: 50;
+}
+
+/* تنسيق العنوان الرئيسي */
+.title1 {
+    color: #ab0404;
+    font-size: 2rem;
+    margin-bottom: 6px;
+    font-family: 'Lobster', cursive;
+}
+
+/* تنسيق الجملة الفرعية */
+.subtitle {
+    color: #e60909;
+    font-size: 1.5rem;
+    margin-bottom: 25px;
+    opacity: 0.9;
+}
+
+/* تنسيق حقول الإدخال */
+.input-group input {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.5);
+    color: rgb(171, 1, 1);
+    font-size: 1rem;
+    box-sizing: border-box;
+    outline: none;
+    /* عشان ما يظهرش إطار لما تضغط */
+    transition: 0.3s;
+    /* عشان الـ padding ما يخرجش بره الحجم */
+}
+
+.input-group input:focus {
+    border-bottom: 2px solid #ff3333;
+    /* اللون الأحمر عند التفاعل */
+}
+
+/* لو عاوزين نغير لون النص بتاع الـ placeholder (الكلام اللي جوه) */
+.input-group input::placeholder {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+/* تنسيق زر الدخول */
+.login-btn {
+    width: 100%;
+    padding: 15px;
+    margin-top: 20px;
+    background: #ff3333;
+    /* أحمر مسرحي قوي */
+    color: rgb(244, 242, 242);
+    border: none;
+    border-radius: 12px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.login-btn:hover {
+    background: #cc0000;
+    transform: scale(1.02);
+}
+
+.register-link {
+    display: block;
+    margin-top: 20px;
+    color: #ffcc00;
+    /* اللون الأصفر */
+    text-decoration: none;
+    font-size: 2.5rem;
+    text-align: center;
+    transition: 0.3s;
+    font-family: 'Lobster', cursive;
+
+    /* سحر التوهج */
+    text-shadow: 0 0 10px #ffcc00, 0 0 20px #ffcc00;
+}
+
+/* حركة التوهج لما الماوس يقف عليها */
+.register-link:hover {
+    color: #fff;
+    text-shadow: 0 0 20px #ffcc00, 0 0 40px #ffcc00;
+    cursor: pointer;
+}
+
+#registerSection input {
+    margin: 8px 0;
+    /* مسافة أقل شوية بين الخانات عشان تكفي */
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.title1 {
+    margin-bottom: 20px;
+}
+
+/* تنسيق موحد لجميع المدخلات داخل المربع */
+input {
+    width: 100%;
+    padding: 10px 0;
+    margin: 10px 0;
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.3);
+    /* الخط الأحمر الخفيف */
+    color: rgb(0, 0, 0);
+    font-size: 1.6rem;
+    outline: none;
+    transition: 0.3s;
+}
+
+/* لون الخط عند التفاعل */
+input:focus {
+    border-bottom: 2px solid #ff3333;
+    /* اللون الأحمر عند الكتابة */
+}
+
+/* تنسيق العناوين (إنشاء حساب) */
+.title {
+    color: white;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* تأكيد إن كل حاجة جوه المربع ليها نفس شكل المربع الأصلي */
+.floating-glass-box2 {
+    background: rgba(139, 0, 0, 0.4);
+    /* اللون الأحمر الزجاجي */
+    backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 30px;
+    border-radius: 20px;
+}
+
+.login-btn {
+    width: 100%;
+    padding: 12px;
+    margin-top: 20px;
+    background: #b22222;
+    /* أحمر غامق (FireBrick) */
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.login-btn:hover {
+    background: #ff3333;
+    /* أحمر فاتح عند الوقوف بالماوس */
+}
+
+#box {
+    box-sizing: border-box;
+    /* عشان الـ padding ما يزودش حجم المربع */
+    overflow: hidden;
+    /* عشان أي حاجة تزيد تختفي جوه المربع */
+}
+
+/* لما تقف على أي خانة */
+input:focus {
+    border-bottom: 2px solid #ff0000;
+    /* الخط اللي تحت يتحول أحمر */
+    box-shadow: 0 4px 6px -1px rgba(255, 0, 0, 0.9);
+    /* توهج أحمر خفيف تحت الخانة */
+    outline: none;
+}
+
+/* لو عاوز المربع نفسه يتوهج لما تقف على أي خانة جواه */
+.floating-glass-box2:focus-within {
+    box-shadow: 0 0 20px rgba(255, 0, 0, 0.5);
+    /* توهج للمربع كله */
+    border: 1px solid rgba(255, 0, 0, 0.5);
+    /* إطار أحمر للمربع */
+}
+
+.no-spinner::-webkit-inner-spin-button,
+.no-spinner::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* المربع الرئيسي الذي سيتغير لونه */
+.signup-box {
+    transition: background 0.5s ease;
+    padding: 20px;
+    border-radius: 15px;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+/* الألوان لكل تخصص */
+.bg-actor {
+    background: rgba(255, 87, 34, 0.3) !important;
+}
+
+.bg-director {
+    background: rgba(33, 150, 243, 0.3) !important;
+}
+
+.bg-decor {
+    background: rgba(139, 195, 74, 0.3) !important;
+}
+
+.bg-music {
+    background: rgba(156, 39, 176, 0.3) !important;
+}
+
+.bg-light {
+    background: rgba(255, 235, 59, 0.3) !important;
+}
+
+.bg-dance {
+    background: rgba(233, 30, 99, 0.3) !important;
+}
+
+/* تنسيق القائمة المنسدلة لتكون زجاجية وحمراء */
+#roleSelect {
+    background: rgba(255, 0, 0, 0.2);
+    /* زجاج أحمر شفاف */
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: white;
+    padding: 10px;
+    border-radius: 8px;
+    outline: none;
+    transition: 0.3s;
+}
+
+/* التوهج عند التفاعل */
+#roleSelect:focus {
+    box-shadow: 0 0 15px rgba(255, 0, 0, 0.6);
+}
+
+/* تنسيق الخيارات داخل القائمة */
+#roleSelect option {
+    background: #333;
+    /* لون خلفية الخيارات */
+    color: white;
+}
+
+#signupBox {
+    transition: all 0.5s ease;
+    /* هذا السطر هو الذي يجعل الألوان "تتداخل" بنعومة */
+}
+
+.profile-container {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    padding: 30px;
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: white;
+    max-width: 400px;
+    margin: 50px auto;
+}
+
+input,
+textarea {
+    width: 100%;
+    background: transparent;
+    border: 1px solid #ff4500;
+    color: white;
+    padding: 10px;
+    margin-top: 5px;
+}
+
+/* تنسيقات الشاشات الصغيرة (الموبايل) النهائية */
+/* تنسيقات عامة لضمان التجاوب التام على الهواتف */
+/* --- تنسيقات الموبايل والتاّبلت الأساسية --- */
+/* --- الحل الجذري لمشكلة القائمة الجانبية وصفحة الباب على الموبايل --- */
+@media screen and (max-width: 768px) {
+
+    /* 1. ضبط زر القائمة والقائمة الجانبية لتظهر وتفتح فوق أي شيء بشياكة */
+    .menu-btn {
+        position: fixed !important;
+        top: 15px !important;
+        left: 15px !important;
+        /* خليناه في الشمال عشان يكون ظاهر وواضح */
+        z-index: 99999 !important;
+        cursor: pointer;
+        background: rgba(0, 0, 0, 0.5);
+        padding: 8px;
+        border-radius: 8px;
+    }
+
+    .side-menu {
+        position: fixed !important;
+        top: 0 !important;
+        left: -280px !important;
+        /* مخفية في اليسار */
+        width: 250px !important;
+        height: 100vh !important;
+        background: rgba(20, 0, 0, 0.98) !important;
+        backdrop-filter: blur(15px);
+        z-index: 99998 !important;
+        transition: left 0.3s ease !important;
+        padding-top: 80px !important;
+        box-sizing: border-box !important;
+        box-shadow: 5px 0 15px rgba(0, 0, 0, 0.5);
+    }
+
+    /* عندما تفتح القائمة عبر الـ JS كلاس active */
+    .side-menu.active {
+        left: 0 !important;
+    }
+
+    .side-menu ul {
+        list-style: none !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        text-align: right !important;
+    }
+
+    .side-menu ul li a {
+        display: block !important;
+        padding: 15px 20px !important;
+        color: #fff !important;
+        text-decoration: none !important;
+        font-size: 16px !important;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+    }
+
+    /* 2. ضبط صفحة الباب (حجم الصورة أو عنصر الباب ليناسب شاشة الموبايل تماماً) */
+    .door-container,
+    img[src*="door"],
+    .door-image,
+    div[style*="door"] {
+        max-width: 80% !important;
+        width: 280px !important;
+        height: auto !important;
+        max-height: 60vh !important;
+        object-fit: contain !important;
+        margin: 80px auto 20px auto !important;
+        display: block !important;
+        position: relative !important;
+    }
+
+    /* تصغير اللوجو في صفحة الباب عشان ميبقاش عملاق */
+    .logo,
+    h1.logo {
+        font-size: 24px !important;
+        text-align: center !important;
+        margin: 10px 0 !important;
+    }
+
+}
+
+@media screen and (max-width: 768px) {
+    .side-menu {
+        position: fixed !important;
+        top: 0 !important;
+        left: -280px !important;
+        width: 250px !important;
+        height: 100vh !important;
+        background: rgba(20, 0, 0, 0.98) !important;
+        backdrop-filter: blur(15px);
+        z-index: 99999 !important;
+        transition: left 0.3s ease !important;
+        padding-top: 70px !important;
+        box-sizing: border-box !important;
+    }
+
+    .side-menu.active {
+        left: 0 !important;
+    }
+
+    .side-menu ul {
+        list-style: none !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        text-align: right !important;
+    }
+
+    .side-menu ul li a {
+        display: block !important;
+        padding: 15px 20px !important;
+        color: #fff !important;
+        text-decoration: none !important;
+        font-size: 16px !important;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+    }
+}
+
+/* إخفاء صندوق الموبايل على اللاب توب واظهاره على الموبايل فقط */
+.mobile-login-container {
+    display: none;
+}
+
+@media screen and (max-width: 768px) {
+    .mobile-login-container {
+        display: flex !important;
+        justify-content: center !important;
+        align-items: center !important;
+        width: 100% !important;
+        padding: 20px !important;
+        box-sizing: border-box !important;
+        margin-top: 80px !important;
+        /* مسافة تحت الهيدر */
+    }
+
+    .mobile-login-box {
+        background: rgba(139, 0, 0, 0.6) !important;
+        backdrop-filter: blur(15px) !important;
+        border: 1px solid rgba(255, 255, 255, 0.2) !important;
+        padding: 20px !important;
+        border-radius: 20px !important;
+        width: 100% !important;
+        max-width: 350px !important;
+        text-align: center !important;
+        color: #fff !important;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5) !important;
+    }
+
+    .mobile-login-box h2 {
+        font-size: 18px !important;
+        margin-bottom: 15px !important;
+        color: #fff !important;
+    }
+
+    .mobile-login-box input {
+        width: 100% !important;
+        padding: 12px !important;
+        margin-bottom: 12px !important;
+        border-radius: 10px !important;
+        border: 1px solid rgba(255, 255, 255, 0.3) !important;
+        background: rgba(0, 0, 0, 0.3) !important;
+        color: #fff !important;
+        text-align: right !important;
+        box-sizing: border-box !important;
+        outline: none !important;
+    }
+
+    .mobile-login-box button {
+        width: 100% !important;
+        padding: 12px !important;
+        background: #ff4757 !important;
+        color: #fff !important;
+        border: none !important;
+        border-radius: 10px !important;
+        font-weight: bold !important;
+        font-size: 16px !important;
+        cursor: pointer !important;
+        margin-top: 5px !important;
+    }
+
+    .mobile-login-box .signup-link {
+        display: block !important;
+        margin-top: 15px !important;
+        color: #ffcc00 !important;
+        text-decoration: none !important;
+        font-size: 14px !important;
+    }
+}
+
+/* ضبط وتوسيط قسم إنشاء الحساب وتسجيل الدخول معاً على الموبايل */
+@media screen and (max-width: 768px) {
+
+    /* ضبط الحاوية الكبيرة (المربع اللي بيجمعهم) */
+    .floating-glass-box2,
+    #box {
+        width: 90% !important;
+        max-width: 400px !important;
+        margin: 60px auto !important;
+        padding: 20px !important;
+        box-sizing: border-box !important;
+        position: relative !important;
+        left: auto !important;
+        right: auto !important;
+        transform: none !important;
+    }
+
+    /* ضمان ظهور قسم إنشاء الحساب لما يتم تفعيله بالـ JS وبنفس تنسيق اللاب */
+    #registerSection {
+        width: 100% !important;
+        box-sizing: border-box !important;
+    }
+
+    /* جعل جميع حقول الإدخال متناسقة وفي منتصف الشاشة على الموبايل */
+    #registerSection input,
+    #loginSection input {
+        width: 100% !important;
+        box-sizing: border-box !important;
+        margin-bottom: 10px !important;
+    }
+}

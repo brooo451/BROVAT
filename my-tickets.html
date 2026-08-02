@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="ar">
+
+<head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css2?family=Lobster&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="next-style.css">
+    <link rel="stylesheet" href="login.css">
+    <link rel="stylesheet" href="texts.css">
+    <link rel="stylesheet" href="show.css">
+    <title>تذاكري المحجوزة - BROVAT</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+
+<div class="menu-btn" id="menuBtn"><span></span><span></span><span></span></div>
+<div class="side-menu" id="sideMenu">
+    <ul>
+        <li><a href="logn.html" class="menu-link">سجل في البروفا</a></li>
+        <li><a href="me.html" class="menu-link">ملفي الشخصي</a></li>
+        <li><a href="next.html" class="menu-link">الرئيسية</a></li>
+        <li><a href="notifications.html" class="menu-link"> الإشعارات</a></li>
+        <li><a href="messages.html" class="menu-link"> الرسائل الخاصة </a></li>
+        <li><a href="texts.html" class="menu-link">نصوص</a></li>
+        <li><a href="show.html" class="menu-link">العروض</a></li>
+        <li><a href="information.html" class="menu-link">معلومات وحجز المسرح</a></li>
+        <li><a href="free.html" class="menu-link"> ورش تعليم </a></li>
+        <li><a href="subscriptions.html" class="menu-link">الباقات والاشتراكات 🌟</a></li>
+        <li>
+        <li><a href="links.html" class="menu-link">اتصل بنا</a></li>
+
+        </li>
+    </ul>
+</div>
+<h1 class="page-title">تذاكري المحجوزة 🎟️</h1>
+<div class="header-container">
+    <h1 class="logo">BROVAT</h1>
+</div>
+
+<!-- حاوية عرض التذاكر الخاصة بالمستخدم -->
+<div class="tickets-container" id="myTicketsContainer"
+    style="display: flex; flex-wrap: wrap; gap: 20px; padding: 20px; justify-content: center; margin-top: 30px;"
+    dir="rtl">
+    <!-- التذاكر هتتحمل هنا أوتوماتيكياً -->
+</div>
+
+<!-- سكربتات Supabase والاتصال -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="init-supabase.js"></script>
+<script src="my-tickets.js"></script>
+<script src="me.js"></script>
+<script src="main.js"></script>
+<script src="script.js"></script>
+</body>
+</body>
+
+</html>

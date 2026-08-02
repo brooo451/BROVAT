@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css2?family=Lobster&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="morbat.css">
+    <link rel="stylesheet" href="login.css">
+    <link rel="stylesheet" href="next-style.css">
+    <link rel="stylesheet" href="me.css">
+    <title>ملف الفنان - BROVAT</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        /* تنسيقات شات المسنجر داخل البروفايل */
+        .messenger-chat-box {
+            display: none;
+            flex-direction: column;
+            width: 100%;
+            max-width: 500px;
+            height: 400px;
+            background: rgba(20, 0, 0, 0.95);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 15px;
+            margin: 20px auto;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.6);
+        }
+
+        .messenger-header {
+            background: rgba(139, 0, 0, 0.7);
+            padding: 12px 15px;
+            font-weight: bold;
+            color: #ffcc00;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .messenger-messages {
+            flex: 1;
+            padding: 15px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            text-align: right;
+        }
+
+        .msg-bubble {
+            max-width: 75%;
+            padding: 9px 14px;
+            border-radius: 12px;
+            font-size: 14px;
+            word-break: break-word;
+            line-height: 1.4;
+        }
+
+        .msg-bubble.sent {
+            background: #ff4757;
+            color: #fff;
+            align-self: flex-start;
+            border-bottom-left-radius: 3px;
+        }
+
+        .msg-bubble.received {
+            background: rgba(255, 255, 255, 0.15);
+            color: #fff;
+            align-self: flex-end;
+            border-bottom-right-radius: 3px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .messenger-input-area {
+            padding: 10px;
+            background: rgba(0, 0, 0, 0.6);
+            display: flex;
+            gap: 8px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .messenger-input-area input {
+            flex: 1;
+            padding: 10px 12px;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: rgba(0, 0, 0, 0.4);
+            color: #fff;
+            outline: none;
+            font-size: 14px;
+        }
+
+        .messenger-input-area button {
+            padding: 10px 18px;
+            background: #ff4757;
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background 0.2s;
+        }
+
+        .messenger-input-area button:hover {
+            background: #ff6b81;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="menu-btn" id="menuBtn"><span></span><span></span><span></span></div>
+
+    <div class="side-menu" id="sideMenu">
+        <ul>
+            <li><a href="next.html" class="menu-link">الرئيسية</a></li>
+            <li><a href="logn.html" class="menu-link">سجل في البروفا</a></li>
+            <li><a href="me.html" class="menu-link">ملفي الشخصي</a></li>
+            <li><a href="notifications.html" class="menu-link"> الإشعارات</a></li>
+            <li><a href="messages.html" class="menu-link"> الرسائل الخاصة </a></li>
+            <li><a href="texts.html" class="menu-link">نصوص</a></li>
+            <li><a href="show.html" class="menu-link">العروض</a></li>
+            <li><a href="information.html" class="menu-link">معلومات وحجز المسرح</a></li>
+            <li><a href="free.html" class="menu-link"> ورش تعليم </a></li>
+            <li><a href="subscriptions.html" class="menu-link">الباقات والاشتراكات 🌟</a></li>
+            <li>
+            <li><a href="links.html" class="menu-link">اتصل بنا</a></li>
+            <li><a href="about.html" class="menu-link">تعريف BROVAT 🌟</a></li>
+
+            </li>
+        </ul>
+    </div>
+
+    <div class="header-container">
+        <h1 class="logo">BROVAT</h1>
+        <h2 class="right-text">بروفايل الفنان</h2>
+    </div>
+
+    <div class="profile-container" style="margin-top: 150px;">
+        <div class="header-section">
+            <div class="user-info">
+                <h1 id="profileNickname">جاري التحميل...</h1>
+            </div>
+            <img src="placeholder.jpg" id="profileAvatar" class="profile-circle">
+        </div>
+
+        <!-- قسم أعداد المتابعين -->
+        <div style="display: flex; justify-content: center; gap: 30px; margin: 15px 0; color: #fff; font-size: 16px;"
+            dir="rtl">
+            <span>المتابعون: <strong id="followersCountDisplay" style="color: #ffcc00;">0</strong></span>
+            <span>يتابع: <strong id="followingCountDisplay" style="color: #ffcc00;">0</strong></span>
+        </div>
+
+        <!-- زرار المتابعة / إلغاء المتابعة -->
+        <div style="text-align: center; margin-bottom: 20px;">
+            <button id="followActionBtn" style="
+                display: none; 
+                background: #ff4757; 
+                color: #fff; 
+                border: none; 
+                padding: 10px 25px; 
+                border-radius: 20px; 
+                cursor: pointer; 
+                font-weight: bold; 
+                font-size: 15px;
+                box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+                transition: 0.2s;
+            ">
+                متابعة 👤+
+            </button>
+        </div>
+
+        <div class="details-section">
+            <span id="profileRole">التخصص</span>
+            <span id="profileAge">السن</span>
+            <span id="profileLocation">محل الإقامة</span>
+            <span id="profilePhone">الرقم</span>
+        </div>
+
+        <div class="bio-section">
+            <h3>السيرة الذاتية</h3>
+            <p id="profileBio">...</p>
+        </div>
+
+        <!-- زرار فتح الشات (يظهر فقط لو زاير بروفايل شخص تاني) -->
+        <div style="text-align: center;">
+            <button id="openMessengerBtn" onclick="toggleMessengerChat()" style="
+                display: none;
+                background: #ff4757; 
+                color: #fff; 
+                border: none; 
+                padding: 12px 25px; 
+                border-radius: 20px; 
+                cursor: pointer; 
+                font-weight: bold; 
+                font-size: 16px;
+                margin: 15px auto;
+                box-shadow: 0 4px 15px rgba(255,71,87,0.4);
+            ">
+                مراسلة عبر المسنجر 💬
+            </button>
+        </div>
+
+        <!-- واجهة شات المسنجر المباشرة -->
+        <div id="messengerChatSection" class="messenger-chat-box">
+            <div class="messenger-header">
+                <span id="chatHeaderName">محادثة مباشرة 💬</span>
+                <button onclick="toggleMessengerChat()"
+                    style="background:none; border:none; color:#fff; cursor:pointer; font-size:16px; font-weight:bold;">✕</button>
+            </div>
+
+            <div id="messengerMessagesList" class="messenger-messages">
+                <div style="color: #aaa; text-align: center; margin: auto;">جاري تحميل المحادثة...</div>
+            </div>
+
+            <div class="messenger-input-area">
+                <input type="text" id="messengerInputText" placeholder="اكتب رسالتك هنا..."
+                    onkeypress="if(event.key === 'Enter') sendMessengerMessage()">
+                <button onclick="sendMessengerMessage()">إرسال</button>
+            </div>
+        </div>
+
+        <!-- معرض بوستات هذا المستخدم -->
+        <h3 style="color: #ffcc00; text-align: center; margin: 20px 0;">معرض أعمال الفنان 🎭</h3>
+        <div class="gallery-section" id="userGalleryContainer"></div>
+    </div>
+
+    <!-- سكربت جلب بيانات المستخدم والشات -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="init-supabase.js"></script>
+    <script>
+        let chatInterval = null;
+        const urlParams = new URLSearchParams(window.location.search);
+        const targetUserId = urlParams.get('id');
+
+        async function loadTargetUserProfile() {
+            if (!targetUserId) {
+                alert("لم يتم تحديد المستخدم!");
+                window.location.href = "next.html";
+                return;
+            }
+
+            // 1. جلب بيانات اليوزر الأساسية
+            const { data: userData, error } = await supabase
+                .from('users')
+                .select('*')
+                .eq('id', targetUserId)
+                .single();
+
+            if (error || !userData) {
+                alert("تعذر العثور على بيانات هذا المستخدم.");
+                return;
+            }
+
+            // تعبئة البيانات في الصفحة
+            document.getElementById('profileNickname').innerText = userData.nickname || "فنان مسرحي";
+            document.getElementById('profileBio').innerText = userData.bio || "لا توجد سيرة ذاتية.";
+            document.getElementById('profileRole').innerText = userData.role || "غير محدد";
+            document.getElementById('profileAge').innerText = (userData.age || "غير محدد") + (userData.age ? " سنة" : "");
+            document.getElementById('profileLocation').innerText = userData.location || "غير محدد";
+            document.getElementById('profilePhone').innerText = userData.phone || "غير محدد";
+
+            if (userData.avatar_url) {
+                document.getElementById('profileAvatar').src = userData.avatar_url;
+            }
+
+            // فحص إظهار زرار المراسلة (لو اليوزر مسجل ومش بيكلم نفسه)
+            const { data: { user } } = await supabase.auth.getUser();
+            if (user && user.id !== targetUserId) {
+                const btn = document.getElementById('openMessengerBtn');
+                if (btn) btn.style.display = 'inline-block';
+                document.getElementById('chatHeaderName').innerText = `محادثة مع: ${userData.nickname || 'فنان'}`;
+            }
+
+            // استدعاء نظام المتابعة والعدادات لهذا اليوزر فور تحميل بياناته بنجاح
+            await loadFollowStatusAndCounts(targetUserId);
+
+            // 2. جلب بوستات هذا المستخدم وعرضها في المعرض الخاص به مع اللايكات والتعليقات والانتقال السليم
+            const { data: posts } = await supabase
+                .from('posts')
+                .select('*')
+                .eq('user_id', targetUserId);
+
+            const gallery = document.getElementById('userGalleryContainer');
+            if (gallery) {
+                gallery.innerHTML = "";
+                if (posts && posts.length > 0) {
+                    for (let post of posts) {
+                        const itemDiv = document.createElement('div');
+                        itemDiv.className = 'gallery-item';
+                        itemDiv.style.cssText = "position: relative; background: rgba(255, 255, 255, 0.1); border-radius: 12px; padding: 15px; text-align: center; backdrop-filter: blur(5px); margin-bottom: 15px; cursor: pointer; transition: transform 0.2s;";
+
+                        // عند الضغط على الكارت بالكامل، ينقله للرئيسية ويقف عند البوست المحدد بدقة
+                        itemDiv.onclick = () => {
+                            window.location.href = `next.html#post-${post.id}`;
+                        };
+
+                        let mediaHtml = "";
+                        if (post.media_url && post.media_url.trim() !== "") {
+                            const isVideo = post.type === 'video' || post.media_url.endsWith('.mp4') || post.media_url.endsWith('.mov');
+                            mediaHtml = isVideo
+                                ? `<video src="${post.media_url}" style="width: 100%; height: 160px; object-fit: cover; border-radius: 8px; margin-bottom: 8px; pointer-events: none;"></video>`
+                                : `<img src="${post.media_url}" style="width: 100%; height: 160px; object-fit: cover; border-radius: 8px; margin-bottom: 8px;">`;
+                        }
+
+                        const captionHtml = post.caption ? `<p style="color: #fff; font-size: 15px; word-break: break-word; margin: 0 0 10px 0;">${post.caption}</p>` : "";
+
+                        // جلب عدد اللايكات الحقيقي
+                        const likesCount = post.likes_count || 0;
+
+                        // جلب عدد التعليقات الحقيقي لهذا البوست من جدول comments
+                        const { count: commentsCount } = await supabase
+                            .from('comments')
+                            .select('*', { count: 'exact', head: true })
+                            .eq('post_id', post.id);
+
+                        const totalComments = commentsCount || 0;
+
+                        // شريط التفاعل (لايكات + تعليقات) أسفل الكارت في المعرض
+                        const statsSection = `
+                            <div style="display: flex; justify-content: center; align-items: center; gap: 20px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 8px; margin-top: 5px; font-size: 14px; color: #fff;">
+                                <span>❤️ ${likesCount}</span>
+                                <span>💬 ${totalComments}</span>
+                            </div>
+                        `;
+
+                        itemDiv.innerHTML = mediaHtml + captionHtml + statsSection;
+                        gallery.appendChild(itemDiv);
+                    }
+                } else {
+                    gallery.innerHTML = "<p style='text-align: center; color: #ccc;'>لا توجد أعمال منشورة لهذا الفنان حتى الآن.</p>";
+                }
+            }
+        }
+
+        // --- دوال نظام المتابعة (Follow / Unfollow) ---
+        async function loadFollowStatusAndCounts(profileUserId) {
+            const { data: { user } } = await supabase.auth.getUser();
+            const currentUserId = user ? user.id : null;
+
+            // أ. حساب عدد المتابعين (Followers)
+            const { count: followersCount } = await supabase
+                .from('follows')
+                .select('*', { count: 'exact', head: true })
+                .eq('following_id', profileUserId);
+
+            // ب. حساب عدد اللي بيتابعهم (Following)
+            const { count: followingCount } = await supabase
+                .from('follows')
+                .select('*', { count: 'exact', head: true })
+                .eq('follower_id', profileUserId);
+
+            // عرض العدادات في الـ HTML
+            if (document.getElementById('followersCountDisplay')) {
+                document.getElementById('followersCountDisplay').innerText = followersCount || 0;
+            }
+            if (document.getElementById('followingCountDisplay')) {
+                document.getElementById('followingCountDisplay').innerText = followingCount || 0;
+            }
+
+            // ج. التحكم في زرار الفولو (إظهاره لو مش بروفايلي وضبط حالته)
+            const followBtn = document.getElementById('followActionBtn');
+            if (followBtn) {
+                if (!currentUserId || currentUserId === profileUserId) {
+                    followBtn.style.display = 'none'; // لو بروفايلي أو مش مسجل، نخفي الزرار
+                    return;
+                }
+
+                followBtn.style.display = 'inline-block'; // إظهار الزرار لبروفايل شخص تاني
+
+                const { data: existingFollow } = await supabase
+                    .from('follows')
+                    .select('*')
+                    .eq('follower_id', currentUserId)
+                    .eq('following_id', profileUserId)
+                    .maybeSingle();
+
+                if (existingFollow) {
+                    followBtn.innerText = "إلغاء المتابعة 👤-";
+                    followBtn.style.background = "#555";
+                    followBtn.setAttribute('data-is-following', 'true');
+                } else {
+                    followBtn.innerText = "متابعة 👤+";
+                    followBtn.style.background = "#ff4757";
+                    followBtn.setAttribute('data-is-following', 'false');
+                }
+
+                // ربط الزرار بدالة التبديل وإرسال الـ ID الصحيح
+                followBtn.setAttribute('onclick', `toggleFollow('${profileUserId}')`);
+            }
+        }
+
+        async function toggleFollow(profileUserId) {
+            const { data: { user } } = await supabase.auth.getUser();
+            if (!user) {
+                alert("يجب تسجيل الدخول أولاً للمتابعة! ⚠️");
+                window.location.href = "logn.html";
+                return;
+            }
+
+            const followBtn = document.getElementById('followActionBtn');
+            const isFollowing = followBtn.getAttribute('data-is-following') === 'true';
+
+            if (isFollowing) {
+                const { error } = await supabase
+                    .from('follows')
+                    .delete()
+                    .eq('follower_id', user.id)
+                    .eq('following_id', profileUserId);
+
+                if (error) {
+                    alert("خطأ أثناء إلغاء المتابعة: " + error.message);
+                } else {
+                    loadFollowStatusAndCounts(profileUserId);
+                }
+            } else {
+                const { error } = await supabase
+                    .from('follows')
+                    .insert([{ follower_id: user.id, following_id: profileUserId }]);
+
+                if (error) {
+                    alert("خطأ أثناء المتابعة: " + error.message);
+                } else {
+                    loadFollowStatusAndCounts(profileUserId);
+                }
+            }
+        }
+        window.toggleFollow = toggleFollow;
+
+        // --- دوال شات المسنجر ---
+        async function toggleMessengerChat() {
+            const section = document.getElementById('messengerChatSection');
+            if (!section) return;
+
+            if (section.style.display === 'flex') {
+                section.style.display = 'none';
+                if (chatInterval) clearInterval(chatInterval);
+            } else {
+                section.style.display = 'flex';
+                loadMessengerMessages();
+                chatInterval = setInterval(loadMessengerMessages, 3000);
+            }
+        }
+
+        async function loadMessengerMessages() {
+            if (!targetUserId) return;
+            const { data: { user } } = await supabase.auth.getUser();
+            if (!user) return;
+
+            const { data: messages, error } = await supabase
+                .from('messages')
+                .select('*')
+                .or(`and(sender_id.eq.${user.id},receiver_id.eq.${targetUserId}),and(sender_id.eq.${targetUserId},receiver_id.eq.${user.id})`)
+                .order('created_at', { ascending: true });
+
+            const container = document.getElementById('messengerMessagesList');
+            if (!container) return;
+
+            if (error || !messages || messages.length === 0) {
+                container.innerHTML = `<div style="color: #aaa; text-align: center; margin: auto; font-size: 13px;">لا توجد رسائل سابقة، ابدأ المحادثة الآن! 🎭</div>`;
+                return;
+            }
+
+            let html = "";
+            messages.forEach(msg => {
+                const isMe = msg.sender_id === user.id;
+                const bubbleClass = isMe ? "sent" : "received";
+
+                html += `
+                    <div class="msg-bubble ${bubbleClass}">
+                        ${msg.message_text}
+                    </div>
+                `;
+            });
+
+            container.innerHTML = html;
+            container.scrollTop = container.scrollHeight;
+        }
+
+        async function sendMessengerMessage() {
+            const input = document.getElementById('messengerInputText');
+            const text = input.value.trim();
+            if (!text || !targetUserId) return;
+
+            const { data: { user } } = await supabase.auth.getUser();
+            if (!user) {
+                alert("يجب تسجيل الدخول أولاً للإرسال!");
+                return;
+            }
+
+            const { error } = await supabase
+                .from('messages')
+                .insert([{
+                    sender_id: user.id,
+                    receiver_id: targetUserId,
+                    message_text: text
+                }]);
+
+            if (!error) {
+                input.value = "";
+                loadMessengerMessages();
+            } else {
+                console.error("خطأ في الإرسال:", error.message);
+            }
+        }
+
+        // تشغيل تحميل البروفايل عند فتح الصفحة
+        loadTargetUserProfile();
+    </script>
+    <script src="script.js"></script>
+    <script src="main.js"></script>
+    <script src="home.js"></script>
+    <script src="login.js"></script>
+    <script src="show.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,180 @@
+/* منع التمدد العرضي وإجبار الصفحة على التوافق التام مع الشاشة */
+* {
+    box-sizing: border-box !important;
+}
+
+html,
+body {
+    max-width: 100% !important;
+    overflow-x: hidden !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+
+.shows-container {
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+
+}
+
+.show-card {
+    background: rgba(255, 255, 255, 0.1);
+    /* تأثير الزجاج */
+    backdrop-filter: blur(10px);
+    border-radius: 15px;
+    padding: 20px;
+    width: 300px;
+    text-align: center;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: white;
+    z-index: 10;
+
+}
+
+.show-image {
+    width: 100%;
+    border-radius: 10px;
+}
+
+.book-btn {
+    background-color: #ff5722;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 15px;
+}
+
+.shows-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    /* تجعل البطاقات تتوزع تلقائياً حسب حجم الشاشة */
+    gap: 65px;
+    padding: -100px;
+}
+
+.modal {
+    display: none;
+    /* مخفية في البداية */
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    /* خلفية داكنة */
+    backdrop-filter: blur(5px);
+    overflow: auto;
+}
+
+.modal-content {
+    background: rgba(191, 7, 7, 0.533);
+    /* شفافية الزجاج */
+    backdrop-filter: blur(15px);
+    border: 1px solid rgba(123, 0, 0, 0.934);
+    margin: 15% auto;
+    padding: 20px;
+    width: 300px;
+    border-radius: 15px;
+    color: white;
+    padding: 10px;
+    /* margin-right: 500px; */
+    margin: 200px 700px;
+    border-radius: 5px;
+    border: none;
+}
+
+.modal {
+    z-index: 9999;
+    /* عشان تظهر فوق أي حاجة تانية في الصفحة */
+}
+
+/* إجبار نافذة الحجز على أن تكون عريضة وواسعة */
+.modal-content {
+    width: 480px !important;
+    max-width: 90vw !important;
+    min-width: 420px !important;
+}
+
+/* تنسيقات الشاشات الصغيرة (الموبايل) النهائية */
+/* تنسيقات عامة لضمان التجاوب التام على الهواتف */
+/* --- تنسيقات الموبايل والتاّبلت الأساسية --- */
+/* --- الحل الجذري لمشكلة القائمة الجانبية وصفحة الباب على الموبايل --- */
+@media screen and (max-width: 768px) {
+
+    /* 1. ضبط زر القائمة والقائمة الجانبية لتظهر وتفتح فوق أي شيء بشياكة */
+    .menu-btn {
+        position: fixed !important;
+        top: 15px !important;
+        left: 15px !important;
+        /* خليناه في الشمال عشان يكون ظاهر وواضح */
+        z-index: 99999 !important;
+        cursor: pointer;
+        background: rgba(0, 0, 0, 0.5);
+        padding: 8px;
+        border-radius: 8px;
+    }
+
+    .side-menu {
+        position: fixed !important;
+        top: 0 !important;
+        left: -280px !important;
+        /* مخفية في اليسار */
+        width: 250px !important;
+        height: 100vh !important;
+        background: rgba(20, 0, 0, 0.98) !important;
+        backdrop-filter: blur(15px);
+        z-index: 99998 !important;
+        transition: left 0.3s ease !important;
+        padding-top: 80px !important;
+        box-sizing: border-box !important;
+        box-shadow: 5px 0 15px rgba(0, 0, 0, 0.5);
+    }
+
+    /* عندما تفتح القائمة عبر الـ JS كلاس active */
+    .side-menu.active {
+        left: 0 !important;
+    }
+
+    .side-menu ul {
+        list-style: none !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        text-align: right !important;
+    }
+
+    .side-menu ul li a {
+        display: block !important;
+        padding: 15px 20px !important;
+        color: #fff !important;
+        text-decoration: none !important;
+        font-size: 16px !important;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+    }
+
+    /* 2. ضبط صفحة الباب (حجم الصورة أو عنصر الباب ليناسب شاشة الموبايل تماماً) */
+    .door-container,
+    img[src*="door"],
+    .door-image,
+    div[style*="door"] {
+        max-width: 80% !important;
+        width: 280px !important;
+        height: auto !important;
+        max-height: 60vh !important;
+        object-fit: contain !important;
+        margin: 80px auto 20px auto !important;
+        display: block !important;
+        position: relative !important;
+    }
+
+    /* تصغير اللوجو في صفحة الباب عشان ميبقاش عملاق */
+    .logo,
+    h1.logo {
+        font-size: 24px !important;
+        text-align: center !important;
+        margin: 10px 0 !important;
+    }
+}

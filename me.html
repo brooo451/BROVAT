@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="ar">
+
+<head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css2?family=Lobster&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="morbat.css">
+    <link rel="stylesheet" href="login.css">
+    <link rel="stylesheet" href="next-style.css">
+    <link rel="stylesheet" href="me.css">
+    <title>الملف الشخصي - BROVAT</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<body>
+
+    <div class="menu-btn" id="menuBtn"><span></span><span></span><span></span></div>
+
+    <div class="side-menu" id="sideMenu">
+        <ul>
+            <li><a href="logn.html" class="menu-link">سجل في البروفا</a></li>
+            <li><a href="next.html" class="menu-link">الرئيسية</a></li>
+            <li><a href="notifications.html" class="menu-link"> الإشعارات</a></li>
+            <li><a href="messages.html" class="menu-link"> الرسائل الخاصة </a></li>
+            <li><a href="texts.html" class="menu-link">نصوص</a></li>
+            <li><a href="show.html" class="menu-link">العروض</a></li>
+            <li><a href="information.html" class="menu-link">معلومات وحجز المسرح</a></li>
+            <li><a href="free.html" class="menu-link"> ورش تعليم </a></li>
+            <li><a href="subscriptions.html" class="menu-link">الباقات والاشتراكات 🌟</a></li>
+            <li><a href="links.html" class="menu-link">اتصل بنا</a></li>
+            <li><a href="about.html" class="menu-link">تعريف BROVAT 🌟</a></li>
+        </ul>
+    </div>
+
+    <div class="header-container">
+        <h1 class="logo">BROVAT</h1>
+        <h2 class="right-text">احنا في البروفا</h2>
+    </div>
+
+    <div class="profile-container">
+        <div class="header-section">
+            <div class="user-info">
+                <h1 id="nicknameDisplay">اسم</h1>
+            </div>
+            <input type="file" id="avatarUpload" accept="image/*" style="display: none;">
+            <img src="placeholder.jpg" id="avatarImage" class="profile-circle"
+                onclick="document.getElementById('avatarUpload').click();" style="cursor: pointer;">
+        </div>
+
+        <div style="display: flex; justify-content: center; gap: 30px; margin: 15px 0; color: #fff; font-size: 16px;"
+            dir="rtl">
+            <span onclick="openFollowersModal('followers')" style="cursor: pointer; position: relative;">
+                المتابعون: <strong id="followersCountDisplay" style="color: #ffcc00;">0</strong>
+                <!-- نقطة الإشعارات الحمراء -->
+                <span id="followersBadge"
+                    style="display: none; position: absolute; top: -5px; right: -10px; width: 10px; height: 10px; background: #ff4757; border-radius: 50%;"></span>
+            </span>
+            <span onclick="openFollowersModal('following')" style="cursor: pointer;">
+                يتابع: <strong id="followingCountDisplay" style="color: #ffcc00;">0</strong>
+            </span>
+        </div>
+        <div class="details-section">
+            <span id="roleDisplay">التخصص</span>
+            <span id="ageDisplay">السن</span>
+            <span id="locationDisplay">محل الإقامة</span>
+            <span id="phoneDisplay">الرقم</span>
+        </div>
+
+        <div class="bio-section">
+            <h3>السيرة الذاتية</h3>
+            <p id="bioDisplay">...</p>
+        </div>
+
+        <!-- قسم إدارة الاشتراك في البروفايل -->
+        <div id="subContainer"></div>
+
+        <div class="gallery-section" id="galleryContainer"></div>
+    </div>
+
+    <!-- قسم نشر البوستات والتراكات -->
+    <div style="margin-top: 15px; text-align: center; background: rgba(0,0,0,0.3); padding: 15px; border-radius: 15px; border: 1px solid rgba(255,255,255,0.1); max-width: 500px; margin-left: auto; margin-right: auto;"
+        dir="rtl">
+        <h4 style="color: #ffcc00; margin-bottom: 10px;">نشر منشور أو تراك موسيقي 🎵</h4>
+
+        <input type="text" id="postCaption" placeholder="اكتب وصفاً للبوست أو التراك..."
+            style="padding: 10px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.2); width: 90%; max-width: 400px; margin-bottom: 10px; background: #222; color: #fff; outline: none;"><br>
+
+        <!-- رفع صورة أو فيديو عادي -->
+        <input type="file" id="mediaUpload" style="display: none;" accept="image/*,video/*">
+
+        <!-- رفع تراك صوتي (مخصص للموسيقيين) -->
+        <input type="file" id="audioUploadInput" style="display: none;" accept="audio/*">
+
+        <div style="display: flex; justify-content: center; gap: 10px; flex-wrap: wrap;">
+            <button onclick="document.getElementById('mediaUpload').click()"
+                style="padding: 8px 15px; border-radius: 8px; background: #ff4757; color: white; border: none; cursor: pointer; font-weight: bold;">📷
+                ميديا (صورة/فيديو)</button>
+
+            <button onclick="document.getElementById('audioUploadInput').click()"
+                style="padding: 8px 15px; border-radius: 8px; background: #ffa502; color: #000; border: none; cursor: pointer; font-weight: bold;">🎵
+                اختر تراك صوتي</button>
+        </div>
+
+        <div style="margin-top: 15px; display: flex; justify-content: center; gap: 15px;">
+            <button onclick="createPost()"
+                style="padding: 10px 20px; border-radius: 8px; background: #2ed573; color: white; border: none; cursor: pointer; font-weight: bold;">نشر
+                بوست عادـي ✍️</button>
+
+            <button onclick="createAudioPost()"
+                style="padding: 10px 20px; border-radius: 8px; background: #3742fa; color: white; border: none; cursor: pointer; font-weight: bold;">نشر
+                التراك 🎧</button>
+        </div>
+    </div>
+
+    <div class="profile-actions" style="text-align: center; margin-top: 20px;">
+        <button onclick="showEditor()" class="btn-edit"
+            style="padding: 10px 20px; background: #28a745; color: white; border: none; border-radius: 5px; cursor: pointer;">تعديل
+            الملف</button>
+        <button onclick="logout()" class="btn-logout"
+            style="padding: 10px 20px; background: #dc3545; color: white; border: none; border-radius: 5px; cursor: pointer;">تسجيل
+            الخروج</button>
+    </div>
+
+    <!-- نافذة تعديل الملف الشخصي المنبثقة (Modal) -->
+    <div id="profileEditor"
+        style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 9999; justify-content: center; align-items: center;">
+        <div style="background: #222; padding: 25px; border-radius: 15px; width: 90%; max-width: 400px; color: #fff; text-align: right; border: 1px solid rgba(255,255,255,0.2);"
+            dir="rtl">
+            <h3>تعديل الملف الشخصي</h3>
+
+            <label>الاسم المستعار:</label>
+            <input type="text" id="editNickname"
+                style="width: 100%; padding: 8px; margin: 5px 0 15px 0; background: #333; border: 1px solid #555; color: #fff; border-radius: 5px;">
+
+            <label>التخصص:</label>
+            <select id="editRole"
+                style="width: 100%; padding: 8px; margin: 5px 0 15px 0; background: #333; border: 1px solid #555; color: #fff; border-radius: 5px;">
+                <option value="actor">ممثل 🎭</option>
+                <option value="director">مخرج 🎬</option>
+                <option value="decor">مهندس ديكور 📐</option>
+                <option value="music">موسيقي 🎵</option>
+                <option value="light">مهندس إضاءة 💡</option>
+                <option value="dance">مصمم استعراضات 💃</option>
+            </select>
+
+            <label>السيرة الذاتية:</label>
+            <textarea id="editBio"
+                style="width: 100%; padding: 8px; margin: 5px 0 15px 0; background: #333; border: 1px solid #555; color: #fff; border-radius: 5px;"></textarea>
+
+            <label>الموقع:</label>
+            <input type="text" id="editLocation"
+                style="width: 100%; padding: 8px; margin: 5px 0 15px 0; background: #333; border: 1px solid #555; color: #fff; border-radius: 5px;">
+
+            <label>رقم الهاتف:</label>
+            <input type="text" id="editPhone"
+                style="width: 100%; padding: 8px; margin: 5px 0 15px 0; background: #333; border: 1px solid #555; color: #fff; border-radius: 5px;">
+
+            <label>العمر:</label>
+            <input type="number" id="editage"
+                style="width: 100%; padding: 8px; margin: 5px 0 15px 0; background: #333; border: 1px solid #555; color: #fff; border-radius: 5px;">
+
+            <div style="display: flex; justify-content: space-between; margin-top: 15px;">
+                <button onclick="updateAllProfile()"
+                    style="background: #ff4757; color: #fff; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; font-weight: bold;">حفظ
+                    التعديلات</button>
+                <button onclick="document.getElementById('profileEditor').style.display='none'"
+                    style="background: #555; color: #fff; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer;">إغلاق</button>
+            </div>
+        </div>
+    </div>
+    <!-- نهاية نافذة التعديل -->
+
+    <!-- قسم إدارة العروض الشامل للمخرجين المشتركين (خارج المودال تماماً ليظهر في الصفحة) -->
+    <div id="directorAddShowSection"
+        style="display: none; margin-top: 25px; background: rgba(139, 0, 0, 0.4); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); padding: 25px; border-radius: 20px; text-align: right; max-width: 500px; margin-left: auto; margin-right: auto; border: 1px solid rgba(255, 255, 255, 0.2); box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);"
+        dir="rtl">
+        <h3
+            style="text-align: center; color: #ffcc00; margin-bottom: 20px; font-family: 'Lobster', cursive; font-size: 24px; text-shadow: 0 2px 4px rgba(0,0,0,0.5);">
+            إدارة العروض المسرحية 🎬</h3>
+
+        <div style="text-align: center; margin-bottom: 15px;">
+            <button onclick="toggleShowForm()"
+                style="background: linear-gradient(135deg, #ff4757, #ff6b81); color: #fff; border: none; padding: 12px 25px; border-radius: 12px; cursor: pointer; font-weight: bold; font-size: 16px; box-shadow: 0 4px 15px rgba(255, 71, 87, 0.4); transition: transform 0.2s ease;">تسجيل
+                العروض 🎟️</button>
+        </div>
+
+        <div id="showFormContainer"
+            style="display: none; margin-top: 15px; border-top: 1px solid rgba(255, 255, 255, 0.15); padding-top: 15px;">
+            <label style="color: #fff; display: block; margin-bottom: 5px; font-weight: bold;">اسم العرض:</label>
+            <input type="text" id="showTitle" placeholder="اكتب اسم العرض..."
+                style="padding: 10px; width: 100%; margin-bottom: 12px; border-radius: 10px; border: 1px solid rgba(255, 255, 255, 0.2); background: rgba(0, 0, 0, 0.3); color: #fff; backdrop-filter: blur(5px); outline: none;"><br>
+
+            <label style="color: #fff; display: block; margin-bottom: 5px; font-weight: bold;">صورة العرض:</label>
+            <input type="file" id="showImageFile" accept="image/*"
+                style="padding: 8px; width: 100%; margin-bottom: 12px; border-radius: 10px; border: 1px solid rgba(255, 255, 255, 0.2); background: rgba(0, 0, 0, 0.3); color: #fff;"><br>
+
+            <label style="color: #fff; display: block; margin-bottom: 5px; font-weight: bold;">ميعاد العرض:</label>
+            <input type="text" id="showTime" placeholder="مثال: الخميس القادم الساعة 8 مساءً"
+                style="padding: 10px; width: 100%; margin-bottom: 12px; border-radius: 10px; border: 1px solid rgba(255, 255, 255, 0.2); background: rgba(0, 0, 0, 0.3); color: #fff; outline: none;"><br>
+
+            <label style="color: #fff; display: block; margin-bottom: 5px; font-weight: bold;">مكان العرض:</label>
+            <input type="text" id="showLocation" placeholder="اسم المسرح أو المدينة..."
+                style="padding: 10px; width: 100%; margin-bottom: 12px; border-radius: 10px; border: 1px solid rgba(255, 255, 255, 0.2); background: rgba(0, 0, 0, 0.3); color: #fff; outline: none;"><br>
+
+            <label style="color: #fff; display: block; margin-bottom: 5px; font-weight: bold;">سعر التذكرة:</label>
+            <input type="text" id="showPrice" placeholder="مثال: 50 جنيه"
+                style="padding: 10px; width: 100%; margin-bottom: 12px; border-radius: 10px; border: 1px solid rgba(255, 255, 255, 0.2); background: rgba(0, 0, 0, 0.3); color: #fff; outline: none;"><br>
+
+            <label style="color: #fff; display: block; margin-bottom: 5px; font-weight: bold;">مدة عرض الإعلان
+                (بالأيام):</label>
+            <select id="showDuration"
+                style="padding: 10px; width: 100%; margin-bottom: 12px; border-radius: 10px; border: 1px solid rgba(255, 255, 255, 0.2); background: rgba(0, 0, 0, 0.4); color: #fff; outline: none;">
+                <option value="3" style="background: #222;">3 أيام</option>
+                <option value="4" style="background: #222;">4 أيام</option>
+                <option value="5" selected style="background: #222;">5 أيام</option>
+            </select><br>
+
+            <label style="color: #fff; display: block; margin-bottom: 5px; font-weight: bold;">وصف أو تفاصيل
+                العرض:</label>
+            <textarea id="showDescription" placeholder="اكتب نبذة عن العرض..."
+                style="padding: 10px; width: 100%; height: 90px; margin-bottom: 15px; border-radius: 10px; border: 1px solid rgba(255, 255, 255, 0.2); background: rgba(0, 0, 0, 0.3); color: #fff; outline: none; resize: none;"></textarea><br>
+
+            <div style="text-align: center;">
+                <button onclick="addNewShow()"
+                    style="background: linear-gradient(135deg, #ffcc00, #ffa502); color: #000; border: none; padding: 12px 30px; border-radius: 12px; cursor: pointer; font-weight: bold; font-size: 16px; box-shadow: 0 4px 15px rgba(255, 204, 0, 0.4); transition: transform 0.2s ease;">إضافة
+                    العرض لقائمة العروض ➕</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- قسم عروضي المضافة -->
+    <div style="margin-top: 30px; text-align: right; max-width: 600px; margin-left: auto; margin-right: auto;"
+        dir="rtl">
+        <h3 style="color: #ffcc00; text-align: center; margin-bottom: 15px;">عروضي المضافة 🎭</h3>
+        <div id="directorShowsContainer" style="display: flex; flex-wrap: wrap; gap: 15px; justify-content: center;">
+        </div>
+    </div>
+    <div id="followersModal"
+        style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 10000; justify-content: center; align-items: center; backdrop-filter: blur(5px);"
+        dir="rtl">
+        <div
+            style="background: rgba(30, 0, 0, 0.95); border: 1px solid rgba(255,255,255,0.2); border-radius: 20px; width: 90%; max-width: 400px; max-height: 80vh; overflow-y: auto; padding: 20px; color: #fff; box-shadow: 0 10px 30px rgba(0,0,0,0.8);">
+            <div
+                style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.2); padding-bottom: 10px; margin-bottom: 15px;">
+                <h3 id="followersModalTitle" style="color: #ffcc00; margin: 0; font-size: 18px;">القائمة</h3>
+                <button onclick="closeFollowersModal()"
+                    style="background: none; border: none; color: #fff; font-size: 20px; cursor: pointer;">✕</button>
+            </div>
+            <div id="followersModalList" style="display: flex; flex-direction: column; gap: 10px;">
+                <div style="color: #aaa; text-align: center; padding: 20px;">جاري التحميل...</div>
+            </div>
+        </div>
+    </div>
+    <!-- سكربتات الاتصال والملفات -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="init-supabase.js"></script>
+    <script src="me.js"></script>
+    <script src="main.js"></script>
+    <script src="script.js"></script>
+</body>
+
+</html>

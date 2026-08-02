@@ -1,0 +1,955 @@
+/* منع التمدد العرضي وإجبار الصفحة على التوافق التام مع الشاشة */
+* {
+    box-sizing: border-box !important;
+}
+
+html,
+body {
+    max-width: 100% !important;
+    overflow-x: hidden !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+
+body {
+    background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('data:image/jpeg;base64,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');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    min-height: 100vh;
+    height: auto;
+    margin: 0;
+    overflow-y: auto;
+}
+
+/* تنسيق شريط العنوان */
+/* تنسيق الحاوية لتثبيت العناصر */
+.header-container {
+    position: relative;
+    padding: 20px;
+}
+
+/* تنسيق اللوجو في أعلى الشمال */
+
+/* تنسيق الجملة في أعلى اليمين */
+
+.glow-red {
+    color: red;
+    text-shadow: 0 0 10px red, 0 0 20px red;
+}
+
+/* توهج أصفر لـ انت دلوقتي في البروفا */
+.glow-yellow {
+    color: yellow;
+    text-shadow: 0 0 10px yellow, 0 0 20px yellow;
+}
+
+
+@keyframes glow-red {
+    from {
+        text-shadow: 0 0 10px #ff0000, 0 0 20px #ff0000;
+        opacity: 0.5;
+        /* تكون خافتة قليلاً */
+    }
+
+    to {
+        text-shadow: 0 0 20px #ff0000, 0 0 40px #ff0000, 0 0 60px #ff0000;
+        opacity: 2;
+        /* تصبح قوية ومتوهجة */
+    }
+}
+
+@keyframes blink-yellow {
+    from {
+        text-shadow: 0 0 10px #ffcc00, 0 0 20px #ffcc00;
+        opacity: 0.5;
+        /* تكون خافتة قليلاً */
+    }
+
+    to {
+        text-shadow: 0 0 20px #ffcc00, 0 0 40px #ffcc00, 0 0 60px #ffcc00;
+        opacity: 2;
+        /* تصبح قوية ومتوهجة */
+    }
+}
+
+/* تنسيق زر الـ 3 شرط */
+
+/* لوجو BROVAT (أحمر ومتوهج) */
+/* تنسيق الحاوية عشان العناصر تكون منظمة */
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    /* اللوجو شمال والجملة يمين */
+    align-items: center;
+    padding: 20px 40px;
+    width: 100%;
+    box-sizing: border-box;
+    /* عشان الـ padding ما يخرجش العناصر بره الشاشة */
+}
+
+/* تنسيق لوجو BROVAT */
+.logo {
+    font-family: 'Lobster', cursive;
+    /* الخط اللي ضفناه */
+    font-size: 3rem;
+    margin-top: auto;
+
+    /* حجم كبير */
+    color: #ff0000;
+    /* اللون الأحمر */
+    text-shadow: 0 0 10px #ff0000, 0 0 20px #ff0000;
+    /* التوهج */
+    margin-left: 20px;
+    cursor: pointer;
+    animation: glow-red 1.5s infinite alternate;
+    /* حركة الوميض */
+}
+
+.logo:hover {
+    transform: scale(1.1);
+    text-shadow: 0 0 30px #ff0000;
+}
+
+/* حركة الوميض (النيون) */
+@keyframes glow-red {
+    from {
+        opacity: 0.5;
+        text-shadow: 0 0 10px #ff0000;
+    }
+
+    to {
+        opacity: 1;
+        text-shadow: 0 0 20px #ff0000, 0 0 40px #ff0000;
+    }
+}
+
+/* تنسيق جملة "احنا في البروفا" */
+.right-text {
+    font-family: 'Arial', sans-serif;
+    /* خط عربي واضح */
+    font-size: 3rem;
+    /* حجم مناسب */
+    color: #ffcc00;
+    /* لون أصفر ذهبي (يليق مع الأحمر) */
+    text-shadow: 0 0 8px #ffcc00;
+    /* توهج أصفر */
+    margin: 0;
+    cursor: pointer;
+    /* إضافة حركة تنفس بسيطة للكلمة */
+    animation: pulse-yellow 2s infinite alternate;
+}
+
+/* حركة الوميض الأصفر */
+@keyframes pulse-yellow {
+    from {
+        opacity: 0.5;
+        text-shadow: 0 0 20px #ffcc00;
+    }
+
+    to {
+        opacity: 3;
+        text-shadow: 0 0 20px #ffcc00, 0 0 40px #ffcc00
+    }
+}
+
+/* تنسيق زر الـ 3 شرط */
+.menu-btn {
+    position: absolute;
+    top: 25px;
+    left: 20px;
+    cursor: pointer;
+    z-index: 1000;
+}
+
+.menu-btn span {
+    display: block;
+    width: 30px;
+    height: 4px;
+    background-color: #ff0000;
+    margin: 5px 0;
+    transition: 0.3s;
+}
+
+/* تنسيق القائمة الجانبية */
+/* تنسيق القائمة الجانبية */
+/* تنسيق القائمة الجانبية وهي مغلقة */
+.side-menu {
+    position: fixed;
+    top: 0;
+    left: -300px;
+    /* مخفية تماماً خارج الشاشة من اليسار */
+    width: 250px;
+    height: 100vh;
+    background-color: #111;
+    z-index: 999;
+    padding-top: 80px;
+    padding-bottom: 60px;
+    transition: 0.4s ease-in-out;
+    /* حركة ناعمة وسريعة */
+    border-right: 2px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 10px 0 30px rgba(0, 0, 0, 0.5);
+    background: radial-gradient(circle at center, rgba(255, 0, 0, 0.3), transparent), rgba(0, 0, 0, 0.2);
+    overflow-y: auto;
+    overflow-x: hidden;
+    box-sizing: border-box;
+    visibility: hidden;
+    /* مخفية تماماً عن المتاعب وعن الضغط وهي قافلة */
+    opacity: 0;
+}
+
+/* تنسيق القائمة الجانبية وهي مفتوحة */
+.side-menu.active {
+    left: 0;
+    /* تظهر داخل الشاشة */
+    visibility: visible;
+    opacity: 1;
+}
+
+.side-menu ul {
+    list-style: none;
+    padding: 0;
+}
+
+.side-menu li:hover {
+    background: rgba(255, 255, 255, 0.05);
+    border-left: 5px solid #ff0000;
+    /* إضافة خط أحمر جانبي عند اختيار العنصر */
+    padding-left: 30px;
+    /* ليتحرك النص قليلاً عند الوقوف عليه */
+    padding: 20px;
+    color: white;
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+
+.side-btn {
+    display: block;
+    width: 80%;
+    /* عرض الزر بالنسبة للقائمة */
+    margin: 20px auto;
+    padding: 15px;
+    text-align: center;
+    background: transparent;
+    border: 2px solid #000000;
+    /* إطار أحمر */
+    color: white;
+    font-size: 1.2rem;
+    border-radius: 10px;
+    text-decoration: none;
+    transition: 0.4s;
+    cursor: pointer;
+}
+
+/* التأثير عند الوقوف بالماوس */
+.side-btn:hover {
+    background: #ff0000;
+    /* يمتلئ باللون الأحمر */
+    box-shadow: 0 0 15px #ff0000;
+    color: white;
+}
+
+.menu-item {
+    display: flex;
+    align-items: center;
+    /* ليصبح الإيموجي والنص على خط واحد */
+    padding: 20px;
+    font-size: 1.5rem;
+    /* حجم النص */
+    color: white;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+/* إضافة الإيموجي قبل النص */
+.menu-item::before {
+    content: attr(data-icon);
+    /* يأخذ الإيموجي من كلاس HTML */
+    font-size: 2.2rem;
+    /* حجم الإيموجي (أكبر من حجم النص 1.5rem) */
+    margin-right: 15px;
+    /* مسافة بين الإيموجي والنص */
+    transition: 0.3s;
+}
+
+/* تأثير الحركة عند الوقوف بالماوس */
+.menu-item:hover {
+    padding-right: 10px;
+    /* حركة بسيطة للنص عند الوقوف */
+}
+
+.menu-item:hover::before {
+    transform: scale(1.2);
+    /* الإيموجي تكبر أكثر عند الـ Hover */
+}
+
+.menu-item::before {
+    text-shadow: 0 0 10px #ff0000;
+}
+
+.falling-emoji {
+    position: fixed;
+    top: -50px;
+    font-size: 24px;
+    z-index: 1;
+    /* ليكون خلف العناصر الأخرى ولا يغطي على اللوجو */
+    pointer-events: none;
+    /* عشان ما يمنعش الضغط على الأزرار */
+    animation: fall linear forwards;
+}
+
+@keyframes fall {
+    to {
+        transform: translateY(105vh) rotate(360deg);
+    }
+}
+
+
+/* طبقة التعتيم المخفية */
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    /* لون أسود شفاف */
+    backdrop-filter: blur(5px);
+    /* تغبيش الشاشة */
+    z-index: 500;
+    /* تكون فوق كل شيء إلا الزر */
+    opacity: 0;
+    /* مخفية */
+    visibility: hidden;
+    /* غير مرئية للمتصفح */
+    transition: 0.5s;
+    /* نعومة في الظهور */
+}
+
+/* عندما نقف بالماوس على المربع، نظهر الـ Overlay */
+.glass-btn:hover~.overlay {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* رفع مستوى الزر ليكون فوق طبقة التعتيم */
+.glass-btn {
+    position: relative;
+    z-index: 1000;
+}
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    /* لون أسود شفاف */
+    backdrop-filter: blur(5px);
+    /* تغبيش الشاشة */
+    z-index: 500;
+    /* تكون فوق كل شيء إلا الزر */
+    opacity: 0;
+    /* مخفية */
+    visibility: hidden;
+    /* غير مرئية للمتصفح */
+    transition: 0.5s;
+    /* نعومة في الظهور */
+}
+
+/* عندما نقف بالماوس على المربع، نظهر الـ Overlay */
+.glass-btn1:hover~.overlay {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* رفع مستوى الزر ليكون فوق طبقة التعتيم */
+.glass-btn1 {
+    position: relative;
+    z-index: 1000;
+}
+
+.glass-btn2:hover~.overlay {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* رفع مستوى الزر ليكون فوق طبقة التعتيم */
+.glass-btn2 {
+    position: relative;
+    z-index: 1000;
+}
+
+.glass-btn3:hover~.overlay {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* رفع مستوى الزر ليكون فوق طبقة التعتيم */
+.glass-btn3 {
+    position: relative;
+    z-index: 1000;
+}
+
+.glass-btn4:hover~.overlay {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* رفع مستوى الزر ليكون فوق طبقة التعتيم */
+.glass-btn4 {
+    position: relative;
+    z-index: 1000;
+}
+
+.glass-btn5:hover~.overlay {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* رفع مستوى الزر ليكون فوق طبقة التعتيم */
+.glass-btn5 {
+    position: relative;
+    z-index: 1000;
+}
+
+.glass-btn {
+    width: 90px;
+    height: 100px;
+    position: absolute;
+    top: -100px;
+    left: 400px;
+    background: rgba(255, 255, 255, 0.1);
+    /* شفافية */
+    backdrop-filter: blur(5px);
+    /* تأثير الزجاج */
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: 0.4s;
+    position: relative;
+    overflow: hidden;
+    text-decoration: none;
+    /* هذا هو السطر الذي سيزيل الخط الأزرق */
+    color: inherit;
+    /* لضمان بقاء لون النص كما هو بدون تغيير */
+    /* لضبط شكل الزر بشكل صحيح */
+
+}
+
+/* اللوجو داخل المربع */
+.logo-icon {
+    font-size: 50px;
+    color: #ff0000;
+    text-shadow: 0 0 10px #ff0000;
+    transition: 0.4s;
+}
+
+/* الكلمة مخفية في البداية */
+.hover-text {
+    color: white;
+    font-family: sans-serif;
+    font-size: 1.5rem;
+    margin-top: 4px;
+    opacity: 0;
+    /* مخفية */
+    transition: 0.4s;
+}
+
+/* التأثير عند الوقوف بالماوس (Hover) */
+.glass-btn:hover {
+    background: rgba(255, 0, 0, 0.2);
+    /* إضاءة حمراء خفيفة */
+    box-shadow: 0 0 50px #ff0000;
+    border-color: #ff0000;
+}
+
+.glass-btn:hover .logo-icon {
+    text-shadow: 0 0 30px #ff0000, 0 0 50px #ff0000;
+    transform: scale(1.2);
+}
+
+.glass-btn:hover .hover-text {
+    opacity: 1;
+    /* تظهر الكلمة */
+}
+
+
+.glass-btn1 {
+    width: 90px;
+    height: 100px;
+    position: absolute;
+    top: -200px;
+    left: 550px;
+    background: rgba(255, 255, 255, 0.1);
+    /* شفافية */
+    backdrop-filter: blur(5px);
+    /* تأثير الزجاج */
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: 0.4s;
+    position: relative;
+    overflow: hidden;
+    text-decoration: none;
+    /* هذا هو السطر الذي سيزيل الخط الأزرق */
+    color: inherit;
+}
+
+/* اللوجو داخل المربع */
+.logo-icon1 {
+    font-size: 50px;
+    color: #ffcc00;
+    text-shadow: 0 0 10px #ffcc00;
+    transition: 0.4s;
+}
+
+/* الكلمة مخفية في البداية */
+.hover-text1 {
+    color: rgba(249, 5, 5, 0.916);
+    font-family: sans-serif;
+    font-size: 1.2rem;
+    margin-top: 3px;
+    opacity: 0;
+    /* مخفية */
+    transition: 0.4s;
+}
+
+/* التأثير عند الوقوف بالماوس (Hover) */
+.glass-btn1:hover {
+    background: rgb(244, 224, 2);
+    /* إضاءة حمراء خفيفة */
+    box-shadow: 0 0 50px #ffcc00;
+    border-color: #ffcc00;
+}
+
+.glass-btn1:hover .logo-icon {
+    text-shadow: 0 0 30px #ffcc00, 0 0 50px #ffcc00;
+    transform: scale(1.2);
+}
+
+.glass-btn1:hover .hover-text {
+    opacity: 1;
+    /* تظهر الكلمة */
+}
+
+.glass-btn2 {
+    width: 90px;
+    height: 100px;
+    position: absolute;
+    top: -300px;
+    left: 700px;
+    background: rgba(255, 255, 255, 0.1);
+    /* شفافية */
+    backdrop-filter: blur(5px);
+    /* تأثير الزجاج */
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: 0.4s;
+    position: relative;
+    overflow: hidden;
+    text-decoration: none;
+    /* هذا هو السطر الذي سيزيل الخط الأزرق */
+    color: inherit;
+}
+
+/* اللوجو داخل المربع */
+.logo-icon2 {
+    font-size: 50px;
+    color: #e28502df;
+    text-shadow: 0 0 10px #e28502df;
+    transition: 0.4s;
+}
+
+/* الكلمة مخفية في البداية */
+.hover-text {
+    color: white;
+    font-family: sans-serif;
+    font-size: 1.2rem;
+    margin-top: 3px;
+    opacity: 0;
+    /* مخفية */
+    transition: 0.4s;
+}
+
+/* التأثير عند الوقوف بالماوس (Hover) */
+.glass-btn2:hover {
+    background: rgb(242, 118, 3);
+    /* إضاءة حمراء خفيفة */
+    box-shadow: 0 0 50px #e28502df;
+    border-color: #e28502df;
+}
+
+.glass-btn2:hover .logo-icon {
+    text-shadow: 0 0 30px #e28502df, 0 0 50px #e28502df;
+    transform: scale(1.2);
+}
+
+.glass-btn2:hover .hover-text {
+    opacity: 1;
+    /* تظهر الكلمة */
+}
+
+.glass-btn3 {
+    width: 90px;
+    height: 100px;
+    position: absolute;
+    top: -400px;
+    left: 850px;
+    background: rgba(255, 255, 255, 0.1);
+    /* شفافية */
+    backdrop-filter: blur(5px);
+    /* تأثير الزجاج */
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: 0.4s;
+    position: relative;
+    overflow: hidden;
+    text-decoration: none;
+    /* هذا هو السطر الذي سيزيل الخط الأزرق */
+    color: inherit;
+}
+
+/* اللوجو داخل المربع */
+.logo-icon3 {
+    font-size: 50px;
+    color: #1045a7;
+    text-shadow: 0 0 10px #1045a7;
+    transition: 0.4s;
+}
+
+/* الكلمة مخفية في البداية */
+.hover-text {
+    color: white;
+    font-family: sans-serif;
+    font-size: 1.2rem;
+    margin-top: 3px;
+    opacity: 0;
+    /* مخفية */
+    transition: 0.4s;
+}
+
+/* التأثير عند الوقوف بالماوس (Hover) */
+.glass-btn3:hover {
+    background: rgb(0, 71, 158);
+    /* إضاءة حمراء خفيفة */
+    box-shadow: 0 0 50px #1045a7;
+    border-color: #1045a7;
+}
+
+.glass-btn3:hover .logo-icon {
+    text-shadow: 0 0 30px #1045a7, 0 0 50px #1045a7;
+    transform: scale(1.2);
+}
+
+.glass-btn3:hover .hover-text {
+    opacity: 1;
+    /* تظهر الكلمة */
+}
+
+.glass-btn4 {
+    width: 90px;
+    height: 100px;
+    position: absolute;
+    top: -500px;
+    left: 1000px;
+    background: rgba(255, 255, 255, 0.1);
+    /* شفافية */
+    backdrop-filter: blur(5px);
+    /* تأثير الزجاج */
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: 0.4s;
+    position: relative;
+    overflow: hidden;
+    text-decoration: none;
+    /* هذا هو السطر الذي سيزيل الخط الأزرق */
+    color: inherit;
+}
+
+/* اللوجو داخل المربع */
+.logo-icon4 {
+    font-size: 50px;
+    color: #feeeba;
+    text-shadow: 0 0 10px #feeeba;
+    transition: 0.4s;
+}
+
+/* الكلمة مخفية في البداية */
+.hover-text {
+    color: white;
+    font-family: sans-serif;
+    font-size: 1.2rem;
+    margin-top: 3px;
+    opacity: 0;
+    /* مخفية */
+    transition: 0.4s;
+}
+
+/* التأثير عند الوقوف بالماوس (Hover) */
+.glass-btn4:hover {
+    background: rgb(253, 255, 135);
+    /* إضاءة حمراء خفيفة */
+    box-shadow: 0 0 50px #feeeba;
+    border-color: #feeeba;
+}
+
+.glass-btn4:hover .logo-icon {
+    text-shadow: 0 0 30px #feeeba, 0 0 50px #feeeba;
+    transform: scale(1.2);
+}
+
+.glass-btn4:hover .hover-text {
+    opacity: 1;
+    /* تظهر الكلمة */
+}
+
+.glass-btn5 {
+    width: 90px;
+    height: 100px;
+    position: absolute;
+    top: -600px;
+    left: 1150px;
+    background: rgba(255, 255, 255, 0.1);
+    /* شفافية */
+    backdrop-filter: blur(5px);
+    /* تأثير الزجاج */
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: 0.4s;
+    position: relative;
+    overflow: hidden;
+    text-decoration: none;
+    /* هذا هو السطر الذي سيزيل الخط الأزرق */
+    color: inherit;
+}
+
+/* اللوجو داخل المربع */
+.logo-icon5 {
+    font-size: 50px;
+    color: #06f2e2;
+    text-shadow: 0 0 10px #06f2e2;
+    transition: 0.4s;
+}
+
+/* الكلمة مخفية في البداية */
+.hover-text {
+    color: white;
+    font-family: sans-serif;
+    font-size: 1.2rem;
+    margin-top: 3px;
+    opacity: 0;
+    /* مخفية */
+    transition: 0.4s;
+}
+
+/* التأثير عند الوقوف بالماوس (Hover) */
+.glass-btn5:hover {
+    background: rgb(0, 242, 255);
+    /* إضاءة حمراء خفيفة */
+    box-shadow: 0 0 50px #06f2e2;
+    border-color: #06f2e2;
+}
+
+.glass-btn5:hover .logo-icon {
+    text-shadow: 0 0 30px #06f2e2, 0 0 50px #06f2e2;
+    transform: scale(1.2);
+}
+
+.glass-btn5:hover .hover-text {
+    opacity: 1;
+    /* تظهر الكلمة */
+}
+
+.menu-link {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 15px;
+    text-decoration: none;
+    color: white;
+    border-radius: 10px;
+    transition: 0.3s;
+    background: rgba(255, 255, 255, 0.05);
+    /* شفافية خفيفة */
+    margin: 5px 0;
+}
+
+/* التأثير لما تقف بالماوس على المربع كله */
+.menu-link:hover {
+    background: rgba(255, 0, 0, 0.3);
+    /* توهج أحمر خفيف */
+    border-right: 4px solid #ff3333;
+    /* خط أحمر جانبي للجمال */
+}
+
+.menu-icon {
+    font-size: 1.5rem;
+    /* حجم الإيموجي */
+}
+
+/* تعديلات خاصة بالشاشات الصغيرة (الموبايل) */
+/* تنسيقات الشاشات الصغيرة (الموبايل) */
+/* تنسيقات الشاشات الصغيرة (الموبايل) النهائية */
+/* تنسيقات عامة لضمان التجاوب التام على الهواتف */
+@media screen and (max-width: 768px) {
+
+    /* 1. ضبط الهيدر العلوي ليكون شريط صغير ومنظم */
+    .header-container {
+        position: fixed !important;
+        top: 0 !important;
+        left: 0 !important;
+        width: 100% !important;
+        height: auto !important;
+        padding: 10px 15px !important;
+        background: rgba(0, 0, 0, 0.6) !important;
+        backdrop-filter: blur(10px) !important;
+        display: flex !important;
+        flex-direction: row !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+        z-index: 1000 !important;
+        box-sizing: border-box !important;
+    }
+
+    .header-container .logo {
+        font-size: 20px !important;
+        margin: 0 !important;
+    }
+
+    .header-container .right-text {
+        font-size: 13px !important;
+        margin: 0 !important;
+    }
+
+    /* 2. جعل حاوية البوستات تبدأ فوراً تحت الهيدر بدون مساحات فارغة */
+    #feedContainer {
+        margin-top: 80px !important;
+        padding: 10px !important;
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
+    }
+
+    /* 3. ضبط كروت البوستات لتملأ عرض شاشة الآيفون بأمان وبشكل مريح */
+    .feed-post-card {
+        width: 95% !important;
+        max-width: 420px !important;
+        margin: 0 auto 12px auto !important;
+        box-sizing: border-box !important;
+    }
+}
+
+/* تنسيقات الشاشات الصغيرة (الموبايل) */
+
+
+/* ضبط العناوين والنصوص لتتاسب مع الموبايل وتمنع التداخل */
+/* --- تنسيقات الموبايل والتاّبلت الأساسية --- */
+/* --- الحل الجذري لمشكلة القائمة الجانبية وصفحة الباب على الموبايل --- */
+@media screen and (max-width: 768px) {
+
+    /* 1. ضبط زر القائمة والقائمة الجانبية لتظهر وتفتح فوق أي شيء بشياكة */
+    .menu-btn {
+        position: fixed !important;
+        top: 15px !important;
+        left: 15px !important;
+        /* خليناه في الشمال عشان يكون ظاهر وواضح */
+        z-index: 99999 !important;
+        cursor: pointer;
+        background: rgba(0, 0, 0, 0.5);
+        padding: 8px;
+        border-radius: 8px;
+    }
+
+    .side-menu {
+        position: fixed !important;
+        top: 0 !important;
+        left: -280px !important;
+        /* مخفية في اليسار */
+        width: 250px !important;
+        height: 100vh !important;
+        background: rgba(20, 0, 0, 0.98) !important;
+        backdrop-filter: blur(15px);
+        z-index: 99998 !important;
+        transition: left 0.3s ease !important;
+        padding-top: 80px !important;
+        box-sizing: border-box !important;
+        box-shadow: 5px 0 15px rgba(0, 0, 0, 0.5);
+    }
+
+    /* عندما تفتح القائمة عبر الـ JS كلاس active */
+    .side-menu.active {
+        left: 0 !important;
+    }
+
+    .side-menu ul {
+        list-style: none !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        text-align: right !important;
+    }
+
+    .side-menu ul li a {
+        display: block !important;
+        padding: 15px 20px !important;
+        color: #fff !important;
+        text-decoration: none !important;
+        font-size: 16px !important;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+    }
+
+    /* 2. ضبط صفحة الباب (حجم الصورة أو عنصر الباب ليناسب شاشة الموبايل تماماً) */
+    .door-container,
+    img[src*="door"],
+    .door-image,
+    div[style*="door"] {
+        max-width: 80% !important;
+        width: 280px !important;
+        height: auto !important;
+        max-height: 60vh !important;
+        object-fit: contain !important;
+        margin: 80px auto 20px auto !important;
+        display: block !important;
+        position: relative !important;
+    }
+
+    /* تصغير اللوجو في صفحة الباب عشان ميبقاش عملاق */
+    .logo,
+    h1.logo {
+        font-size: 24px !important;
+        text-align: center !important;
+        margin: 10px 0 !important;
+    }
+}

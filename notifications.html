@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الإشعارات - كواليس البروفا</title>
+    <!-- ربط ملفات الـ CSS الخاصة بالموقع -->
+    <link rel="stylesheet" href="login.css"> <!-- أو ملف الـ CSS الأساسي عندك -->
+    <link rel="stylesheet" href="texts.css">
+    <link rel="stylesheet" href="next-style.css">
+    <link rel="stylesheet" href="mystyle.css">
+    <style>
+        body {
+            background-color: #1a0000;
+            color: #fff;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .notifications-page-container {
+            width: 90%;
+            max-width: 500px;
+            margin: 40px auto;
+            background: rgba(30, 0, 0, 0.85);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            padding: 20px;
+            backdrop-filter: blur(15px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+        }
+
+        .notifications-page-container h2 {
+            text-align: center;
+            color: #ffcc00;
+            margin-bottom: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            padding-bottom: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="menu-btn" id="menuBtn" onclick="toggleMenu()">
+        <span></span><span></span><span></span>
+    </div>
+
+    <div class="side-menu" id="sideMenu">
+        <div class="search-box-container"
+            style="position: relative; width: 90%; max-width: 400px; margin: 20px auto; text-align: right;">
+            <input type="text" id="userSearchInput" placeholder="ابحث عن اسم المستخدم..." oninput="searchUsersLive()"
+                style="
+        width: 100%;
+        padding: 12px 20px;
+        border-radius: 25px;
+        border: 1px solid rgba(255,255,255,0.3);
+        background: rgba(0, 0, 0, 0.6);
+        color: #fff;
+        font-size: 16px;
+        outline: none;
+        box-sizing: border-box;
+        backdrop-filter: blur(10px);
+    ">
+
+            <div id="searchResultsDropdown" style="
+        display: none;
+        position: absolute;
+        top: 100%;
+        right: 0;
+        width: 100%;
+        background: rgba(20, 0, 0, 0.95);
+        border: 1px solid rgba(255,255,255,0.2);
+        border-radius: 15px;
+        margin-top: 8px;
+        overflow: hidden;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.6);
+        backdrop-filter: blur(15px);
+        z-index: 9999;
+    "></div>
+        </div>
+        <ul>
+            <li>
+                <a href="logn.html" class="menu-link">
+                    <span class="menu-icon">👤</span>
+                    <span class="menu-text">سجل في البروفا</span>
+                </a>
+            </li>
+            <li>
+                <a href="me.html" class="menu-link">
+                    <span class="menu-icon">👤</span>
+                    <span class="menu-text">ملفي الشخصي</span>
+                </a>
+            </li>
+            <li>
+                <a href="next.html" class="menu-link">
+                    <span class="menu-icon">🎭</span>
+                    <span class="menu-text">الرئيسية</span>
+                </a>
+            </li>
+            <a href="notifications.html" class="menu-link">
+                <span class="menu-icon">🔔</span>
+                <span class="menu-text">الإشعارات</span>
+            </a>
+            <li>
+                <a href="texts.html" class="menu-link">
+                    <span class="menu-icon">📜</span>
+                    <span class="menu-text">نصوص</span>
+                </a>
+            </li>
+            <li>
+                <a href="show.html" class="menu-link">
+                    <span class="menu-icon">🎟️</span>
+                    <span class="menu-text">العروض</span>
+                </a>
+            </li>
+            <li>
+                <a href="information.html" class="menu-link">
+                    <span class="menu-icon">🏛️</span>
+                    <span class="menu-text">معلومات وحجز المسرح</span>
+                </a>
+            </li>
+            <li><a href="subscriptions.html" class="menu-link" style="color: #ffcc00; font-weight: bold;">الباقات
+                    والاشتراكات 🌟</a></li>
+            <li>
+                <a href="my-tickets.html" class="menu-link">
+                    <span class="menu-icon">🎟️</span>
+                    <span class="menu-text">تذاكري المحجوزة</span>
+                </a>
+            </li>
+            <li>
+            <li><a href="links.html" class="menu-link">اتصل بنا</a></li>
+
+
+            <li><a href="about.html" class="menu-link">تعريف BROVAT 🌟</a></li>
+
+            </li>
+
+
+
+    </div>
+
+    <div class="notifications-page-container">
+        <h2>الإشعارات 🔔</h2>
+        <!-- القائمة اللي هتنزل فيها الإشعارات تلقائياً -->
+        <div id="notificationsList" style="display: flex; flex-direction: column; gap: 12px;">
+            <div style="color: #aaa; text-align: center; padding: 20px;">جاري تحميل الإشعارات...</div>
+        </div>
+    </div>
+
+    <!-- مكتبة Supabase -->
+    <!-- 1. تحميل مكتبة Supabase الرسمية أولاً -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <!-- 2. تحميل ملف تهيئة الاتصال الذي ينشئ متغير supabase -->
+    <script src="init-supabase.js"></script>
+
+    <!-- 3. تحميل ملف main.js في النهاية -->
+    <script src="main.js"></script>
+
+
+</body>
+
+</html>

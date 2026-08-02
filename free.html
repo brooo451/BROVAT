@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css2?family=Lobster&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="morbat.css">
+    <link rel="stylesheet" href="login.css">
+    <link rel="stylesheet" href="next-style.css">
+    <link rel="stylesheet" href="me.css">
+    <title>ورش تعليم المسرح - BROVAT</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        .glass-card {
+            background: rgba(20, 0, 0, 0.75);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 20px;
+            padding: 20px;
+            margin: 20px auto;
+            max-width: 600px;
+            color: #fff;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(12px);
+            text-align: right;
+            transition: transform 0.3s;
+        }
+
+        .glass-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .workshop-images-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+
+        .workshop-images-grid img {
+            width: 100%;
+            height: 110px;
+            object-fit: cover;
+            border-radius: 10px;
+            border: 2px solid rgba(255, 204, 0, 0.5);
+        }
+
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(8px);
+            padding: 15px;
+        }
+
+        .modal-content {
+            background: rgba(25, 0, 0, 0.95);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            width: 100%;
+            max-width: 400px;
+            padding: 25px;
+            color: #fff;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.9);
+            text-align: center;
+        }
+
+        .admin-form-box {
+            display: none;
+            background: rgba(30, 0, 0, 0.95);
+            border: 1px solid #ff4757;
+            padding: 20px;
+            border-radius: 15px;
+            max-width: 600px;
+            margin: 20px auto;
+            color: #fff;
+            text-align: right;
+        }
+
+        .admin-form-box input,
+        .admin-form-box textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 8px 0 15px 0;
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            color: #fff;
+            outline: none;
+        }
+
+        .admin-btn {
+            background: #ff4757;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: bold;
+            display: none;
+            margin: 10px auto;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="menu-btn" id="menuBtn"><span></span><span></span><span></span></div>
+
+    <div class="side-menu" id="sideMenu">
+        <ul>
+            <li><a href="next.html" class="menu-link">الرئيسية</a></li>
+            <li><a href="logn.html" class="menu-link">سجل في البروفا</a></li>
+            <li><a href="me.html" class="menu-link">ملفي الشخصي</a></li>
+            <li><a href="notifications.html" class="menu-link">الإشعارات</a></li>
+            <li><a href="messages.html" class="menu-link">الرسائل الخاصة</a></li>
+            <li><a href="texts.html" class="menu-link">نصوص</a></li>
+            <li><a href="show.html" class="menu-link">العروض</a></li>
+            <li><a href="information.html" class="menu-link">معلومات عن المسرح</a></li>
+            <li><a href="free.html" class="menu-link" style="color: #ff4757; font-weight: bold;">ورش تعليم</a></li>
+            <li><a href="subscriptions.html" class="menu-link">الباقات والاشتراكات 🌟</a></li>
+            <li><a href="links.html" class="menu-link">اتصل بنا</a></li>
+            <li><a href="about.html" class="menu-link">تعريف BROVAT 🌟</a></li>
+        </ul>
+    </div>
+
+    <div class="header-container">
+        <h1 class="logo">BROVAT</h1>
+        <h2 class="right-text">ورش تعليم المسرح</h2>
+    </div>
+
+    <div style="margin-top: 150px; padding: 20px;">
+
+        <div style="text-align: center;">
+            <button id="showAddWorkshopBtn" class="admin-btn" onclick="toggleAdminForm()">➕ إضافة ورشة جديدة (أدمن
+                فقط)</button>
+        </div>
+
+        <!-- لوحة تحكم الأدمن للورش -->
+        <div id="adminWorkshopForm" class="admin-form-box">
+            <h3 style="color: #ffcc00; margin-bottom: 15px;">لوحة تحكم الأدمن: إضافة ورشة تعليمية 🎭</h3>
+            <input type="hidden" id="editingWorkshopId" value="">
+
+            <label>اسم الورشة:</label>
+            <input type="text" id="wsTitle" placeholder="مثال: ورشة فن التمثيل والإلقاء">
+
+            <label>اسم مخرج الورشة:</label>
+            <input type="text" id="wsDirector" placeholder="مثال: المخرج أحمد إبراهيم">
+
+            <label>العنوان / اللوكيشن:</label>
+            <input type="text" id="wsLocation" placeholder="مثال: مسرح الهوسابير - وسط البلد">
+
+            <label>سعر الورشة (أو اكتب "مجانية"):</label>
+            <input type="text" id="wsPrice" placeholder="مثال: 300 جنيه أو مجانية">
+
+            <label>صور الورشة (صورة أو صور متعددة):</label>
+            <input type="file" id="wsImagesFiles" accept="image/*" multiple>
+
+            <button onclick="saveWorkshop()"
+                style="background: #2ed573; color: #fff; border:none; padding: 12px; border-radius: 8px; cursor:pointer; font-weight:bold; width:100%; margin-top:15px;">حفظ
+                ونشر الورشة 🚀</button>
+        </div>
+
+        <!-- حاوية عرض الورش أو رسالة قريباً -->
+        <div id="workshopsContainer">
+            <div id="comingSoonBox" class="profile-container"
+                style="max-width: 600px; margin: 40px auto; text-align: center; background: rgba(20, 0, 0, 0.9); padding: 30px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.2);">
+                <div style="font-size: 40px; margin-bottom: 10px;">⏳</div>
+                <h2 style="color: #ffcc00; margin-bottom: 15px;">قريباً</h2>
+                <p style="color: #fff; font-size: 16px; line-height: 1.6;">
+                    (BROVAT) سيتواجد قريباً نظام حجز ورش تعليم في منصة 🎭✨
+                </p>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- نافذة الحجز وإدخال الرقم -->
+    <div id="workshopBookingModal" class="modal-overlay">
+        <div class="modal-content">
+            <h3 style="color: #ffcc00; margin-bottom: 10px;">حجز ورشة مسرحية 🎟️</h3>
+            <p id="modalWsTitle" style="color: #ddd; font-size: 14px; margin-bottom: 15px;"></p>
+            <input type="text" id="clientPhoneInput" placeholder="أدخل رقم التواصل (الهاتف)..."
+                style="width: 100%; padding: 12px; background: rgba(0,0,0,0.6); border: 1px solid rgba(255,255,255,0.2); border-radius: 10px; color: #fff; margin-bottom: 15px; text-align: right; outline: none;">
+            <div style="display: flex; gap: 10px;">
+                <button onclick="submitWorkshopBooking()"
+                    style="flex: 1; background: #2ed573; color: #fff; border: none; padding: 10px; border-radius: 8px; font-weight: bold; cursor: pointer;">تأكيد
+                    الحجز 🚀</button>
+                <button onclick="closeBookingModal()"
+                    style="flex: 1; background: #555; color: #fff; border: none; padding: 10px; border-radius: 8px; font-weight: bold; cursor: pointer;">إلغاء
+                    ✕</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="init-supabase.js"></script>
+    <script>
+        const adminEmail = "0101medomedo@gmail.com";
+        let isAdmin = false;
+        let allWorkshops = [];
+        let activeWorkshopForBooking = null;
+
+        document.addEventListener("DOMContentLoaded", async () => {
+            await checkAdminPermissions();
+            await loadWorkshops();
+        });
+
+        async function checkAdminPermissions() {
+            if (typeof supabase === 'undefined') return;
+            const { data: { user } } = await supabase.auth.getUser();
+            if (user && user.email === adminEmail) {
+                isAdmin = true;
+                const btn = document.getElementById('showAddWorkshopBtn');
+                if (btn) btn.style.display = 'inline-block';
+            }
+        }
+
+        function toggleAdminForm() {
+            const form = document.getElementById('adminWorkshopForm');
+            if (form) form.style.display = form.style.display === 'block' ? 'none' : 'block';
+        }
+
+        async function saveWorkshop() {
+            const wsId = document.getElementById('editingWorkshopId').value;
+            const title = document.getElementById('wsTitle').value.trim();
+            const director = document.getElementById('wsDirector').value.trim();
+            const location = document.getElementById('wsLocation').value.trim();
+            const price = document.getElementById('wsPrice').value.trim();
+            const filesInput = document.getElementById('wsImagesFiles');
+
+            if (!title) {
+                alert("يرجى إدخال اسم الورشة على الأقل! ⚠️");
+                return;
+            }
+
+            let imageUrls = [];
+            if (filesInput && filesInput.files.length > 0) {
+                for (let i = 0; i < filesInput.files.length; i++) {
+                    const file = filesInput.files[i];
+                    const fileName = `ws_${Date.now()}_${i}_${file.name}`;
+                    const { error: uploadError } = await supabase.storage.from('theaters-images').upload(fileName, file);
+                    if (!uploadError) {
+                        const { data: pubUrl } = supabase.storage.from('theaters-images').getPublicUrl(fileName);
+                        imageUrls.push(pubUrl.publicUrl);
+                    }
+                }
+            }
+
+            let updateData = {
+                title: title,
+                director: director || null,
+                location: location || null,
+                price: price || null
+            };
+
+            if (imageUrls.length > 0) updateData.image_urls = imageUrls;
+
+            if (wsId) {
+                const { error } = await supabase.from('workshops').update(updateData).eq('id', wsId);
+                if (error) alert("خطأ: " + error.message);
+                else { alert("تم تعديل الورشة بنجاح! 🎭"); resetForm(); loadWorkshops(); }
+            } else {
+                if (imageUrls.length === 0) imageUrls.push('placeholder.jpg');
+                updateData.image_urls = imageUrls;
+                const { error } = await supabase.from('workshops').insert([updateData]);
+                if (error) alert("خطأ: " + error.message);
+                else { alert("تم إضافة الورشة بنجاح! 🎭"); resetForm(); loadWorkshops(); }
+            }
+        }
+
+        function resetForm() {
+            document.getElementById('editingWorkshopId').value = "";
+            document.getElementById('wsTitle').value = "";
+            document.getElementById('wsDirector').value = "";
+            document.getElementById('wsLocation').value = "";
+            document.getElementById('wsPrice').value = "";
+            document.getElementById('adminWorkshopForm').style.display = 'none';
+        }
+
+        async function loadWorkshops() {
+            if (typeof supabase === 'undefined') return;
+            const { data: workshops, error } = await supabase.from('workshops').select('*').order('created_at', { ascending: false });
+
+            const container = document.getElementById('workshopsContainer');
+            if (!container || error || !workshops || workshops.length === 0) return;
+
+            allWorkshops = workshops;
+            let html = "";
+            workshops.forEach(w => {
+                let images = w.image_urls || ['placeholder.jpg'];
+                let imagesHtml = `<div class="workshop-images-grid">`;
+                images.forEach(img => imagesHtml += `<img src="${img}">`);
+                imagesHtml += `</div>`;
+
+                let directorHtml = w.director ? `<p style="margin: 5px 0;"><strong>مخرج الورشة:</strong> ${w.director}</p>` : "";
+                let locationHtml = w.location ? `<p style="margin: 5px 0; color: #ffcc00;">📍 ${w.location}</p>` : "";
+                let priceHtml = w.price ? `<p style="margin: 5px 0;"><strong>السعر:</strong> <span style="color: #2ed573; font-weight: bold;">${w.price}</span></p>` : "";
+
+                let adminActions = isAdmin ? `
+                    <div style="margin-top: 15px; display: flex; gap: 10px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 10px;">
+                        <button onclick="editWorkshop(${w.id})" style="background: #ffa502; color:#fff; border:none; padding:8px 15px; border-radius:6px; cursor:pointer; font-weight:bold;">تعديل ✏️</button>
+                        <button onclick="deleteWorkshop(${w.id})" style="background: #ff4757; color:#fff; border:none; padding:8px 15px; border-radius:6px; cursor:pointer; font-weight:bold;">حذف 🗑️</button>
+                    </div>
+                ` : "";
+
+                html += `
+                    <div class="glass-card">
+                        ${imagesHtml}
+                        <h2 style="color: #ffcc00; margin-bottom: 8px;">${w.title} 🎭</h2>
+                        ${directorHtml}
+                        ${locationHtml}
+                        ${priceHtml}
+                        <button onclick="openBookingModal(${w.id})" style="background: #ff4757; color:#fff; border:none; padding:10px 20px; border-radius:10px; cursor:pointer; font-weight:bold; width:100%; margin-top:12px; box-shadow: 0 5px 15px rgba(255,71,87,0.4);">حجز الورشة 🎟️</button>
+                        ${adminActions}
+                    </div>
+                `;
+            });
+            container.innerHTML = html;
+        }
+
+        function openBookingModal(id) {
+            const w = allWorkshops.find(item => item.id === id);
+            if (!w) return;
+            activeWorkshopForBooking = w;
+            document.getElementById('modalWsTitle').innerText = `ورشة: ${w.title}`;
+            document.getElementById('workshopBookingModal').style.display = 'flex';
+        }
+
+        function closeBookingModal() {
+            document.getElementById('workshopBookingModal').style.display = 'none';
+        }
+
+        // إرسال تفاصيل الحجز عبر الواتساب للأدمن
+        function submitWorkshopBooking() {
+            const phone = document.getElementById('clientPhoneInput').value.trim();
+            if (!phone) {
+                alert("يرجى إدخال رقم التواصل الخاص بك! ⚠️");
+                return;
+            }
+
+            const w = activeWorkshopForBooking;
+            // ⚠️ استبدل الرقم برقم الواتساب الخاص بك (متبوعاً بكود الدولة، مثلاً 20 لمصر وبعدها رقمك بدون صفر البداية)
+            const adminWhatsAppNumber = "201117415769"; // <--- ضع رقمك هنا
+
+            const message = `       🎭:%0a` +
+                `📌 اسم الورشة: ${w.title}%0a` +
+                `🎬 مخرج الورشة: ${w.director || 'غير محدد'}%0a` +
+                `📍 المكان: ${w.location || 'غير محدد'}%0a` +
+                `💰 السعر: ${w.price || 'غير محدد'}%0a` +
+                `📱 رقم تواصل العميل: ${phone}`;
+
+            const whatsappUrl = `https://wa.me/${adminWhatsAppNumber}?text=${message}`;
+
+            alert("تم إرسال طلب حجزك بنجاح! سيتم الرد في خلال 24 ساعة 🚀");
+            closeBookingModal();
+            document.getElementById('clientPhoneInput').value = "";
+
+            window.open(whatsappUrl, '_blank');
+        }
+
+        function editWorkshop(id) {
+            const w = allWorkshops.find(item => item.id === id);
+            if (!w) return;
+
+            document.getElementById('editingWorkshopId').value = w.id;
+            document.getElementById('wsTitle').value = w.title;
+            document.getElementById('wsDirector').value = w.director || "";
+            document.getElementById('wsLocation').value = w.location || "";
+            document.getElementById('wsPrice').value = w.price || "";
+
+            document.getElementById('adminWorkshopForm').style.display = 'block';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        async function deleteWorkshop(id) {
+            if (confirm("هل أنت متأكد من حذف هذه الورشة؟")) {
+                const { error } = await supabase.from('workshops').delete().eq('id', id);
+                if (error) alert("خطأ: " + error.message);
+                else { alert("تم الحذف بنجاح"); loadWorkshops(); }
+            }
+        }
+    </script>
+    <script src="main.js"></script>
+</body>
+
+</html>

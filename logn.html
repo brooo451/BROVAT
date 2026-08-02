@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="ar">
+
+<head>
+    <link href="https://fonts.googleapis.com/css2?family=Lobster&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="morbat.css">
+    <link rel="stylesheet" href="next-style.css">
+    <link rel="stylesheet" href="login.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<body>
+    <div class="header-container">
+        <h1 class="logo">BROVAT</h1>
+        <h2 class="right-text">احنا في البروفا</h2>
+    </div>
+    <div class="menu-btn" id="menuBtn"><span></span><span></span><span></span></div>
+    <div class="side-menu" id="sideMenu">
+        <ul>
+
+            <li><a href="me.html" class="menu-link">ملفي الشخصي</a></li>
+            <li><a href="next.html" class="menu-link">الرئيسية</a></li>
+            <li><a href="notifications.html" class="menu-link"> الإشعارات</a></li>
+            <li><a href="messages.html" class="menu-link"> الرسائل الخاصة </a></li>
+            <li><a href="free.html" class="menu-link"> ورش تعليم </a></li>
+            <li><a href="texts.html" class="menu-link">نصوص</a></li>
+            <li><a href="show.html" class="menu-link">العروض</a></li>
+            <li><a href="information.html" class="menu-link">معلومات وحجز المسرح</a></li>
+            <li><a href="free.html" class="menu-link"> ورش تعليم </a></li>
+            <li><a href="subscriptions.html" class="menu-link">الباقات والاشتراكات 🌟</a></li>
+            <li>
+            <li><a href="links.html" class="menu-link">اتصل بنا</a></li>
+            <li><a href="about.html" class="menu-link">تعريف BROVAT 🌟</a></li>
+
+            </li>
+        </ul>
+    </div>
+    <div class="floating-glass-box2" id="box">
+        <div id="loginSection">
+            <h2 class="title">اهلا بيك في كواليس البروفا</h2>
+            <div class="input-group">
+                <input type="email" id="email" placeholder="البريد الإلكتروني">
+                <input type="password" id="password" placeholder="كلمة المرور">
+            </div>
+            <button onclick="loginUser()" class="login-btn">تسجيل الدخول</button>
+            <a href="#" class="register-link" id="showRegister"> إنشاء حساب</a>
+        </div>
+
+        <div id="registerSection" style="display: none;">
+            <h2 class="title1">إنشاء حساب</h2>
+            <div class="signup-box" id="signupBox">
+                <input type="text" placeholder="الاسم" id="fullName">
+                <input type="text" placeholder="اسم الأب" id="fatherName">
+                <input type="text" id="nickname" placeholder="اسم الشهرة">
+                <input type="number" placeholder="السن" id="age" class="no-spinner">
+                <input type="text" placeholder="محل الإقامة" id="location">
+                <input type="tel" placeholder="رقم الهاتف" id="phone">
+
+                <input type="email" id="reg-email" placeholder="البريد الإلكتروني">
+                <input type="password" id="reg-password" placeholder="كلمة المرور">
+
+                <label for="role">اختر تخصصك:</label>
+                <select id="roleSelect" onchange="changeColor()">
+                    <option value="actor">ممثل</option>
+                    <option value="director">مخرج</option>
+                    <option value="decor">ديكور</option>
+                    <option value="music">موسيقي</option>
+                    <option value="light">إضاءة</option>
+                    <option value="dance">استعراضات</option>
+                </select>
+            </div>
+            <button onclick="registerUser()" class="login-btn">ادخل البروفا</button>
+        </div>
+    </div>
+
+    <!-- ترتيب التحميل الصحيح -->
+
+    <!-- صندوق تسجيل الدخول الخاص بالموبايل -->
+
+
+    <!-- أولاً: مكتبة Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <!-- ثانياً: ملف التعريف الوحيد -->
+    <script src="init-supabase.js"></script>
+
+    <!-- ثالثاً: باقي ملفاتك (me.js, login.js, etc...) -->
+    <script src="me.js"></script>
+    <script src="script.js"></script>
+    <script src="login.js"></script>
+    <script src="main.js"></script>
+
+</body>
+
+</html>
