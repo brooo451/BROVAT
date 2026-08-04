@@ -105,6 +105,17 @@
             <button onclick="createPost()"
                 style="padding: 10px 20px; border-radius: 8px; background: #2ed573; color: white; border: none; cursor: pointer; font-weight: bold;">نشر
                 بوست عادـي ✍️</button>
+            <!-- مؤشر التحميل (مخفي افتراضياً) -->
+            <div id="uploadProgressBox"
+                style="display: none; margin: 15px auto; text-align: center; max-width: 400px; background: rgba(0,0,0,0.8); padding: 15px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.2);">
+                <p id="uploadStatusText" style="color: #ffcc00; margin-bottom: 8px; font-size: 14px;">جاري رفع الملف...
+                    ⏳</p>
+                <div
+                    style="width: 100%; background: rgba(255,255,255,0.2); border-radius: 10px; overflow: hidden; height: 10px;">
+                    <div id="uploadProgressBar"
+                        style="width: 0%; height: 100%; background: #2ed573; transition: width 0.3s;"></div>
+                </div>
+            </div>
 
             <button onclick="createAudioPost()"
                 style="padding: 10px 20px; border-radius: 8px; background: #3742fa; color: white; border: none; cursor: pointer; font-weight: bold;">نشر

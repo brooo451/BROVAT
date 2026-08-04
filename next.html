@@ -81,9 +81,11 @@
                 </a>
             </li>
             <li>
-                <a href="me.html" class="menu-link">
+                <a href="me.html" class="menu-link" style="position: relative;">
                     <span class="menu-icon">👤</span>
                     <span class="menu-text">ملفي الشخصي</span>
+                    <span id="profileBadgeCount"
+                        style="display: none; position: absolute; left: 15px; background: #ff4757; color: #fff; font-size: 11px; padding: 2px 6px; border-radius: 50%; font-weight: bold;">0</span>
                 </a>
             </li>
             <li>
@@ -92,14 +94,18 @@
                     <span class="menu-text">الرئيسية</span>
                 </a>
             </li>
-            <a href="notifications.html" class="menu-link">
+            <a href="notifications.html" class="menu-link" style="position: relative;">
                 <span class="menu-icon">🔔</span>
                 <span class="menu-text">الإشعارات</span>
+                <span id="notifBadgeCount"
+                    style="display: none; position: absolute; left: 15px; background: #ff4757; color: #fff; font-size: 11px; padding: 2px 6px; border-radius: 50%; font-weight: bold;">0</span>
             </a>
             <li>
-                <a href="messages.html" class="menu-link">
+                <a href="messages.html" class="menu-link" style="position: relative;">
                     <span class="menu-icon">💬</span>
                     <span class="menu-text">الرسائل الخاصة</span>
+                    <span id="msgBadgeCount"
+                        style="display: none; position: absolute; left: 15px; background: #ff4757; color: #fff; font-size: 11px; padding: 2px 6px; border-radius: 50%; font-weight: bold;">0</span>
                 </a>
             </li>
             <li>
@@ -205,6 +211,44 @@
                         localStorage.setItem('userBadge', badgeEmoji);
                     }
                 }
+            }
+        });
+        document.addEventListener("DOMContentLoaded", () => {
+            // مراقب ذكي لكل الفيديوهات الحالية والمستقبلية في الصفحة
+            const videoObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    const video = entry.target;
+                    if (entry.isIntersecting) {
+                        // الفيديو بقى ظاهر في الشاشة -> تشغيل تلقائي صامت
+                        video.play().catch(e => console.log("التشغيل التلقائي متوقف مؤقتاً:", e));
+                    } else {
+                        // الفيديو خرج من الشاشة -> إيقاف مؤقت
+                        video.pause();
+                    }
+                });
+            }, { threshold: 0.5 }); // بيشتغل لما نص الفيديو (50%) يبان
+
+            // دالة لتطبيق المراقبة على كل الفيديوهات
+            function observeVideos() {
+                const videos = document.querySelectorAll('video');
+                videos.forEach(video => {
+                    // التأكد من وجود خاصية muted عشان المتصفح مايعملش حظر للتشغيل
+                    video.muted = true;
+                    video.setAttribute('playsinline', '');
+                    videoObserver.observe(video);
+                });
+            }
+
+            // تشغيل الدالة أول ما الصفحة تفتح
+            observeVideos();
+
+            // مراقبة أي تحديثات تتم في الـ feedContainer (لو الفيديوهات بتنزل ديناميكياً)
+            const feedContainer = document.getElementById('feedContainer');
+            if (feedContainer) {
+                const observerMutations = new MutationObserver(() => {
+                    observeVideos();
+                });
+                observerMutations.observe(feedContainer, { childList: true, subtree: true });
             }
         });
     </script>

@@ -68,8 +68,6 @@ async function loadEverything() {
     await checkUserRoleForShowButton();
     await checkUserRoleForAudioButton();
 
-    // تحميل حالة المتابعين والعدادات لليوزر الحالي أو البروفايل المعروض
-    // إذا كنت في صفحة شخص آخر، استبدل userId بـ ID الشخص الآخر المستخرج من الرابط
     const urlParams = new URLSearchParams(window.location.search);
     const targetUserId = urlParams.get('id') || userId;
     await loadFollowStatusAndCounts(targetUserId);
@@ -136,6 +134,7 @@ async function loadEverything() {
 
 loadEverything();
 
+// --- دالة إنشاء المنشورات العامة مع شريط التحميل (Progress Bar) ---
 async function createPost() {
     const { data: { user }, error: userError } = await supabase.auth.getUser();
     if (userError || !user) {
@@ -186,14 +185,43 @@ async function createPost() {
     }
 
     let mediaUrl = null;
+    let progressBox = null;
+
     if (file) {
+        // إنشاء شريط التحميل ديناميكياً وعرضه للمستخدم
+        progressBox = document.getElementById('uploadProgressBox');
+        if (!progressBox) {
+            progressBox = document.createElement('div');
+            progressBox.id = 'uploadProgressBox';
+            progressBox.style.cssText = "margin: 15px auto; text-align: center; max-width: 400px; background: rgba(0,0,0,0.85); padding: 15px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.2);";
+            progressBox.innerHTML = `
+                <p id="uploadStatusText" style="color: #ffcc00; margin-bottom: 8px; font-size: 14px;">جاري رفع الملف ... 🔄</p>
+                <div style="width: 100%; background: rgba(255,255,255,0.2); border-radius: 10px; overflow: hidden; height: 10px;">
+                    <div id="uploadProgressBar" style="width: 40%; height: 100%; background: #2ed573; transition: width 0.3s;"></div>
+                </div>
+            `;
+            const captionInput = document.getElementById('postCaption');
+            if (captionInput) captionInput.parentNode.insertBefore(progressBox, captionInput.nextSibling);
+            else document.body.appendChild(progressBox);
+        } else {
+            progressBox.style.display = 'block';
+            document.getElementById('uploadProgressBar').style.width = '40%';
+            document.getElementById('uploadStatusText').innerText = "جاري رفع الملف ... 🔄";
+        }
+
         const fileExt = file.name.split('.').pop();
         const filePath = `${user.id}/${Date.now()}.${fileExt}`;
         const { error: uploadError } = await supabase.storage.from('posts').upload(filePath, file);
+
         if (uploadError) {
+            if (progressBox) progressBox.style.display = 'none';
             alert("خطأ في رفع الملف: " + uploadError.message);
             return;
         }
+
+        // تحديث شريط التحميل لـ 100%
+        document.getElementById('uploadProgressBar').style.width = '100%';
+        document.getElementById('uploadStatusText').innerText = "تم الرفع بنجاح! جاري النشر... ✅";
 
         const { data } = await supabase.storage.from('posts').getPublicUrl(filePath);
         mediaUrl = data.publicUrl;
@@ -208,6 +236,12 @@ async function createPost() {
         user_badge: userBadge
     }]);
 
+    if (progressBox) {
+        setTimeout(() => {
+            progressBox.style.display = 'none';
+        }, 1000);
+    }
+
     if (dbError) {
         alert("خطأ في حفظ البوست: " + dbError.message);
         return;
@@ -221,6 +255,7 @@ async function createPost() {
 }
 window.createPost = createPost;
 
+// --- دالة نشر التراكات الصوتيّة مع شريط التحميل ---
 async function createAudioPost() {
     const { data: { user }, error: userError } = await supabase.auth.getUser();
     if (userError || !user) {
@@ -249,14 +284,36 @@ async function createAudioPost() {
         return;
     }
 
+    let progressBox = document.getElementById('uploadProgressBox');
+    if (!progressBox) {
+        progressBox = document.createElement('div');
+        progressBox.id = 'uploadProgressBox';
+        progressBox.style.cssText = "margin: 15px auto; text-align: center; max-width: 400px; background: rgba(0,0,0,0.85); padding: 15px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.2);";
+        progressBox.innerHTML = `
+            <p id="uploadStatusText" style="color: #ffcc00; margin-bottom: 8px; font-size: 14px;">جاري رفع التراك الصوتي... 🔄</p>
+            <div style="width: 100%; background: rgba(255,255,255,0.2); border-radius: 10px; overflow: hidden; height: 10px;">
+                <div id="uploadProgressBar" style="width: 40%; height: 100%; background: #2ed573; transition: width 0.3s;"></div>
+            </div>
+        `;
+        document.body.appendChild(progressBox);
+    } else {
+        progressBox.style.display = 'block';
+        document.getElementById('uploadProgressBar').style.width = '40%';
+        document.getElementById('uploadStatusText').innerText = "جاري رفع التراك الصوتي... 🔄";
+    }
+
     const fileExt = file.name.split('.').pop();
     const filePath = `tracks/${user.id}_${Date.now()}.${fileExt}`;
 
     const { error: uploadError } = await supabase.storage.from('posts').upload(filePath, file);
     if (uploadError) {
+        progressBox.style.display = 'none';
         alert("خطأ في رفع التراك: " + uploadError.message);
         return;
     }
+
+    document.getElementById('uploadProgressBar').style.width = '100%';
+    document.getElementById('uploadStatusText').innerText = "تم رفع التراك بنجاح! جاري الحفظ... ✅";
 
     const { data: pubData } = supabase.storage.from('posts').getPublicUrl(filePath);
     const audioUrl = pubData.publicUrl;
@@ -270,6 +327,10 @@ async function createAudioPost() {
         caption: captionText || "تراك موسيقي جديد 🎵",
         user_badge: userBadge
     }]);
+
+    setTimeout(() => {
+        progressBox.style.display = 'none';
+    }, 1000);
 
     if (dbError) {
         alert("خطأ في حفظ التراك: " + dbError.message);
@@ -446,24 +507,20 @@ async function checkUserRoleForShowButton() {
     }
 }
 
-// --- دوال نظام المتابعة (Follow / Unfollow) والعدادات ---
 async function loadFollowStatusAndCounts(profileUserId) {
     const { data: { user } } = await supabase.auth.getUser();
     const currentUserId = user ? user.id : null;
 
-    // أ. حساب عدد المتابعين (Followers)
     const { count: followersCount } = await supabase
         .from('follows')
         .select('*', { count: 'exact', head: true })
         .eq('following_id', profileUserId);
 
-    // ب. حساب عدد اللي بيتابعهم (Following)
     const { count: followingCount } = await supabase
         .from('follows')
         .select('*', { count: 'exact', head: true })
         .eq('follower_id', profileUserId);
 
-    // عرض العدادات في HTML
     if (document.getElementById('followersCountDisplay')) {
         document.getElementById('followersCountDisplay').innerText = followersCount || 0;
     }
@@ -471,15 +528,14 @@ async function loadFollowStatusAndCounts(profileUserId) {
         document.getElementById('followingCountDisplay').innerText = followingCount || 0;
     }
 
-    // ج. التحكم في زرار الفولو (إظهاره وإخفائه وتغيير حالته)
     const followBtn = document.getElementById('followActionBtn');
     if (followBtn) {
         if (!currentUserId || currentUserId === profileUserId) {
-            followBtn.style.display = 'none'; // لو بروفايلي أو مش مسجل، نخفي الزرار
+            followBtn.style.display = 'none';
             return;
         }
 
-        followBtn.style.display = 'block'; // ظهوره لو بروفايل شخص تاني
+        followBtn.style.display = 'block';
 
         const { data: existingFollow } = await supabase
             .from('follows')
@@ -498,10 +554,10 @@ async function loadFollowStatusAndCounts(profileUserId) {
             followBtn.setAttribute('data-is-following', 'false');
         }
 
-        // ربط الزرار بدالة التبديل وإرسال الـ ID الصحيح
         followBtn.setAttribute('onclick', `toggleFollow('${profileUserId}')`);
     }
 }
+
 async function toggleFollow(profileUserId) {
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) {
@@ -519,7 +575,6 @@ async function toggleFollow(profileUserId) {
     const isFollowing = followBtn.getAttribute('data-is-following') === 'true';
 
     if (isFollowing) {
-        // إلغاء المتابعة
         const { error } = await supabase
             .from('follows')
             .delete()
@@ -532,7 +587,6 @@ async function toggleFollow(profileUserId) {
             loadFollowStatusAndCounts(profileUserId);
         }
     } else {
-        // 1. تنفيذ المتابعة في جدول follows
         const { error } = await supabase
             .from('follows')
             .insert([{ follower_id: user.id, following_id: profileUserId }]);
@@ -540,7 +594,6 @@ async function toggleFollow(profileUserId) {
         if (error) {
             alert("خطأ أثناء المتابعة: " + error.message);
         } else {
-            // 2. جلب بيانات المستخدم الحالي (المتابع) لكي تظهر في الإشعار بدقة
             const { data: currentUserData } = await supabase
                 .from('users')
                 .select('nickname, avatar_url')
@@ -550,15 +603,14 @@ async function toggleFollow(profileUserId) {
             const followerName = currentUserData ? (currentUserData.nickname || "فنان") : "فنان";
             const followerAvatar = currentUserData ? (currentUserData.avatar_url || 'img/default-avatar.png') : 'img/default-avatar.png';
 
-            // 3. إرسال الإشعار لجدول notifications عشان يظهر في صفحة الإشعارات
             const { error: notifError } = await supabase
                 .from('notifications')
                 .insert([{
-                    user_id: profileUserId,       // الشخص المستقبل للإشعار
-                    actor_id: user.id,            // الشخص الذي قام بالمتابعة
-                    actor_name: followerName,     // اسم المتابع
-                    actor_avatar: followerAvatar, // صورة المتابع
-                    action_type: 'follow',        // نوع التفاعل (الكلمة المفتاحية لصفحة الإشعارات)
+                    user_id: profileUserId,
+                    actor_id: user.id,
+                    actor_name: followerName,
+                    actor_avatar: followerAvatar,
+                    action_type: 'follow',
                     message: `قام ${followerName} بمتابعتك! 🌟`
                 }]);
 
@@ -572,8 +624,6 @@ async function toggleFollow(profileUserId) {
 }
 window.toggleFollow = toggleFollow;
 
-
-// --- دالة فتح زرار ونموذج إضافة العروض بالتحقق الصارم ---
 async function toggleShowForm() {
     if (typeof supabase === 'undefined') {
         alert("مكتبة Supabase غير محملة!");
@@ -639,7 +689,6 @@ async function toggleShowForm() {
 }
 window.toggleShowForm = toggleShowForm;
 
-// --- دالة إضافة ونشر العرض وحفظ حالة الاستهلاك فوراً ---
 async function addNewShow() {
     const title = document.getElementById('showTitle').value;
     const description = document.getElementById('showDescription').value;

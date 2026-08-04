@@ -491,3 +491,114 @@ async function toggleFollow(profileUserId) {
     }
 }
 window.toggleFollow = toggleFollow;
+// --- دالة فحص وتحديث العدادات في القائمة الجانبية (Sidebar Badges) ---
+// --- دالة تحديث وإنشاء العدادات في القائمة الجانبية تلقائياً ---
+// --- دالة تحديث وإنشاء العدادات في القائمة الجانبية تلقائياً ---
+async function updateSidebarBadges() {
+    const activeSupabase = window.supabase || dbClient;
+    if (!activeSupabase || !activeSupabase.auth) return;
+
+    const { data: { user } } = await activeSupabase.auth.getUser();
+    if (!user) return;
+
+    // البحث عن روابط القائمة الجانبية بالـ href الخاص بها
+    const links = document.querySelectorAll('.side-menu a');
+
+    if (links.length === 0) {
+        // لو الـ Sidebar لسه متحملش، نعيد المحاولة بعد نصف ثانية
+        setTimeout(updateSidebarBadges, 500);
+        return;
+    }
+
+    links.forEach(async (link) => {
+        const href = link.getAttribute('href');
+        let count = 0;
+        let badgeId = '';
+
+        try {
+            // 1. حساب إشعارات الإشعارات غير المقروءة
+            if (href && href.includes('notifications.html')) {
+                badgeId = 'notifBadgeCount';
+                const { count: unreadNotifs } = await activeSupabase
+                    .from('notifications')
+                    .select('*', { count: 'exact', head: true })
+                    .eq('user_id', user.id)
+                    .or('is_read.is.null,is_read.eq.false'); // يدعم لو القيمة false أو null
+                count = unreadNotifs || 0;
+            }
+            // 2. حساب المتابعات الجديدة لملفي الشخصي
+            else if (href && href.includes('me.html')) {
+                badgeId = 'profileBadgeCount';
+                const { count: newFollowers } = await activeSupabase
+                    .from('notifications')
+                    .select('*', { count: 'exact', head: true })
+                    .eq('user_id', user.id)
+                    .eq('action_type', 'follow')
+                    .or('is_read.is.null,is_read.eq.false');
+                count = newFollowers || 0;
+            }
+            // 3. حساب الرسائل الخاصة
+            else if (href && href.includes('messages.html')) {
+                badgeId = 'msgBadgeCount';
+                const { count: unreadMessages } = await activeSupabase
+                    .from('messages')
+                    .select('*', { count: 'exact', head: true })
+                    .eq('receiver_id', user.id)
+                    .or('is_read.is.null,is_read.eq.false');
+                count = unreadMessages || 0;
+            }
+
+            if (badgeId) {
+                let badge = document.getElementById(badgeId);
+                if (!badge) {
+                    badge = document.createElement('span');
+                    badge.id = badgeId;
+                    badge.style.cssText = "background: #ff4757; color: #fff; font-size: 11px; font-weight: bold; padding: 2px 8px; border-radius: 50px; margin-right: auto; margin-left: 10px; display: inline-block;";
+
+                    // ضمان أن الـ link يدعم الفليكس لعرض العنصر في الأقصى
+                    link.style.display = 'flex';
+                    link.style.alignItems = 'center';
+                    link.style.justifyContent = 'space-between';
+                    link.appendChild(badge);
+                }
+
+                if (count > 0) {
+                    badge.innerText = count;
+                    badge.style.display = 'inline-block';
+                } else {
+                    badge.style.display = 'none';
+                }
+            }
+        } catch (err) {
+            console.error("خطأ في تحديث العدادات للرابط:", href, err);
+        }
+    });
+}
+
+// تشغيل الفحص عند اكتمال التحميل وعند فتح الصفحة
+document.addEventListener('DOMContentLoaded', () => {
+    updateSidebarBadges();
+});
+window.addEventListener('load', () => {
+    updateSidebarBadges();
+});
+
+// تشغيل الفحص أول ما الصفحة تفتح
+// تصفير الإشعارات وجعلها مقروءة بمجرد فتح الصفحة
+async function markNotificationsAsRead() {
+    const activeSupabase = window.supabase || dbClient;
+    if (!activeSupabase || !activeSupabase.auth) return;
+
+    const { data: { user } } = await activeSupabase.auth.getUser();
+    if (!user) return;
+
+    await activeSupabase
+        .from('notifications')
+        .update({ is_read: true })
+        .eq('user_id', user.id)
+        .eq('is_read', false);
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    markNotificationsAsRead();
+});
