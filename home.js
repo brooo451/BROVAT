@@ -5,6 +5,7 @@
 
 
 function createEmoji() {
+    if (window.isEmojisActive === false) return;
     const emojis = ['🎭', '🎟️', '🎬', '📽️', '✨', '🎫🎫', '🥇', '🎩', '🏛️', '🎗️', '🎈', '🎀', '🎞️'];
     const emoji = document.createElement('div');
     emoji.innerText = emojis[Math.floor(Math.random() * emojis.length)];

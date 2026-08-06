@@ -602,3 +602,29 @@ async function markNotificationsAsRead() {
 document.addEventListener('DOMContentLoaded', () => {
     markNotificationsAsRead();
 });
+// متغير عام لحالة الأيموجي (يعمل افتراضياً)
+window.isEmojisActive = true;
+let emojiInterval = null;
+
+// دالة تشغيل وإيقاف الأيموجي
+// ==================== زرار تشغيل وإيقاف الأيموجي المتحركة ====================
+window.isEmojisActive = true;
+
+function toggleEmojis(checkbox) {
+    window.isEmojisActive = checkbox.checked; // true أو false حسب حالة الزرار
+
+    if (!window.isEmojisActive) {
+        console.log("تم إيقاف تساقط الأيموجي 🛑");
+
+        // إزالة أي أيموجي نازلة حالياً على الشاشة فوراً
+        const fallingElements = document.querySelectorAll('.falling-emoji, .emoji, span[style*="position: fixed"], div[style*="position: fixed"]');
+        fallingElements.forEach(el => {
+            // للتأكد من حذف عناصر الأيموجي فقط وعدم حذف عناصر الموقع الأساسية
+            if (el.innerText && /[\u{1F300}-\u{1F9FF}]/u.test(el.innerText)) {
+                el.remove();
+            }
+        });
+    } else {
+        console.log("تم تشغيل تساقط الأيموجي 🌟");
+    }
+}

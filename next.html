@@ -31,8 +31,24 @@
     <script src="next.js"></script>
 
 
+
     <div class="header-container">
-        <h1 class="logo">BROVAT</h1>
+        <!-- دمجنا اللوجو والزرار في سطر واحد عشان يفضلوا جنب بعض -->
+        <h1 class="logo">
+            BROVAT
+            <span class="small-switch-wrapper">
+                <!-- From Uiverse.io by Admin12121 - زرار التبديل مصغر -->
+                <label class="switch-button small-switch" for="switch">
+                    <div class="switch-outer">
+                        <input id="switch" type="checkbox" onchange="toggleEmojis(this)" checked>
+                        <div class="button">
+                            <span class="button-toggle"></span>
+                            <span class="button-indicator"></span>
+                        </div>
+                    </div>
+                </label>
+            </span>
+        </h1>
         <h2 class="right-text">احنا في البروفا</h2>
     </div>
 
