@@ -16,8 +16,8 @@ window.registerUser = async () => {
     const email = document.getElementById("reg-email").value;
     const password = document.getElementById("reg-password").value;
     const nickname = document.getElementById("nickname").value;
+    const age = document.getElementById("age") ? document.getElementById("age").value : null;
     const role = document.getElementById("roleSelect").value;
-    const phone = document.getElementById("phone").value;
 
     const { data, error } = await supabase.auth.signUp({ email, password });
     if (error) return alert(error.message);
@@ -32,16 +32,16 @@ window.registerUser = async () => {
         .from('users')
         .upsert([{
             id: data.user.id,        // الـ ID بتاع الـ Auth
-            nickname: nickname,      // اسم المستخدم
-            role: role,              // التخصص
-            phone: phone             // رقم الهاتف
+            nickname: nickname,      // اسم الشهرة
+            age: age ? parseInt(age, 10) : null, // السن
+            role: role               // التخصص
         }]);
 
     if (dbError) {
         console.error("تفاصيل الخطأ من Supabase:", dbError);
         alert("الخطأ اللي ظهر هو: " + dbError.message + " - نوع الخطأ: " + dbError.code);
     } else {
-        alert("تم التسجيل!");
+        alert("تم التسجيل بنجاح! 🚀");
         window.location.href = "me.html";
     }
 };
